@@ -1,0 +1,104 @@
+/*******************************************************************
+ * Copyright (c) 2010 Rohit Kumbhar
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *******************************************************************/
+package net.yama.android.response;
+
+import java.util.Date;
+
+import net.yama.android.util.Constants;
+
+import org.json.JSONObject;
+
+/**
+ * @author Rohit Kumbhar
+ *
+ */
+public class EventComment extends BaseResponse {
+
+	private String eventCommentId;
+	private String comment;
+	private String commentingMemberId;
+	private String commentingMemberName;
+	private Date postingTime;
+	
+	
+	public EventComment() {
+	}
+	
+	@Override
+	public void convertFromJSON(BaseResponse b, JSONObject json) {
+		
+		EventComment comment = (EventComment) b;
+		comment.setPhotoURL(json.optString(Constants.RESPONSE_PARAM_PHOTO_URL));
+		comment.eventCommentId = json.optString(Constants.RESPONSE_PARAM_EVENT_COMMENT_ID);
+		comment.comment = json.optString(Constants.RESPONSE_PARAM_COMMENT);
+		comment.commentingMemberId = json.optString(Constants.RESPONSE_PARAM_MEMBER_ID);
+		comment.commentingMemberName = json.optString(Constants.RESPONSE_PARAM_MEMBER_NAME);
+		comment.postingTime = new Date(json.optLong(Constants.RESPONSE_PARAM_TIME));
+
+	}
+
+	public String getEventCommentId() {
+		return eventCommentId;
+	}
+
+	public void setEventCommentId(String eventCommentId) {
+		this.eventCommentId = eventCommentId;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getCommentingMemberId() {
+		return commentingMemberId;
+	}
+
+	public void setCommentingMemberId(String commentingMemberId) {
+		this.commentingMemberId = commentingMemberId;
+	}
+
+	public String getCommentingMemberName() {
+		return commentingMemberName;
+	}
+
+	public void setCommentingMemberName(String commentingMemberName) {
+		this.commentingMemberName = commentingMemberName;
+	}
+
+	public Date getPostingTime() {
+		return postingTime;
+	}
+
+	public void setPostingTime(Date postingTime) {
+		this.postingTime = postingTime;
+	}
+
+	
+	
+}

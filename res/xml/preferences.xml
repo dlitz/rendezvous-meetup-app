@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="@string/generalPrefs">
+		<ListPreference android:title="@string/startTabLabel"
+			android:summary="@string/startupTabDesc"
+			android:key="startupTab" 
+			android:defaultValue="0"
+			android:entries="@array/startupTabs" 
+			android:entryValues="@array/startupTabsValues" />
+		
+	</PreferenceCategory>
+	
+	<PreferenceCategory android:title="@string/appBehavior">
+		<ListPreference android:title="@string/fetchEventsFrom"
+			android:summary="@string/fetchEventsFromDesc"
+			android:key="fetchEventsFrom" 
+			android:defaultValue="-1d"
+			android:entries="@array/fetchPrevDurations" 
+			android:entryValues="@array/fetchPrevDurationsValues" />
+			
+		<ListPreference android:title="@string/fetchEventsTo"
+			android:summary="@string/fetchEventsToDesc"
+			android:key="fetchEventsTo" 
+			android:defaultValue="1m"
+			android:entries="@array/fetchNextDurations" 
+			android:entryValues="@array/fetchNextDurationsValues" />
+			
+	</PreferenceCategory>
+	
+	
+</PreferenceScreen>

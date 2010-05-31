@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="startupTabsValues">
+		<item>0</item>
+		<item>1</item>
+	</string-array>
+	<string-array name="startupTabs">
+		<item>@string/myMeetups</item>
+		<item>@string/myGroups</item>
+	</string-array>
+	<string-array name="fetchPrevDurationsValues">
+		<item>-1d</item>
+		<item>-1w</item>
+		<item>-2w</item>
+		<item>-1m</item>
+	</string-array>
+	<string-array name="fetchPrevDurations">
+		<item>@string/lastOneDay</item>
+		<item>@string/lastOneWeek</item>
+		<item>@string/lastTwoWeeks</item>
+		<item>@string/lastOneMonth</item>
+	</string-array>
+	<string-array name="fetchNextDurationsValues">
+		<item>1d</item>
+		<item>1w</item>
+		<item>2w</item>
+		<item>1m</item>
+	</string-array>
+	<string-array name="fetchNextDurations">
+		<item>@string/nextOneDay</item>
+		<item>@string/nextOneWeek</item>
+		<item>@string/nextTwoWeeks</item>
+		<item>@string/nextOneMonth</item>
+	</string-array>
+</resources>

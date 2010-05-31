@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Rendezvous</string>
+    <string name="emailAddress">E-Mail Address:</string>
+    <string name="password">Password:</string>
+    <string name="apiKey">API Key:</string>
+    <string name="submit">Submit</string>
+    <string name="authorizeMessage">In order to use this application, you need to authorize this application on meetup.com. <br /> Clicking on te button below will open a new browser window where you will be asked to grant permission to the application. You will be returned back to the application after you select your response.</string>
+	<string name="authorize">Authorize</string>
+	<string name="haveAComment">Have a comment?</string>
+	<string name="youRsvped">You RSVPed: </string>
+	<string name="rsvpClosed">Sorry! RSVPs are closed.</string>
+	<string name="guestsLabel">Guests:</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+	<string name="maybe">Maybe</string>
+	<string name="noCommentsYet">No comments for this event.</string>
+	<string name="addComment">Add a comment:</string>
+	<string name="addCommentBtn">   Add   </string>
+	<string name="myMeetups">Meetups</string>
+	<string name="myGroups">Groups</string>
+	<string name="generalPrefs">General Preferences</string>
+	<string name="startTabLabel">Starting Tab</string>
+	<string name="startupTabDesc">Default tab to open.</string>
+	<string name="appBehavior">Application Behavior</string>
+	<string name="fetchEventsFrom">Past Meetups</string>
+	<string name="fetchEventsFromDesc">Previous meetups to show in your list.</string>
+	<string name="lastOneDay">Since yesterday</string>
+	<string name="lastOneWeek">Since last week</string>
+	<string name="lastTwoWeeks">Since last two weeks</string>
+	<string name="lastOneMonth">Since last month</string>
+	<string name="fetchEventsTo">Future Meetups</string>
+	<string name="fetchEventsToDesc">Future meetups to show in your list.</string>
+	<string name="nextOneDay">Meetups tomorrow</string>
+	<string name="nextOneWeek">Meetups next week</string>
+	<string name="nextTwoWeeks">Meetups for next two weeks</string>
+	<string name="nextOneMonth">Metups for next month</string>
+	<string name="prefSettings">Settings</string>
+	<string name="prefResetCache">Reset Cache</string>
+	<string name="prefDeleteAcc">Delete Account</string>
+	
+</resources>

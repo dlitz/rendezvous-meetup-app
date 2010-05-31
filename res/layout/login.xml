@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+    <TextView
+    	android:id="@+id/apiKey"  
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" 
+        android:text="@string/apiKey"
+        />
+     <EditText  
+		android:id="@+id/apiKeyEdit"
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"
+        android:text = "f1463202c745e3745336f6f5b665064"
+        />
+        
+     <Button
+     	android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/submit"
+        android:layout_gravity="center"
+        android:paddingLeft="15px"
+        android:paddingRight="15px"
+        />   
+
+</LinearLayout>
