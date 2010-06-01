@@ -27,8 +27,8 @@ package net.yama.android.util;
 public class Constants {
 
 	public static String PREF_FILE_NAME = "JV3498752EAIRGBAARGER";
-	public static final String OAUTH_CONSUMER_KEY = "NOT_REAL_KEY";
-	public static final String OAUTH_CONSUMER_SECRET = "NOT_REAL_SECRET";
+	public static final String OAUTH_CONSUMER_KEY = "BFBBF99F342CC089A51438BA257DA188";
+	public static final String OAUTH_CONSUMER_SECRET = "64D3BADF7920EA14DBB553AA2BC4F33F";
 	public static final String OAUTH_CONSUMER_NAME = "Rendezvous";
 	
 	public static final String BASE_API_URL = "http://api.meetup.com/";
@@ -73,6 +73,8 @@ public class Constants {
 	
 	public static final String GROUP_INFO_TAB_ID = "group_info_tab";
 	public static final String GROUP_MEETUPS_TAB_ID = "group_meetups_tab";
+	public static final String GROUP_PHOTOS_TAB_ID = "group_photos_tab";
+	
 	
 	public static final String PARAM_ORDER = "order";
 	public static final String ORDER_NAME = "name";
@@ -143,6 +145,22 @@ public class Constants {
 	public static final String FETCH_EVENTS_FROM_PREF_KEY = "fetchEventsFrom";
 	public static final String DEFAULT_BEFORE_PERIOD = "-1w";
 	public static final String FETCH_EVENTS_TO_PREF_KEY = "fetchEventsTo";
-	
+	public static final String PHOTO_ALBUM_ID = "photo_album_id";
+	public static final String TITLE = "title";
+	public static final String PHOTO_COUNT = "photo_count";
+	public static final String CREATED_TS = "created";
+	public static final String UPDATED_TS = "updated";
+	public static final String ALBUM_ID = "album_id";
+	public static final String ALBUM_TITLE = "albumtitle";
+	public static final String POSTING_MEMBER_URL = "member_url";
+	public static final String DESCR = "descr";
+	public static final String CAPTIONS = "captions";
+	public static final String PHOTO_ALBUMS_GROUP_KEY = "PHOTO_ALBUMS_GROUP_KEY_";
+	public static final String SELECTED_ALBUM_ID = "SELECTED_ALBUM_ID";
+	public static final String PHOTO_IN_ALBUM = "PHOTO_IN_ALBUM";
+	public static final String ALBUM_PHOTO_URLS = "photo_urls";
+	public static final String THUMBNAIL_URLS = "thumb_urls";
+	public static final String PHOTOS_IN_GROUP = "PHOTOS_IN_GROUP_";
+	public static final String SELECTED_GROUP_ID = "SELECTED_GROUP_ID";
 
 }

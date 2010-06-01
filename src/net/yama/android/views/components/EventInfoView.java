@@ -174,6 +174,7 @@ public class EventInfoView extends TableLayout {
 			this.addView(monthView, 60,20);
 			this.addView(dayView, 60,40);
 			this.addView(timeView, 60,20);
+			this.setPadding(10, 10, 10, 10);
 			
 		}
 		

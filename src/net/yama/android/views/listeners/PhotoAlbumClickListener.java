@@ -22,31 +22,41 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *******************************************************************/
-package net.yama.android.views.activity;
+package net.yama.android.views.listeners;
 
-import net.yama.android.R;
 import net.yama.android.util.Constants;
-import net.yama.android.views.contentfactory.GroupInfoContentFactory;
-import android.app.TabActivity;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.widget.TabHost;
+import android.view.View;
+import android.view.View.OnClickListener;
 
-public class GroupInfoActivity extends TabActivity {
+/**
+ * Generic listener. Passes the Id of the clicked view 
+ * to the activity specified by the class
+ * @author Rohit Kumbhar
+ *
+ */
+public class PhotoAlbumClickListener implements OnClickListener {
+
+	Context context;
+	Class activityClass;
+	String groupId;
 	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Intent i = getIntent();
-		String groupId = i.getExtras().getString(Constants.RESPONSE_PARAM_GROUP_ID);
-		setContentView(R.layout.dashboard);
-		setTitle("Group Details");
-		GroupInfoContentFactory contentFactory = new GroupInfoContentFactory(GroupInfoActivity.this,groupId);
-		TabHost mTabHost = getTabHost();
-		mTabHost.addTab(mTabHost.newTabSpec(Constants.GROUP_INFO_TAB_ID).setIndicator("Info").setContent(contentFactory));
-	    mTabHost.addTab(mTabHost.newTabSpec(Constants.GROUP_MEETUPS_TAB_ID).setIndicator("Meetups").setContent(contentFactory));
-	    mTabHost.addTab(mTabHost.newTabSpec(Constants.GROUP_PHOTOS_TAB_ID).setIndicator("Photos").setContent(contentFactory));
-	    mTabHost.setCurrentTab(0);
+	public PhotoAlbumClickListener(Context context, Class actvityClass, String groupId) {
+		this.context = context;
+		this.activityClass = actvityClass;
+		this.groupId = groupId;
+	}
+	
+	public void onClick(View v) {
+		
+		int id = v.getId();
+		Intent i = new Intent(context,activityClass);
+		i.putExtra(Constants.SELECTED_ALBUM_ID, String.valueOf(id));
+		i.putExtra(Constants.SELECTED_GROUP_ID, String.valueOf(groupId));
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(i);
+
 	}
 
 }
