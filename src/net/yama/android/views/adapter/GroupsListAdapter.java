@@ -30,33 +30,17 @@ import net.yama.android.response.Group;
 import net.yama.android.views.components.InfoRowView;
 import net.yama.android.views.listeners.GroupLinkClickListener;
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 
-public class GroupsListAdapter implements ListAdapter {
+public class GroupsListAdapter extends AbstractListAdapter {
 
-	List data;
-	Context context;
+	
 	GroupLinkClickListener linkClickListener;
 	
 	public GroupsListAdapter(List data, Context ctx) {
-		this.context = ctx;
-		this.data = data;
+		super(data,ctx);
 		linkClickListener = new GroupLinkClickListener(context);
-	}
-
-	public boolean areAllItemsEnabled() {
-		return true;
-	}
-
-	public boolean isEnabled(int position) {
-		return true;
-	}
-
-	public int getCount() {
-		return data.size();
 	}
 
 	public Object getItem(int position) {
@@ -69,10 +53,6 @@ public class GroupsListAdapter implements ListAdapter {
 		return Long.valueOf(group.getId());
 	}
 
-	public int getItemViewType(int position) {
-		return IGNORE_ITEM_VIEW_TYPE;
-	}
-
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Group group = (Group) data.get(position);
 		InfoRowView view = new InfoRowView(this.context,
@@ -82,24 +62,6 @@ public class GroupsListAdapter implements ListAdapter {
 										   Integer.valueOf(group.getId()));
 		view.setOnClickListener(linkClickListener);
 		return view;
-	}
-
-	public int getViewTypeCount() {
-		return 1;
-	}
-
-	public boolean hasStableIds() {
-		return true;
-	}
-
-	public boolean isEmpty() {
-		return (data == null || data.isEmpty());
-	}
-
-	public void registerDataSetObserver(DataSetObserver observer) {
-	}
-
-	public void unregisterDataSetObserver(DataSetObserver observer) {
 	}
 
 }

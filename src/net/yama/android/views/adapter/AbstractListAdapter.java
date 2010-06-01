@@ -22,31 +22,59 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *******************************************************************/
-package net.yama.android.views.activity;
+package net.yama.android.views.adapter;
 
-import net.yama.android.R;
-import net.yama.android.util.Constants;
-import net.yama.android.views.contentfactory.GroupInfoContentFactory;
-import android.app.TabActivity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.TabHost;
+import java.util.List;
 
-public class GroupInfoActivity extends TabActivity {
+import android.content.Context;
+import android.database.DataSetObserver;
+import android.widget.ListAdapter;
+
+public abstract class AbstractListAdapter implements ListAdapter {
+
+	List data;
+	Context context;
 	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Intent i = getIntent();
-		String groupId = i.getExtras().getString(Constants.RESPONSE_PARAM_GROUP_ID);
-		setContentView(R.layout.dashboard);
-		setTitle("Group Details");
-		GroupInfoContentFactory contentFactory = new GroupInfoContentFactory(GroupInfoActivity.this,groupId);
-		TabHost mTabHost = getTabHost();
-		mTabHost.addTab(mTabHost.newTabSpec(Constants.GROUP_INFO_TAB_ID).setIndicator("Info").setContent(contentFactory));
-	    mTabHost.addTab(mTabHost.newTabSpec(Constants.GROUP_MEETUPS_TAB_ID).setIndicator("Meetups").setContent(contentFactory));
-	    mTabHost.addTab(mTabHost.newTabSpec(Constants.GROUP_PHOTOS_TAB_ID).setIndicator("Photos").setContent(contentFactory));
-	    mTabHost.setCurrentTab(0);
+	public AbstractListAdapter(List data, Context ctx) {
+		this.context = ctx;
+		this.data = data;
+	}
+
+	public boolean areAllItemsEnabled() {
+		return true;
+	}
+
+	public boolean isEnabled(int position) {
+		return true;
+	}
+
+	public int getCount() {
+		return data.size();
+	}
+
+	public int getViewTypeCount() {
+		return 1;
+	}
+
+	public boolean hasStableIds() {
+		return true;
+	}
+
+	public boolean isEmpty() {
+		return (data == null || data.isEmpty());
+	}
+	
+	public int getItemViewType(int position) {
+		return IGNORE_ITEM_VIEW_TYPE;
+	}
+
+	public void registerDataSetObserver(DataSetObserver observer) {
+		// Do nothing
+
+	}
+
+	public void unregisterDataSetObserver(DataSetObserver observer) {
+		// Do nothing
 	}
 
 }

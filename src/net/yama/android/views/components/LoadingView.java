@@ -28,6 +28,7 @@ import net.yama.android.managers.connection.ApplicationException;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -57,23 +58,9 @@ public abstract class LoadingView extends FrameLayout {
 	public LoadingView(Context context) {
 		super(context);
 		this.context = context;
-		
-//		RotateAnimation animation = new RotateAnimation(0.0f, 360.0f, Animation.RELATIVE_TO_SELF, 0.5f,	Animation.RELATIVE_TO_SELF, 0.5f);
-//		animation.setRepeatCount(Animation.INFINITE);
-//		
-//		ImageView i = new ImageView(context);
-//		i.setImageResource(R.drawable.loading);
-//		i.setScaleType(ScaleType.CENTER_INSIDE);
-//		i.setAnimation(animation);
-//		this.addView(i);
-		
-//		TextView v = new TextView(context);
-//		v.setText("Loading data...");
-//		v.setAnimation(animation);
-//		this.addView(v);
-		
 		dialog = ProgressDialog.show(context, "", "Loading. Please wait...", true);
 		doWork();
+		
 	}
 
 	private void doWork() {
@@ -81,8 +68,11 @@ public abstract class LoadingView extends FrameLayout {
 		Thread t = new Thread(new Runnable() {
 			public void run() {
 				try {
+					if(Looper.myLooper() == null)
+						Looper.prepare();
+					
 					afterResultsView = getResultsView();
-				} catch (ApplicationException e) {
+				} catch (Exception e) {
 					TextView v = new TextView(context);
 					v.setText(e.getMessage());
 					errorView = v;
