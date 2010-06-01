@@ -27,8 +27,8 @@ package net.yama.android.util;
 public class Constants {
 
 	public static String PREF_FILE_NAME = "JV3498752EAIRGBAARGER";
-	public static final String OAUTH_CONSUMER_KEY = "BFBBF99F342CC089A51438BA257DA188";
-	public static final String OAUTH_CONSUMER_SECRET = "64D3BADF7920EA14DBB553AA2BC4F33F";
+	public static final String OAUTH_CONSUMER_KEY = "BFB9F34ADF2CC089A51438BA257DA188";
+	public static final String OAUTH_CONSUMER_SECRET = "64DDF7920EA14DBB553BCFAA2BC4F33F";
 	public static final String OAUTH_CONSUMER_NAME = "Rendezvous";
 	
 	public static final String BASE_API_URL = "http://api.meetup.com/";
