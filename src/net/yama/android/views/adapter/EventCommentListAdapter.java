@@ -30,16 +30,33 @@ import java.util.List;
 import net.yama.android.response.EventComment;
 import net.yama.android.views.components.InfoRowView;
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
 
-public class EventCommentListAdapter extends AbstractListAdapter{
+public class EventCommentListAdapter implements ListAdapter {
+
+	List data;
+	Context context;
 	static SimpleDateFormat subTextFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 	
 	public EventCommentListAdapter(List data, Context ctx) {
-		super(data,ctx);
+		this.context = ctx;
+		this.data = data;
 	}
 
+	public boolean areAllItemsEnabled() {
+		return true;
+	}
+
+	public boolean isEnabled(int position) {
+		return true;
+	}
+
+	public int getCount() {
+		return data.size();
+	}
 
 	public Object getItem(int position) {
 		EventComment eventComment = (EventComment) data.get(position);
@@ -49,6 +66,10 @@ public class EventCommentListAdapter extends AbstractListAdapter{
 	public long getItemId(int position) {
 		EventComment eventComment = (EventComment) data.get(position);
 		return Long.valueOf(eventComment.getEventCommentId());
+	}
+
+	public int getItemViewType(int position) {
+		return IGNORE_ITEM_VIEW_TYPE;
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -61,4 +82,24 @@ public class EventCommentListAdapter extends AbstractListAdapter{
 		
 		return view;
 	}
+
+	public int getViewTypeCount() {
+		return 1;
+	}
+
+	public boolean hasStableIds() {
+		return true;
+	}
+
+	public boolean isEmpty() {
+		return (data == null || data.isEmpty());
+	}
+
+	public void registerDataSetObserver(DataSetObserver observer) {
+	}
+
+	public void unregisterDataSetObserver(DataSetObserver observer) {
+	}
+
+
 }

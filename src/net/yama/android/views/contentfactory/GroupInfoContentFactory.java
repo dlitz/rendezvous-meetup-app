@@ -34,7 +34,6 @@ import net.yama.android.response.Event;
 import net.yama.android.response.Group;
 import net.yama.android.util.Constants;
 import net.yama.android.views.adapter.EventListAdapter;
-import net.yama.android.views.adapter.PhotoAlbumsListAdapter;
 import net.yama.android.views.components.GroupInfoView;
 import net.yama.android.views.components.LoadingView;
 import android.app.Activity;
@@ -57,8 +56,6 @@ public class GroupInfoContentFactory extends AbstractContentFactory{
 				contentView = getGroupInfoView();
 			else if (Constants.GROUP_MEETUPS_TAB_ID.equalsIgnoreCase(tag))
 				contentView = getGroupEventsView();
-			else if (Constants.GROUP_PHOTOS_TAB_ID.equalsIgnoreCase(tag))
-				contentView = getGroupPhotosView();
 			else
 				contentView = getNullView();
 		} catch (Exception e) {
@@ -66,23 +63,6 @@ public class GroupInfoContentFactory extends AbstractContentFactory{
 		}
 		
 		return contentView;
-	}
-
-	private View getGroupPhotosView() {
-		
-		LoadingView view = new LoadingView(context) {
-
-			@Override
-			public View getResultsView() throws ApplicationException {
-				
-				List photoCollection = DataManager.getPhotosForGroup(groupId);
-				ListView photoAlbumsListView = new ListView(context);
-				photoAlbumsListView.setAdapter(new PhotoAlbumsListAdapter(photoCollection,context,groupId));
-				return photoAlbumsListView;
-			}
-		};
-		
-		return view;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -31,18 +31,34 @@ import net.yama.android.response.Event;
 import net.yama.android.views.components.InfoRowView;
 import net.yama.android.views.listeners.EventListClickListener;
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
 
-public class EventListAdapter extends AbstractListAdapter{
+public class EventListAdapter implements ListAdapter {
 
-	
+	List data;
+	Context context;
 	EventListClickListener listener;
 	static SimpleDateFormat subTextFormat = new SimpleDateFormat("MM/dd hh:mm a");
 	
 	public EventListAdapter(List data, Context ctx) {
-		super(data, ctx);
+		this.context = ctx;
+		this.data = data;
 		this.listener = new EventListClickListener(ctx);
+	}
+
+	public boolean areAllItemsEnabled() {
+		return true;
+	}
+
+	public boolean isEnabled(int position) {
+		return true;
+	}
+
+	public int getCount() {
+		return data.size();
 	}
 
 	public Object getItem(int position) {
@@ -55,6 +71,10 @@ public class EventListAdapter extends AbstractListAdapter{
 		return Long.valueOf(event.getId());
 	}
 
+	public int getItemViewType(int position) {
+		return IGNORE_ITEM_VIEW_TYPE;
+	}
+
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Event event = (Event) data.get(position);
 		InfoRowView view = new InfoRowView(this.context,
@@ -65,4 +85,23 @@ public class EventListAdapter extends AbstractListAdapter{
 		view.setOnClickListener(listener);
 		return view;
 	}
+
+	public int getViewTypeCount() {
+		return 1;
+	}
+
+	public boolean hasStableIds() {
+		return true;
+	}
+
+	public boolean isEmpty() {
+		return (data == null || data.isEmpty());
+	}
+
+	public void registerDataSetObserver(DataSetObserver observer) {
+	}
+
+	public void unregisterDataSetObserver(DataSetObserver observer) {
+	}
+
 }

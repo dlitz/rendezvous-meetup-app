@@ -45,7 +45,6 @@ public class GroupInfoActivity extends TabActivity {
 		TabHost mTabHost = getTabHost();
 		mTabHost.addTab(mTabHost.newTabSpec(Constants.GROUP_INFO_TAB_ID).setIndicator("Info").setContent(contentFactory));
 	    mTabHost.addTab(mTabHost.newTabSpec(Constants.GROUP_MEETUPS_TAB_ID).setIndicator("Meetups").setContent(contentFactory));
-	    mTabHost.addTab(mTabHost.newTabSpec(Constants.GROUP_PHOTOS_TAB_ID).setIndicator("Photos").setContent(contentFactory));
 	    mTabHost.setCurrentTab(0);
 	}
 

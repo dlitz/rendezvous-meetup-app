@@ -35,14 +35,12 @@ import net.yama.android.managers.connection.ConnectionManagerFactory;
 import net.yama.android.requests.EventCommentRequest;
 import net.yama.android.requests.EventRequest;
 import net.yama.android.requests.GroupRequest;
-import net.yama.android.requests.PhotoRequest;
 import net.yama.android.requests.RsvpRequest;
 import net.yama.android.requests.write.WriteEventComment;
 import net.yama.android.requests.write.WriteRsvp;
 import net.yama.android.response.Event;
 import net.yama.android.response.EventComment;
 import net.yama.android.response.Group;
-import net.yama.android.response.Photo;
 import net.yama.android.response.Rsvp;
 import net.yama.android.util.Constants;
 import net.yama.android.util.Helper;
@@ -255,66 +253,5 @@ public class DataManager {
 
 	public static void nuke() {
 		cache.clear();
-	}
-
-//	@Deprecated
-//	public static List getPhotoAlbumsForGroup(String groupId) throws ApplicationException {
-//
-//		List photoAlbums = (List) getFromCache(Constants.PHOTO_ALBUMS_GROUP_KEY + groupId);
-//		
-//		if(photoAlbums == null){
-//			PhotoAlbumRequest request = new PhotoAlbumRequest();
-//			request.addParameter(Constants.RESPONSE_PARAM_GROUP_ID, groupId);
-//			String response = ConnectionManagerFactory.getConnectionManager().makeRequest(request);
-//			try {
-//				photoAlbums = Helper.getListFromResult(response, PhotoAlbum.class);
-//				storeInCache(Constants.PHOTO_ALBUMS_GROUP_KEY + groupId, photoAlbums);
-//			} catch (Exception e) {
-//				Log.e("DataManager::getPhotoAlbumsForGroup()", e.getMessage(), e);
-//				throw new ApplicationException(e);
-//			}
-//		}
-//		return photoAlbums;
-//	}
-//
-//	@Deprecated
-//	public static List getPhotosFromAlbum(String albumId) throws ApplicationException {
-//		
-//		List photos = (List) getFromCache(Constants.PHOTO_IN_ALBUM + albumId);
-//		
-//		if(photos == null){
-//			PhotoRequest request = new PhotoRequest();
-//			request.addParameter(Constants.ALBUM_ID, albumId);
-//			String response = ConnectionManagerFactory.getConnectionManager().makeRequest(request);
-//			try {
-//				photos = Helper.getListFromResult(response, Photo.class);
-//				storeInCache(Constants.PHOTO_IN_ALBUM + albumId, photos);
-//			} catch (Exception e) {
-//				Log.e("DataManager::getPhotosFromAlbum()", e.getMessage(), e);
-//				throw new ApplicationException(e);
-//			}
-//		}
-//		return photos;
-//	}
-	
-	
-	public static List getPhotosForGroup(String groupId) throws ApplicationException{
-		
-		List photos = (List) getFromCache(Constants.PHOTOS_IN_GROUP + groupId);
-		
-		if(photos == null){
-			PhotoRequest request = new PhotoRequest();
-			request.addParameter(Constants.RESPONSE_PARAM_GROUP_ID, groupId);
-			String response = ConnectionManagerFactory.getConnectionManager().makeRequest(request);
-			try {
-				photos = Helper.getListFromResult(response, Photo.class);
-				storeInCache(Constants.PHOTOS_IN_GROUP + groupId, photos);
-			} catch (Exception e) {
-				Log.e("DataManager::getPhotosForGroup()", e.getMessage(), e);
-				throw new ApplicationException(e);
-			}
-		}
-		
-		return photos;
 	}
 }

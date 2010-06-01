@@ -16,7 +16,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.widget.ImageView;
 
@@ -69,9 +68,6 @@ public class DrawableManager {
 	        drawableMap.remove(urlString);
 	    }
 
-	    if(Looper.myLooper() == null)
-	    	Looper.prepare();
-	    
 	    final Handler handler = new Handler() {
 	        @Override
 	        public void handleMessage(Message message) {
