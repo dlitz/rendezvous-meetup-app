@@ -27,5 +27,16 @@
 			
 	</PreferenceCategory>
 	
+	<PreferenceCategory android:title="@string/advancedPrefs" 
+						android:summary="@string/dontMessAround">
+		<ListPreference android:title="@string/cachingTitle"
+			android:summary="@string/cachingDesc"
+			android:key="fetchEventsTo" 
+			android:defaultValue="1m"
+			android:entries="@array/cachingValuesDescription" 
+			android:entryValues="@array/cachingValues" />
+		
+	</PreferenceCategory>
+	
 	
 </PreferenceScreen>

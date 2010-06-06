@@ -27,11 +27,9 @@ package net.yama.android.managers.config;
 import net.yama.android.Rendezvous;
 import net.yama.android.managers.connection.ConnectionManagerFactory.ConnectionType;
 import net.yama.android.util.Constants;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 
 /**
@@ -67,7 +65,6 @@ public class ConfigurationManager {
 		SharedPreferences defaultPrefs = PreferenceManager.getDefaultSharedPreferences(yama);
 		defaultPrefs.registerOnSharedPreferenceChangeListener(new OnSharedPreferenceChangeListener() {
 			public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,String key) {
-				
 				if(Constants.FETCH_EVENTS_FROM_PREF_KEY.equals(key) || Constants.FETCH_EVENTS_TO_PREF_KEY.equals(key))
 					yama.reloadTabs();
 			}
@@ -170,6 +167,10 @@ public class ConfigurationManager {
 	public void saveTempImageStoragePath(String tempImageStoragePath) {
 		addPairToPrefs(Constants.TEMP_IMAGE_FILE_PATH,tempImageStoragePath);
 		this.tempImageStoragePath = tempImageStoragePath;
+	}
+
+	public int getImageThreads() {
+		return 3;
 	}
 	
 }

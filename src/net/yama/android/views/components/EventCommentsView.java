@@ -37,11 +37,13 @@ import net.yama.android.views.adapter.EventCommentListAdapter;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -78,8 +80,11 @@ public class EventCommentsView extends TableLayout {
 			editComments.setLines(3);
 			this.addView(editComments);
 			
+			RelativeLayout rel = new RelativeLayout(context);
+			rel.setGravity(Gravity.CENTER);
 			Button addComment = new Button(context);
 			addComment.setText(R.string.addCommentBtn);
+			addComment.setMinimumWidth(100);
 			addComment.setLayoutParams(new android.view.ViewGroup.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 			addComment.setOnClickListener(new View.OnClickListener() {
 				
@@ -95,7 +100,11 @@ public class EventCommentsView extends TableLayout {
 					}
 				}
 			});
-			this.addView(addComment);
+			
+			rel.addView(addComment);
+			RelativeLayout.LayoutParams uploadBtnParams = new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT,android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
+			uploadBtnParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+			this.addView(rel);
 		}
 		
 		if(!eventComments.isEmpty()) {

@@ -52,22 +52,14 @@ import android.widget.Toast;
 public class UploadPhotoActivity extends Activity implements OnClickListener {
 	
 	private static final int UPLOAD_BUTTON_ID = 0xDEADBEEF;
-	
-	Bitmap imageToUpload;
-	String eventId;
-
-	private EditText captionEdit;
-
+	private String eventId;
 	private String tempImagePath;
-
 	private Event event;
+	private EditText captionEdit;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		event = null;
-		
 		Intent intent = getIntent();
 		Bundle b = intent.getExtras();
 		
@@ -81,7 +73,6 @@ public class UploadPhotoActivity extends Activity implements OnClickListener {
 		
 		if(event != null)
 			setTitle(getResources().getString(R.string.uploadPhoto) + " - " + event.getName());
-		
 		
 		Bitmap bm = BitmapFactory.decodeFile(this.tempImagePath);
 		TableLayout layout = new TableLayout(this);
@@ -132,9 +123,12 @@ public class UploadPhotoActivity extends Activity implements OnClickListener {
 			Toast.makeText(getApplicationContext(), R.string.uploadPhotoSuccess, Toast.LENGTH_LONG).show();
 			if(event != null)
 				DataManager.removeCachedPhotosForGroup(event.getGroupId());
+			
 		} catch (ApplicationException e) {
 			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
 		}
+		
+		
 	}
 
 }

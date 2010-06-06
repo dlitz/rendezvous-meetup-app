@@ -60,10 +60,10 @@ public class InfoRowView extends TableLayout {
 		this.setPadding(5, 10, 5, 10);
 		
 		image = new ImageView(context);
-		image.setMaxHeight(50);
-		image.setMaxWidth(50);
-		image.setMinimumWidth(50);
-		image.setMinimumHeight(50);
+		image.setMaxHeight(100);
+		image.setMaxWidth(100);
+		image.setMinimumWidth(100);
+		image.setMinimumHeight(100);
 		image.setAdjustViewBounds(true);
 		image.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 		image.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -88,7 +88,7 @@ public class InfoRowView extends TableLayout {
 			layoutText.setPadding(5, 0, 1, 0);
 			
 			LinearLayout layout = new LinearLayout(context);
-			layout.addView(image,50,50);
+			layout.addView(image,100,100);
 			layout.addView(layoutText);
 			this.addView(layout); 
 		} else {

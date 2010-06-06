@@ -65,7 +65,7 @@ public class EventInfoView extends TableLayout {
 		
 		TableRow dateVenueInfo = new TableRow(context);
 		DateDisplay dateDisplay = new DateDisplay(context, event.getEventTime());
-		dateDisplay.setPadding(2, 0, 0, 0);
+		dateDisplay.setPadding(10, 10, 10, 10);
 		TextView venueInfo = new TextView(context);
 		venueInfo.setPadding(10, 0, 1, 0);
 		venueInfo.setText(getVenueString(event.getVenue()));
@@ -152,7 +152,7 @@ public class EventInfoView extends TableLayout {
 			monthView.setTypeface(Typeface.DEFAULT_BOLD);
 			monthView.setGravity(Gravity.CENTER_HORIZONTAL);
 			monthView.setTextColor(Color.WHITE);
-			monthView.setBackgroundColor(Color.RED);
+			monthView.setBackgroundColor(Color.rgb(204, 0, 0));
 			monthView.setMaxHeight(15);
 			
 			TextView dayView = new TextView(context);
@@ -170,10 +170,10 @@ public class EventInfoView extends TableLayout {
 			timeView.setGravity(Gravity.CENTER_HORIZONTAL);
 			timeView.setMinHeight(15);
 			
-			this.addView(monthView, 60,20);
-			this.addView(dayView, 60,40);
-			this.addView(timeView, 60,20);
-			this.setPadding(10, 10, 10, 10);
+			this.addView(monthView, 80,30);
+			this.addView(dayView, 80,60);
+			this.addView(timeView, 80,30);
+			this.setPadding(20,20,20,20);
 			
 		}
 		
