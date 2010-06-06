@@ -49,7 +49,7 @@ public class ConfigurationManager {
 	private String requestAfterPeriod;
 	private int defaultStartupTab;
 	private String tempImageStoragePath;
-	
+	private String cachingEnabled;
 	private ConfigurationManager() {
 	}
 
@@ -69,14 +69,17 @@ public class ConfigurationManager {
 					yama.reloadTabs();
 			}
 		});
+		
 		instance.apiKey = prefs.getString(Constants.API_KEY, null);
 		instance.accessToken = prefs.getString(Constants.ACCESS_TOKEN, null);
 		instance.accessTokenSecret = prefs.getString(Constants.ACCESS_TOKEN_SECRET, null);
 		instance.memberId = prefs.getString(Constants.MEMBER_ID, null);
 		instance.defaultStartupTab = Integer.valueOf(defaultPrefs.getString(Constants.STARTUP_TAB, "0"));
+		instance.tempImageStoragePath = prefs.getString(Constants.TEMP_IMAGE_FILE_PATH, null);
+		
 		instance.requestAfterPeriod = defaultPrefs.getString(Constants.FETCH_EVENTS_FROM_PREF_KEY, Constants.DEFAULT_BEFORE_PERIOD);
 		instance.requestBeforePeriod = defaultPrefs.getString(Constants.FETCH_EVENTS_TO_PREF_KEY, Constants.DEFAULT_AFTER_PERIOD);
-		instance.tempImageStoragePath = prefs.getString(Constants.TEMP_IMAGE_FILE_PATH, null);
+		instance.cachingEnabled = defaultPrefs.getString(Constants.IS_CACHING_ENABLED, "true");
 	}
 
 	public String getApiKey() {
@@ -171,6 +174,10 @@ public class ConfigurationManager {
 
 	public int getImageThreads() {
 		return 3;
+	}
+
+	public String getCachingEnabled() {
+		return cachingEnabled;
 	}
 	
 }

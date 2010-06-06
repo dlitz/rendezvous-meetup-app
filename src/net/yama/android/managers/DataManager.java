@@ -58,6 +58,10 @@ public class DataManager {
 	
 	private static void storeInCache(String key, Object value){
 		
+		String cacheEnabled = ConfigurationManager.instance.getCachingEnabled();
+		if(cacheEnabled != null && !Boolean.parseBoolean(cacheEnabled))
+			return;
+		
 		if(Constants.GROUP_DATA_KEY.equals(key) || Constants.EVENT_DATA_KEY.equals(key))
 			cache.put(Constants.CACHE_TIMESTAMP_KEY, Long.valueOf(System.currentTimeMillis()));
 		

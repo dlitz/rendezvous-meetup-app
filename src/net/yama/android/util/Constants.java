@@ -169,5 +169,6 @@ public class Constants {
 	public static final String PHOTO = "photo";
 	public static final String IMAGE_CAPTION = "caption";
 	public static final String IMAGE_THREAD_COUNT = "imageThreadCount";
+	public static final String IS_CACHING_ENABLED = "cachingEnabled";
 
 }
