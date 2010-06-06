@@ -40,7 +40,8 @@
 	<string name="prefDeleteAcc">Delete Account</string>
 	<string name="takePhoto">Take a photo</string>
 	<string name="cancelPhoto">Photo canceled</string>
-	<string name="uploadPhoto">Upload Photo</string>
+	<string name="uploadPhoto">Upload photo </string>
+	<string name="uploadPhotoSuccess">Photo uploaded successfully.</string>
 	<string name="photoCaption">Caption:</string>
 	
 </resources>

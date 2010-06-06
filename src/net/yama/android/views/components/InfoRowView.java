@@ -57,7 +57,7 @@ public class InfoRowView extends TableLayout {
 	private void setupComponents(int id, Context context, String mainText,String subText, String imageUrl) {
 		
 		this.setId(id);
-		this.setPadding(2, 2, 2, 2);
+		this.setPadding(5, 10, 5, 10);
 		
 		image = new ImageView(context);
 		image.setMaxHeight(50);

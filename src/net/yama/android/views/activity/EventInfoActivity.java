@@ -55,7 +55,6 @@ public class EventInfoActivity extends TabActivity {
 		Intent i = getIntent();
 		eventId = i.getExtras().getString(Constants.EVENT_ID_KEY);
 		setContentView(R.layout.dashboard);
-		setTitle("Meetup Details");
 		EventInfoContentFactory contentFactory = new EventInfoContentFactory(EventInfoActivity.this,eventId);
 		TabHost mTabHost = getTabHost();
 		mTabHost.addTab(mTabHost.newTabSpec(Constants.MEETUP_INFO_TAB_ID).setIndicator("Info").setContent(contentFactory));
@@ -102,26 +101,10 @@ public class EventInfoActivity extends TabActivity {
 		}
 		switch (requestCode) {		
 			case Constants.CAMERA_INTENT_ID: 
-				
-				
 				Intent uploadPhoto = new Intent(this, UploadPhotoActivity.class);
-//				uploadPhoto.putExtras(intent.getExtras());
 				uploadPhoto.putExtra(Constants.TEMP_IMAGE_FILE_PATH,tempImage.getAbsolutePath());
 				uploadPhoto.putExtra(Constants.EVENT_ID_KEY, eventId);
-				
 				startActivity(uploadPhoto);
-				
-//				Bundle b = intent.getExtras();
-//				if (b != null && b.containsKey(MediaStore.EXTRA_OUTPUT)) { // large image?
-//					try {
-//						MediaStore.Images.Media.insertImage(getContentResolver(), tempImage.getAbsolutePath(), null, null);
-//					} catch (FileNotFoundException e) {
-//						e.printStackTrace();
-//					}
-//				} 
-//				else {
-//					MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null);
-//				}
 				break;
 		}
 	}

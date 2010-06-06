@@ -36,13 +36,12 @@ import net.yama.android.views.components.LoadingView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Gallery;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
+/*
+ * Displayes all the pictures in a meetup
+ */
 public class GalleryActivity extends Activity {
 
 	@Override
@@ -61,12 +60,6 @@ public class GalleryActivity extends Activity {
 				Photo albumPhotos = getPhotosForAlbum(photos,albumId);
 				Gallery g = new Gallery(GalleryActivity.this);
 				g.setAdapter(new GalleryAdapter(albumPhotos,GalleryActivity.this));
-//			    g.setOnItemClickListener(new OnItemClickListener() {
-//			        public void onItemClick(AdapterView parent, View v, int position, long id) {
-//			            Toast.makeText(GalleryActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-//			        }
-//			    });
-			    
 			    return g;
 			}
 

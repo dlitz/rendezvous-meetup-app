@@ -25,9 +25,11 @@
 package net.yama.android.views.activity;
 
 import net.yama.android.R;
+import net.yama.android.managers.DataManager;
 import net.yama.android.managers.connection.ApplicationException;
 import net.yama.android.managers.connection.ConnectionManagerFactory;
 import net.yama.android.requests.write.WritePhotoRequest;
+import net.yama.android.response.Event;
 import net.yama.android.util.Constants;
 import android.app.Activity;
 import android.content.Intent;
@@ -42,13 +44,13 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class UploadPhotoActivity extends Activity implements OnClickListener {
 	
-	private static final String DATA = "data";
-
 	private static final int UPLOAD_BUTTON_ID = 0xDEADBEEF;
 	
 	Bitmap imageToUpload;
@@ -57,15 +59,29 @@ public class UploadPhotoActivity extends Activity implements OnClickListener {
 	private EditText captionEdit;
 
 	private String tempImagePath;
+
+	private Event event;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		event = null;
+		
 		Intent intent = getIntent();
 		Bundle b = intent.getExtras();
 		
 		tempImagePath = b.getString(Constants.TEMP_IMAGE_FILE_PATH);
 		this.eventId = b.getString(Constants.EVENT_ID_KEY);
+		try {
+			event = DataManager.getEvent(eventId);
+		} catch (ApplicationException e) {
+			// Ignore for now
+		}
+		
+		if(event != null)
+			setTitle(getResources().getString(R.string.uploadPhoto) + " - " + event.getName());
+		
 		
 		Bitmap bm = BitmapFactory.decodeFile(this.tempImagePath);
 		TableLayout layout = new TableLayout(this);
@@ -82,15 +98,20 @@ public class UploadPhotoActivity extends Activity implements OnClickListener {
 		captionEdit = new EditText(this);
 		layout.addView(captionEdit);
 		
+		RelativeLayout rel = new RelativeLayout(getApplicationContext());
+		rel.setGravity(Gravity.CENTER);
+		
 		Button upload = new Button(this);
 		upload.setId(UPLOAD_BUTTON_ID);
 		upload.setText(R.string.uploadPhoto);
 		upload.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-		upload.setPadding(15, 15, 15, 15);
+		rel.setPadding(15, 15, 15, 15);
 		upload.setOnClickListener(this);
-		upload.setGravity(Gravity.CENTER);
+		rel.addView(upload);
+		RelativeLayout.LayoutParams uploadBtnParams = new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT,android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
+		uploadBtnParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		
-		layout.addView(upload);
+		layout.addView(rel);
 		setContentView(layout);
 		
 	}
@@ -108,10 +129,11 @@ public class UploadPhotoActivity extends Activity implements OnClickListener {
 		String response;
 		try {
 			response = ConnectionManagerFactory.getConnectionManager().uploadPhoto(request);
-			System.out.println(response);
+			Toast.makeText(getApplicationContext(), R.string.uploadPhotoSuccess, Toast.LENGTH_LONG).show();
+			if(event != null)
+				DataManager.removeCachedPhotosForGroup(event.getGroupId());
 		} catch (ApplicationException e) {
-			
-			e.printStackTrace();
+			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
 

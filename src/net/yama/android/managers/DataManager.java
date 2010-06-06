@@ -257,47 +257,6 @@ public class DataManager {
 		cache.clear();
 	}
 
-//	@Deprecated
-//	public static List getPhotoAlbumsForGroup(String groupId) throws ApplicationException {
-//
-//		List photoAlbums = (List) getFromCache(Constants.PHOTO_ALBUMS_GROUP_KEY + groupId);
-//		
-//		if(photoAlbums == null){
-//			PhotoAlbumRequest request = new PhotoAlbumRequest();
-//			request.addParameter(Constants.RESPONSE_PARAM_GROUP_ID, groupId);
-//			String response = ConnectionManagerFactory.getConnectionManager().makeRequest(request);
-//			try {
-//				photoAlbums = Helper.getListFromResult(response, PhotoAlbum.class);
-//				storeInCache(Constants.PHOTO_ALBUMS_GROUP_KEY + groupId, photoAlbums);
-//			} catch (Exception e) {
-//				Log.e("DataManager::getPhotoAlbumsForGroup()", e.getMessage(), e);
-//				throw new ApplicationException(e);
-//			}
-//		}
-//		return photoAlbums;
-//	}
-//
-//	@Deprecated
-//	public static List getPhotosFromAlbum(String albumId) throws ApplicationException {
-//		
-//		List photos = (List) getFromCache(Constants.PHOTO_IN_ALBUM + albumId);
-//		
-//		if(photos == null){
-//			PhotoRequest request = new PhotoRequest();
-//			request.addParameter(Constants.ALBUM_ID, albumId);
-//			String response = ConnectionManagerFactory.getConnectionManager().makeRequest(request);
-//			try {
-//				photos = Helper.getListFromResult(response, Photo.class);
-//				storeInCache(Constants.PHOTO_IN_ALBUM + albumId, photos);
-//			} catch (Exception e) {
-//				Log.e("DataManager::getPhotosFromAlbum()", e.getMessage(), e);
-//				throw new ApplicationException(e);
-//			}
-//		}
-//		return photos;
-//	}
-	
-	
 	public static List getPhotosForGroup(String groupId) throws ApplicationException{
 		
 		List photos = (List) getFromCache(Constants.PHOTOS_IN_GROUP + groupId);
@@ -316,5 +275,9 @@ public class DataManager {
 		}
 		
 		return photos;
+	}
+	
+	public static void removeCachedPhotosForGroup(String groupId){
+		removeFromCache(Constants.PHOTOS_IN_GROUP + groupId);
 	}
 }
