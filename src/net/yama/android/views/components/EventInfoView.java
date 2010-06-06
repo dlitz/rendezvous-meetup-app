@@ -35,7 +35,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;

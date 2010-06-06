@@ -24,25 +24,36 @@
  *******************************************************************/
 package net.yama.android.views.activity;
 
+import java.io.File;
+
 import net.yama.android.R;
 import net.yama.android.util.Constants;
+import net.yama.android.util.Helper;
 import net.yama.android.views.contentfactory.EventInfoContentFactory;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 /**
  * @author Rohit Kumbhar
- *
  */
 public class EventInfoActivity extends TabActivity {
 
+	private File tempImage;
+	private Intent cameraIntent;
+	private String eventId;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent i = getIntent();
-		String eventId = i.getExtras().getString(Constants.EVENT_ID_KEY);
+		eventId = i.getExtras().getString(Constants.EVENT_ID_KEY);
 		setContentView(R.layout.dashboard);
 		setTitle("Meetup Details");
 		EventInfoContentFactory contentFactory = new EventInfoContentFactory(EventInfoActivity.this,eventId);
@@ -53,4 +64,67 @@ public class EventInfoActivity extends TabActivity {
 	    mTabHost.addTab(mTabHost.newTabSpec(Constants.MEETUP_ALL_RSVP_ID).setIndicator("Responses").setContent(contentFactory));
 	    mTabHost.setCurrentTab(0);
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		menu.add(0, Constants.TAKE_A_PICTURE, 0, R.string.takePhoto).setIcon(android.R.drawable.ic_menu_camera);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		super.onOptionsItemSelected(item);
+		
+		switch (item.getItemId()) {
+		 case Constants.TAKE_A_PICTURE:
+		    	startCamera();
+		        return true;
+		}
+		return false;
+	}
+
+	private void startCamera() {
+		
+			tempImage = new File(Helper.getTempStorageDirectory(),Constants.TEMP_IMAGE);
+			cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);	
+			cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(tempImage));
+			startActivityForResult(	cameraIntent, Constants.CAMERA_INTENT_ID);
+	}
+		
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		
+		super.onActivityResult(requestCode, resultCode, intent);
+		if (resultCode == RESULT_CANCELED) {
+			Toast.makeText(this,R.string.cancelPhoto,Toast.LENGTH_SHORT).show();
+			return;
+		}
+		switch (requestCode) {		
+			case Constants.CAMERA_INTENT_ID: 
+				
+				
+				Intent uploadPhoto = new Intent(this, UploadPhotoActivity.class);
+//				uploadPhoto.putExtras(intent.getExtras());
+				uploadPhoto.putExtra(Constants.TEMP_IMAGE_FILE_PATH,tempImage.getAbsolutePath());
+				uploadPhoto.putExtra(Constants.EVENT_ID_KEY, eventId);
+				
+				startActivity(uploadPhoto);
+				
+//				Bundle b = intent.getExtras();
+//				if (b != null && b.containsKey(MediaStore.EXTRA_OUTPUT)) { // large image?
+//					try {
+//						MediaStore.Images.Media.insertImage(getContentResolver(), tempImage.getAbsolutePath(), null, null);
+//					} catch (FileNotFoundException e) {
+//						e.printStackTrace();
+//					}
+//				} 
+//				else {
+//					MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null);
+//				}
+				break;
+		}
+	}
+	
+	
 }

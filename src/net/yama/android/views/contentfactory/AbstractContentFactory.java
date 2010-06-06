@@ -53,7 +53,6 @@ public abstract class AbstractContentFactory implements TabContentFactory {
 		TextView temp = new TextView(this.context);
 		temp.setText(message);
 		temp.setPadding(5, 5, 5, 5);
-		temp.setTextSize(10.0F);
 		return temp;
 	}
 

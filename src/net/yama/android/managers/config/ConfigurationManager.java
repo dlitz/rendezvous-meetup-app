@@ -31,6 +31,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 
 /**
@@ -49,6 +50,7 @@ public class ConfigurationManager {
 	private String requestBeforePeriod;
 	private String requestAfterPeriod;
 	private int defaultStartupTab;
+	private String tempImageStoragePath;
 	
 	private ConfigurationManager() {
 	}
@@ -77,6 +79,7 @@ public class ConfigurationManager {
 		instance.defaultStartupTab = Integer.valueOf(defaultPrefs.getString(Constants.STARTUP_TAB, "0"));
 		instance.requestAfterPeriod = defaultPrefs.getString(Constants.FETCH_EVENTS_FROM_PREF_KEY, Constants.DEFAULT_BEFORE_PERIOD);
 		instance.requestBeforePeriod = defaultPrefs.getString(Constants.FETCH_EVENTS_TO_PREF_KEY, Constants.DEFAULT_AFTER_PERIOD);
+		instance.tempImageStoragePath = prefs.getString(Constants.TEMP_IMAGE_FILE_PATH, null);
 	}
 
 	public String getApiKey() {
@@ -160,4 +163,13 @@ public class ConfigurationManager {
 		saveMemberId(null);
 	}
 
+	public String getTempImageStoragePath() {
+		return tempImageStoragePath;
+	}
+
+	public void saveTempImageStoragePath(String tempImageStoragePath) {
+		addPairToPrefs(Constants.TEMP_IMAGE_FILE_PATH,tempImageStoragePath);
+		this.tempImageStoragePath = tempImageStoragePath;
+	}
+	
 }

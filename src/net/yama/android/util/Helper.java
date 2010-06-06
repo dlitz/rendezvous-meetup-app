@@ -24,12 +24,14 @@
  *******************************************************************/
 package net.yama.android.util;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.yama.android.managers.config.ConfigurationManager;
 import net.yama.android.response.BaseResponse;
 import net.yama.android.response.Rsvp;
 import net.yama.android.response.Rsvp.RsvpResponse;
@@ -37,6 +39,8 @@ import net.yama.android.response.Rsvp.RsvpResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.os.Environment;
 
 
 public class Helper{
@@ -51,7 +55,15 @@ public class Helper{
 		return cache.get(key);
 	}
 	
-	
+	/**
+	 * Converts the JSON string into entity classes
+	 * @param responseBody
+	 * @param clazz
+	 * @return
+	 * @throws JSONException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 */
 	@SuppressWarnings("unchecked")
 	public static List getListFromResult(String responseBody, Class clazz ) throws JSONException, IllegalAccessException, InstantiationException{
 		
@@ -70,6 +82,11 @@ public class Helper{
 		return results;
 	}
 	
+	/**
+	 * Split the list of RSVPs into three maps,  YES, NO, MAYBE
+	 * @param allRsvps
+	 * @return
+	 */
 	public static Map<RsvpResponse, List<Rsvp>> splitRsvps(List allRsvps) {
 
 		Map<RsvpResponse, List<Rsvp>> rsvpMap = new HashMap<RsvpResponse, List<Rsvp>>();
@@ -93,6 +110,30 @@ public class Helper{
 		rsvpMap.put(RsvpResponse.MAYBE, mayBeRsvp);
 		
 		return rsvpMap;
+	}
+
+	/**
+	 * Create a temporary storage on the sdcard
+	 * @return
+	 */
+	public static File getTempStorageDirectory() {
+
+		String tempStorageDir = ConfigurationManager.instance.getTempImageStoragePath();
+		if(tempStorageDir != null)
+			return new File(tempStorageDir);
+		
+		// All or nothing
+		String tempStorageDirectory = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "rendezvous";
+		File f = new File(tempStorageDirectory);
+		if(!f.exists() && f.mkdirs()){
+			f =  new File(tempStorageDirectory + File.separator + "temp");
+			if(!f.exists() && f.mkdirs()) {
+				ConfigurationManager.instance.saveTempImageStoragePath(f.getAbsolutePath());
+				return f;
+			}
+		}
+			
+		return Environment.getExternalStorageDirectory();
 	}
 
 }

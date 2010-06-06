@@ -25,6 +25,7 @@
 package net.yama.android.managers.connection;
 
 import net.yama.android.requests.AbstractRequest;
+import net.yama.android.requests.write.WritePhotoRequest;
 
 /**
  * Implementations of this interface provide the ability to make requests to meetup.com  
@@ -32,4 +33,5 @@ import net.yama.android.requests.AbstractRequest;
  */
 public interface ConnectionManager {
 	public String makeRequest(AbstractRequest request) throws ApplicationException;
+	public String uploadPhoto(WritePhotoRequest request) throws ApplicationException;
 }

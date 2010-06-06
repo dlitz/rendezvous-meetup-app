@@ -45,8 +45,10 @@ import net.yama.android.views.activity.RendezvousPreferences;
 import net.yama.android.views.contentfactory.MainContentFactory;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -251,12 +253,10 @@ public class Rendezvous extends TabActivity {
 	    }
 	    return false;
 	}
-
+	
 	private void showPreferencesScreen() {
-		
 		Intent prefsIntent = new Intent(getBaseContext(),RendezvousPreferences.class);
 		startActivity(prefsIntent);
-		
 	}
 
 	public void reloadTabs() {

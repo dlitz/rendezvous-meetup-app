@@ -26,6 +26,7 @@ package net.yama.android.managers.connection;
 
 import net.yama.android.managers.config.ConfigurationManager;
 import net.yama.android.requests.AbstractRequest;
+import net.yama.android.requests.write.WritePhotoRequest;
 import net.yama.android.util.Constants;
 
 import org.apache.http.client.HttpClient;
@@ -61,6 +62,10 @@ public class ApiKeyConnectionManager implements ConnectionManager {
 		}
 
 		return responseBody;
+	}
+
+	public String uploadPhoto(WritePhotoRequest request) {
+		throw new RuntimeException("Not implemented");
 	}
 
 }
