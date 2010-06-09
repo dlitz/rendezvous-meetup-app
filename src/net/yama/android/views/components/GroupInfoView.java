@@ -25,8 +25,10 @@
 package net.yama.android.views.components;
 
 import net.yama.android.response.Group;
+import net.yama.android.util.Constants;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.util.Linkify;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -53,6 +55,7 @@ public class GroupInfoView extends TableLayout {
 		TextView groupDesc = new TextView(context);
 		groupDesc.setText(group.getDescription());
 		scrollView.addView(groupDesc);
+		Linkify.addLinks(groupDesc, Constants.LINK_MASK);
 		this.addView(scrollView, 1);
 		
 	}

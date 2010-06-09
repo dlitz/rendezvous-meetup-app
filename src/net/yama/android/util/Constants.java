@@ -24,6 +24,8 @@
  *******************************************************************/
 package net.yama.android.util;
 
+import android.text.util.Linkify;
+
 public class Constants {
 
 	public static String PREF_FILE_NAME = "JV3498752EAIRGBAARGER";
@@ -170,5 +172,6 @@ public class Constants {
 	public static final String IMAGE_CAPTION = "caption";
 	public static final String IMAGE_THREAD_COUNT = "imageThreadCount";
 	public static final String IS_CACHING_ENABLED = "cachingEnabled";
+	public static final int LINK_MASK = Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS | Linkify.WEB_URLS;
 
 }

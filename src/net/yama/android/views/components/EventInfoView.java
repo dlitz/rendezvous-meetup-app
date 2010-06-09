@@ -30,9 +30,11 @@ import java.util.Date;
 
 import net.yama.android.response.Event;
 import net.yama.android.response.Venue;
+import net.yama.android.util.Constants;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
@@ -69,6 +71,7 @@ public class EventInfoView extends TableLayout {
 		TextView venueInfo = new TextView(context);
 		venueInfo.setPadding(10, 0, 1, 0);
 		venueInfo.setText(getVenueString(event.getVenue()));
+		Linkify.addLinks(venueInfo, Constants.LINK_MASK );
 		dateVenueInfo.addView(dateDisplay);
 		dateVenueInfo.addView(venueInfo);
 		this.addView(dateVenueInfo,1);
@@ -86,6 +89,7 @@ public class EventInfoView extends TableLayout {
 		descriptionView.setPadding(2, 2, 2, 2);
 		descriptionView.setScrollContainer(true);
 		descriptionView.setScrollBarStyle(SCROLLBARS_OUTSIDE_OVERLAY);
+		Linkify.addLinks(descriptionView, Constants.LINK_MASK);
 		scrollView.addView(descriptionView);
 		
 		this.addView(scrollView,3);
