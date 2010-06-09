@@ -58,6 +58,7 @@ public class EventCommentListAdapter extends AbstractListAdapter{
 										   eventComment.getComment() + "\n- at " + subTextFormat.format(eventComment.getPostingTime() ),
 										   eventComment.getPhotoURL(),
 										   -1);
+		view.linkify();
 		
 		return view;
 	}

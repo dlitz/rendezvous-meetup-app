@@ -25,9 +25,11 @@
 package net.yama.android.views.components;
 
 import net.yama.android.R;
+import net.yama.android.util.Constants;
 import net.yama.android.util.DrawableManager;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.util.Linkify;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -116,6 +118,12 @@ public class InfoRowView extends TableLayout {
 		this.mainTextView.setClickable(false);
 		this.subTextView.setClickable(false);
 		super.setClickable(false);
+	}
+
+	public void linkify() {
+		Linkify.addLinks(this.mainTextView, Constants.LINK_MASK);
+		Linkify.addLinks(this.subTextView, Constants.LINK_MASK);
+		
 	}
 	
 }
