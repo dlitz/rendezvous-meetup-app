@@ -173,5 +173,8 @@ public class Constants {
 	public static final String IMAGE_THREAD_COUNT = "imageThreadCount";
 	public static final String IS_CACHING_ENABLED = "cachingEnabled";
 	public static final int LINK_MASK = Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS | Linkify.WEB_URLS;
+	public static final int ADD_TO_CALENDAR = 6;
+	public static final String REMINDER_CAL_ID_KEY = "reminderCalendar";
+	public static final int START_PREFS_FOR_CAL = 7;
 
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
       package="net.yama.android"
-      android:versionName="2" android:versionCode="2">
+      android:versionName="3" android:versionCode="3">
     <application android:icon="@drawable/launcher" android:label="@string/app_name">
         <activity android:name=".Rendezvous"
                   android:label="@string/app_name">
@@ -21,12 +21,11 @@
         <activity android:name=".views.activity.RendezvousPreferences" android:label="Settings"></activity>
         <activity android:name=".views.activity.GalleryActivity" android:label="Gallery"></activity>
         <activity android:name=".views.activity.UploadPhotoActivity" android:label="Upload Photo"></activity>
-        
-        
     </application>
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	
-	<uses-sdk android:minSdkVersion="4" />
+	<uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+   <uses-sdk android:minSdkVersion="4" />
 </manifest> 

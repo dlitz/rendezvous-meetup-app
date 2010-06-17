@@ -27,14 +27,24 @@ package net.yama.android.views.activity;
 import java.io.File;
 
 import net.yama.android.R;
+import net.yama.android.managers.DataManager;
+import net.yama.android.managers.config.ConfigurationManager;
+import net.yama.android.managers.connection.ApplicationException;
+import net.yama.android.response.Event;
 import net.yama.android.util.Constants;
 import net.yama.android.util.Helper;
 import net.yama.android.views.contentfactory.EventInfoContentFactory;
+import android.app.AlertDialog;
 import android.app.TabActivity;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
@@ -48,6 +58,36 @@ public class EventInfoActivity extends TabActivity {
 	private File tempImage;
 	private Intent cameraIntent;
 	private String eventId;
+	private Handler handler = new Handler();
+	
+	private Runnable showDialogAndLaunchPrefs = new Runnable() {
+		
+		private AlertDialog dialog;
+
+		public void run() {
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder((EventInfoActivity.this));
+			builder.setMessage(R.string.noCalSel);
+			builder.setCancelable(true);
+			builder.setPositiveButton("OK", new OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					Intent prefsIntent = new Intent(EventInfoActivity.this,RendezvousPreferences.class);
+					startActivityForResult(prefsIntent, Constants.START_PREFS_FOR_CAL);
+				}
+			});
+			
+			builder.setNegativeButton("Cancel", new OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					Toast.makeText(EventInfoActivity.this, "Could not set a reminder", Toast.LENGTH_SHORT).show();
+				}
+			});
+			
+			dialog = builder.show();
+			
+		}
+	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +108,7 @@ public class EventInfoActivity extends TabActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		menu.add(0, Constants.TAKE_A_PICTURE, 0, R.string.takePhoto).setIcon(android.R.drawable.ic_menu_camera);
+		menu.add(0, Constants.ADD_TO_CALENDAR, 0, R.string.addToCalendar).setIcon(android.R.drawable.ic_menu_month);
 		return true;
 	}
 	
@@ -79,8 +120,51 @@ public class EventInfoActivity extends TabActivity {
 		 case Constants.TAKE_A_PICTURE:
 		    	startCamera();
 		        return true;
-		}
+		 case Constants.ADD_TO_CALENDAR:
+			 	addEventToCalendar();
+			 break;
+		 }
+		
+		
 		return false;
+	}
+
+	private void addEventToCalendar() {
+		
+		String calendarId = ConfigurationManager.instance.getReminderCalendarId();
+		
+		if(calendarId == null){
+			// No calendar selected. Open the preferences page
+			handler.post(showDialogAndLaunchPrefs);
+			return;
+		}
+		
+		try {
+			// Add to calendar.
+			Event event = DataManager.getEvent(eventId);
+			ContentValues calEntry = new ContentValues();
+			calEntry.put("calendar_id", calendarId);
+			calEntry.put("title", event.getName());
+			calEntry.put("description", event.getDescription());
+			calEntry.put("eventLocation", event.getVenue().toString());
+			calEntry.put("dtstart", event.getEventTime().getTime());
+			calEntry.put("visibility", 0);
+			calEntry.put("transparency", 0);
+			calEntry.put("hasAlarm", 1);
+			
+			Uri eventsUri = Uri.parse("content://calendar/events");
+			Uri url = getContentResolver().insert(eventsUri, calEntry);
+			
+			if(url != null)
+				Toast.makeText(EventInfoActivity.this, getText(R.string.savedInCal), Toast.LENGTH_SHORT).show();
+			
+		} catch (ApplicationException e) {
+			Log.e(EventInfoActivity.class.getName(), e.getMessage());
+			Toast.makeText(EventInfoActivity.this, getText(R.string.calSaveFailed), Toast.LENGTH_LONG).show();
+		}
+		
+
+
 	}
 
 	private void startCamera() {
@@ -95,7 +179,7 @@ public class EventInfoActivity extends TabActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		
 		super.onActivityResult(requestCode, resultCode, intent);
-		if (resultCode == RESULT_CANCELED) {
+		if (requestCode == Constants.CAMERA_INTENT_ID && resultCode == RESULT_CANCELED) {
 			Toast.makeText(this,R.string.cancelPhoto,Toast.LENGTH_SHORT).show();
 			return;
 		}
@@ -105,6 +189,9 @@ public class EventInfoActivity extends TabActivity {
 				uploadPhoto.putExtra(Constants.TEMP_IMAGE_FILE_PATH,tempImage.getAbsolutePath());
 				uploadPhoto.putExtra(Constants.EVENT_ID_KEY, eventId);
 				startActivity(uploadPhoto);
+				break;
+			case Constants.START_PREFS_FOR_CAL:
+				addEventToCalendar();
 				break;
 		}
 	}

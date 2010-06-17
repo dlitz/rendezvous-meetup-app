@@ -36,10 +36,10 @@ public class ApplicationException extends Exception {
 
 	private static final long serialVersionUID = -1468654093504656108L;
 	
-	private static Map<Class,String> excpetionMessages = null;
+	private static Map<Class<? extends Exception>,String> excpetionMessages = null;
 	
 	static{
-		excpetionMessages = new HashMap<Class, String>();
+		excpetionMessages = new HashMap<Class<? extends Exception>, String>();
 		excpetionMessages.put(UnknownHostException.class, "Network connection is not available.");
 	}
 
@@ -57,6 +57,7 @@ public class ApplicationException extends Exception {
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public String getMessage() {
 	

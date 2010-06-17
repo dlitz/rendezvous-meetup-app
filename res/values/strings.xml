@@ -49,8 +49,11 @@
 	<string name="cachingTitle">Cache</string>
 	<string name="cachingDesc">Enable/disable caching data.</string>
 	<string name="dontMessAround">Change these only if you know what you are doing.</string>
-	
-	
-	
+	<string name="addToCalendar">Add to calendar</string>
+	<string name="calendarList">Select Calendar</string>
+	<string name="calendarListDesc">Calendar to set reminders</string>
+	<string name="noCalSel">A calendar has not been specified. Press OK to open the Setings screen.</string>
+	<string name="savedInCal">Event was successfully added to your calendar.</string>
+	<string name="calSaveFailed">There was an error adding the event to your calendar. Please try again later.</string>
 	
 </resources>

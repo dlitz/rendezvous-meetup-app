@@ -75,6 +75,11 @@ public class Rendezvous extends TabActivity {
 		configurationManager = ConfigurationManager.init(this);
 		contentFactory = new MainContentFactory(this);
 		
+		// Do updgrade activities
+		if(configurationManager.getAccessToken() != null){
+			doUpgradeActivities();
+		}
+		
 		Object accessor = Helper.getFromCache(OAUTH_ACCESSOR_INSTANCE);
 		if(accessor != null)
 			finishAuthorize();
@@ -84,19 +89,29 @@ public class Rendezvous extends TabActivity {
 	}
 	
 	/**
+	 * Things to do after an upgrade
+	 */
+	private void doUpgradeActivities() {
+		
+		// Clear data cache
+		DataManager.nuke();
+		
+	}
+
+	/**
 	 * Populates the screen when everything is authorized.
 	 */
 	private void populateDashboard() {
 		
-		if(configurationManager.haveAcess()){
-			Member currentMember = getMemberInformation();
-			if(currentMember == null){
-				Toast t = Toast.makeText(getApplicationContext(), "Network connection not available.", Toast.LENGTH_LONG);
-				t.show();
-				return;
-			}
-			setTitle("Welcome " + currentMember.getName());
-		}
+//		if(configurationManager.haveAcess()){
+//			Member currentMember = getMemberInformation();
+//			if(currentMember == null){
+//				Toast t = Toast.makeText(getApplicationContext(), "Network connection not available.", Toast.LENGTH_LONG);
+//				t.show();
+//				return;
+//			}
+//			setTitle("Welcome " + currentMember.getName());
+//		}
 		
 		TabHost mTabHost = getTabHost();
 		mTabHost.setDrawingCacheEnabled(false);

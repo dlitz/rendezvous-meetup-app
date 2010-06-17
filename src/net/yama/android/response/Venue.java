@@ -143,4 +143,17 @@ public class Venue {
 		this.venueLongitude = venueLongitude;
 	}
 	
+	@Override
+	public String toString() {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.venueName != null ? venueName + " " : "");
+		sb.append(this.venueAddress1 != null ? venueAddress1  + " ": "");
+		sb.append(this.venueAddress2 != null ? venueAddress2  + " ": "");
+		sb.append(this.venueCity != null ? venueCity  + " " : "");
+		sb.append(this.venueState != null ? venueState  + " ": "");
+		sb.append(this.venueZip != null ? venueZip  + " ": "");
+		return sb.toString();
+	}
+	
 }

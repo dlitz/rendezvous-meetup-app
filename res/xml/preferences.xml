@@ -24,6 +24,11 @@
 			android:defaultValue="1m"
 			android:entries="@array/fetchNextDurations" 
 			android:entryValues="@array/fetchNextDurationsValues" />
+		
+		<ListPreference android:title="@string/calendarList"
+			android:summary="@string/calendarListDesc"
+			android:key="reminderCalendar" 
+		 />
 			
 	</PreferenceCategory>
 	
@@ -32,7 +37,7 @@
 		<ListPreference android:title="@string/cachingTitle"
 			android:summary="@string/cachingDesc"
 			android:key="cachingEnabled" 
-			android:defaultValue="1m"
+			android:defaultValue="false"
 			android:entries="@array/cachingValuesDescription" 
 			android:entryValues="@array/cachingValues" />
 		

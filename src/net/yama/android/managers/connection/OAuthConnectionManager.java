@@ -80,16 +80,18 @@ public class OAuthConnectionManager implements ConnectionManager {
 	 */
 	public String makeRequest(AbstractRequest request) throws ApplicationException {
 		
-		OAuthAccessor accessor = new OAuthAccessor(OAuthConnectionManager.consumer);
-		accessor.accessToken = ConfigurationManager.instance.getAccessToken();
-		accessor.tokenSecret = ConfigurationManager.instance.getAccessTokenSecret();
-		accessor.consumer.setProperty(OAuthClient.PARAMETER_STYLE,ParameterStyle.QUERY_STRING);
-		
-		ArrayList<Map.Entry<String, String>> params = new ArrayList<Map.Entry<String, String>>();
-		convertRequestParamsToOAuth(params,request.getParameterMap());
-		OAuthClient oAuthClient = new OAuthClient(new HttpClient4());
-		OAuthMessage authMessage;
 		try {
+			
+			OAuthAccessor accessor = new OAuthAccessor(OAuthConnectionManager.consumer);
+			accessor.accessToken = ConfigurationManager.instance.getAccessToken();
+			accessor.tokenSecret = ConfigurationManager.instance.getAccessTokenSecret();
+			accessor.consumer.setProperty(OAuthClient.PARAMETER_STYLE,ParameterStyle.QUERY_STRING);
+			
+			ArrayList<Map.Entry<String, String>> params = new ArrayList<Map.Entry<String, String>>();
+			convertRequestParamsToOAuth(params,request.getParameterMap());
+			OAuthClient oAuthClient = new OAuthClient(new HttpClient4());
+			OAuthMessage authMessage;
+		
 			authMessage = oAuthClient.invoke(accessor, request.getMethod(),request.getRequestURL(),params);
 			String body = authMessage.readBodyAsString();
 			return body;

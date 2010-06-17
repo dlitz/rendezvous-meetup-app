@@ -50,25 +50,35 @@ public class ConfigurationManager {
 	private int defaultStartupTab;
 	private String tempImageStoragePath;
 	private String cachingEnabled;
+	private String reminderCalendarId;
+	private static SharedPreferences prefs;
+	private static SharedPreferences defaultPrefs;
 	private ConfigurationManager() {
 	}
 
 	public static ConfigurationManager init(Rendezvous yama) {
 		instance = new ConfigurationManager();
 		instance.activity = yama;
-		loadConfiguration(yama);
+		setupPreferenceFiles(yama);
+		loadConfiguration();
 		return instance;
 	}
 
-	public static void loadConfiguration(final Rendezvous yama) {
-		SharedPreferences prefs = instance.activity.getSharedPreferences(Constants.PREF_FILE_NAME, Context.MODE_PRIVATE);
-		SharedPreferences defaultPrefs = PreferenceManager.getDefaultSharedPreferences(yama);
+	private static void setupPreferenceFiles(final Rendezvous yama) {
+		prefs = instance.activity.getSharedPreferences(Constants.PREF_FILE_NAME, Context.MODE_PRIVATE);
+		defaultPrefs = PreferenceManager.getDefaultSharedPreferences(yama);
 		defaultPrefs.registerOnSharedPreferenceChangeListener(new OnSharedPreferenceChangeListener() {
 			public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,String key) {
+				loadConfiguration();
 				if(Constants.FETCH_EVENTS_FROM_PREF_KEY.equals(key) || Constants.FETCH_EVENTS_TO_PREF_KEY.equals(key))
 					yama.reloadTabs();
 			}
 		});
+		
+	}
+
+	public static void loadConfiguration() {
+		
 		
 		instance.apiKey = prefs.getString(Constants.API_KEY, null);
 		instance.accessToken = prefs.getString(Constants.ACCESS_TOKEN, null);
@@ -79,7 +89,8 @@ public class ConfigurationManager {
 		
 		instance.requestAfterPeriod = defaultPrefs.getString(Constants.FETCH_EVENTS_FROM_PREF_KEY, Constants.DEFAULT_BEFORE_PERIOD);
 		instance.requestBeforePeriod = defaultPrefs.getString(Constants.FETCH_EVENTS_TO_PREF_KEY, Constants.DEFAULT_AFTER_PERIOD);
-		instance.cachingEnabled = defaultPrefs.getString(Constants.IS_CACHING_ENABLED, "true");
+		instance.cachingEnabled = defaultPrefs.getString(Constants.IS_CACHING_ENABLED, "false");
+		instance.reminderCalendarId = defaultPrefs.getString(Constants.REMINDER_CAL_ID_KEY, null);
 	}
 
 	public String getApiKey() {
@@ -180,4 +191,7 @@ public class ConfigurationManager {
 		return cachingEnabled;
 	}
 	
+	public String getReminderCalendarId() {
+		return reminderCalendarId;
+	}
 }

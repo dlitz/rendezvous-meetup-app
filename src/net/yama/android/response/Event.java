@@ -83,12 +83,14 @@ public class Event extends BaseResponse {
 		NO,
 		MAYBE,
 		NONE,
+		PAST_DEADLINE,
 		NOT_OPEN_YET
 	}
 	
 	public enum Rsvpable{
 		FULL,
 		OPEN,
+		PAST_DEADLINE,
 		NOT_OPEN_YET,
 		CLOSED
 	}
@@ -141,15 +143,25 @@ public class Event extends BaseResponse {
 	}
 
 	private Rsvpable extractRsvpable(String rsvpable) {
-		if(rsvpable != null && rsvpable.length() > 0)
-			return Rsvpable.valueOf(rsvpable.toUpperCase());
+		
+		try{
+			if(rsvpable != null && rsvpable.length() > 0)
+				return Rsvpable.valueOf(rsvpable.toUpperCase());
+		} catch (Exception e) {
+			return Rsvpable.CLOSED;
+		}
 		
 		return null;
 	}
 
 	private void setRSVPStatus(String rsvpStatus) {
-		if(rsvpStatus != null && rsvpStatus.length() > 0)
-			this.rsvpStatus = RsvpStatus.valueOf(rsvpStatus.toUpperCase());
+		try{
+			if(rsvpStatus != null && rsvpStatus.length() > 0)
+				this.rsvpStatus = RsvpStatus.valueOf(rsvpStatus.toUpperCase());
+			
+		}catch (Exception e) {
+			this.rsvpStatus = RsvpStatus.NONE;
+		}
 	}
 
 	public String getDescription() {
