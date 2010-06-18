@@ -41,6 +41,7 @@ public class ConfigurationManager {
 	public static ConfigurationManager instance;
 	private Rendezvous activity;
 
+	private String currentVersion;
 	private String apiKey;
 	private String accessToken;
 	private String accessTokenSecret;
@@ -53,6 +54,7 @@ public class ConfigurationManager {
 	private String reminderCalendarId;
 	private static SharedPreferences prefs;
 	private static SharedPreferences defaultPrefs;
+	
 	private ConfigurationManager() {
 	}
 
@@ -79,18 +81,17 @@ public class ConfigurationManager {
 
 	public static void loadConfiguration() {
 		
-		
 		instance.apiKey = prefs.getString(Constants.API_KEY, null);
 		instance.accessToken = prefs.getString(Constants.ACCESS_TOKEN, null);
 		instance.accessTokenSecret = prefs.getString(Constants.ACCESS_TOKEN_SECRET, null);
 		instance.memberId = prefs.getString(Constants.MEMBER_ID, null);
 		instance.defaultStartupTab = Integer.valueOf(defaultPrefs.getString(Constants.STARTUP_TAB, "0"));
 		instance.tempImageStoragePath = prefs.getString(Constants.TEMP_IMAGE_FILE_PATH, null);
-		
 		instance.requestAfterPeriod = defaultPrefs.getString(Constants.FETCH_EVENTS_FROM_PREF_KEY, Constants.DEFAULT_BEFORE_PERIOD);
 		instance.requestBeforePeriod = defaultPrefs.getString(Constants.FETCH_EVENTS_TO_PREF_KEY, Constants.DEFAULT_AFTER_PERIOD);
 		instance.cachingEnabled = defaultPrefs.getString(Constants.IS_CACHING_ENABLED, "false");
 		instance.reminderCalendarId = defaultPrefs.getString(Constants.REMINDER_CAL_ID_KEY, null);
+		instance.currentVersion = defaultPrefs.getString(Constants.CURRENT_VERSION, null);
 	}
 
 	public String getApiKey() {
@@ -172,6 +173,9 @@ public class ConfigurationManager {
 		saveAccessToken(null);
 		saveAccessTokenSecret(null);
 		saveMemberId(null);
+		SharedPreferences.Editor editor = defaultPrefs.edit();
+		editor.clear();
+		editor.commit();
 	}
 
 	public String getTempImageStoragePath() {
@@ -193,5 +197,16 @@ public class ConfigurationManager {
 	
 	public String getReminderCalendarId() {
 		return reminderCalendarId;
+	}
+
+	public String getCurrentVersion() {
+		return currentVersion;
+	}
+	
+	public void setCurrentVersion(String currentVersion) {
+		this.currentVersion = currentVersion;
+		SharedPreferences.Editor editor = defaultPrefs.edit();
+		editor.putString(Constants.CURRENT_VERSION, currentVersion);
+		editor.commit();
 	}
 }

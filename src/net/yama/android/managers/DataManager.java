@@ -35,6 +35,7 @@ import net.yama.android.managers.connection.ConnectionManagerFactory;
 import net.yama.android.requests.EventCommentRequest;
 import net.yama.android.requests.EventRequest;
 import net.yama.android.requests.GroupRequest;
+import net.yama.android.requests.MembersRequest;
 import net.yama.android.requests.PhotoRequest;
 import net.yama.android.requests.RsvpRequest;
 import net.yama.android.requests.write.WriteEventComment;
@@ -42,6 +43,7 @@ import net.yama.android.requests.write.WriteRsvp;
 import net.yama.android.response.Event;
 import net.yama.android.response.EventComment;
 import net.yama.android.response.Group;
+import net.yama.android.response.Member;
 import net.yama.android.response.Photo;
 import net.yama.android.response.Rsvp;
 import net.yama.android.util.Constants;
@@ -91,6 +93,31 @@ public class DataManager {
 		cache.remove(Constants.EVENT_DATA_KEY);
 		cache.remove(Constants.CACHE_TIMESTAMP_KEY);
 	}
+	
+	
+	public static Member getMemberInformation() throws ApplicationException {
+		
+		MembersRequest selfInfo = new MembersRequest();
+		selfInfo.setParameters(Constants.PARAM_RELATION,"self");
+		
+		String responseBody = null;
+	    Member currentMember = null;
+	    
+		try {
+			responseBody = ConnectionManagerFactory.getConnectionManager().makeRequest(selfInfo);
+			List members = Helper.getListFromResult(responseBody, Member.class);
+			currentMember = (Member) members.get(0);
+			ConfigurationManager.instance.saveMemberId(currentMember.getId());
+
+		} catch (Exception e) {
+			Log.e("DataManager", "Exception occured in getMemberInformation()", e);
+			throw new ApplicationException(e);
+		}
+        
+        
+        return currentMember;
+	}
+
 
 	/**
 	 * Gets all rsvps for a event id
@@ -158,6 +185,7 @@ public class DataManager {
 				request.addParameter(Constants.PARAM_ORDER, Constants.ORDER_TIME);
 				request.addParameter(Constants.PARAM_AFTER, ConfigurationManager.instance.getRequestAfterPeriod());
 				request.addParameter(Constants.PARAM_BEFORE, ConfigurationManager.instance.getRequestBeforePeriod());
+				request.addParameter(Constants.PARAM_TEXT_FORMAT, Constants.TEXT_FORMAT_PLAIN);
 				String response = ConnectionManagerFactory.getConnectionManager().makeRequest(request);
 				eventsList = Helper.getListFromResult(response, Event.class);
 				storeInCache(Constants.EVENT_DATA_KEY, eventsList);

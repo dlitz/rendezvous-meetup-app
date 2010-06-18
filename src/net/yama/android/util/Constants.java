@@ -176,5 +176,8 @@ public class Constants {
 	public static final int ADD_TO_CALENDAR = 6;
 	public static final String REMINDER_CAL_ID_KEY = "reminderCalendar";
 	public static final int START_PREFS_FOR_CAL = 7;
+	public static final String PARAM_TEXT_FORMAT = "text_format";
+	public static final String TEXT_FORMAT_PLAIN = "plain";
+	public static final String CURRENT_VERSION = "current_version";
 
 }

@@ -25,7 +25,6 @@
 package net.yama.android;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import net.oauth.OAuth;
@@ -35,10 +34,7 @@ import net.oauth.client.OAuthClient;
 import net.oauth.client.httpclient4.HttpClient4;
 import net.yama.android.managers.DataManager;
 import net.yama.android.managers.config.ConfigurationManager;
-import net.yama.android.managers.connection.ConnectionManagerFactory;
 import net.yama.android.managers.connection.OAuthConnectionManager;
-import net.yama.android.requests.MembersRequest;
-import net.yama.android.response.Member;
 import net.yama.android.util.Constants;
 import net.yama.android.util.Helper;
 import net.yama.android.views.activity.RendezvousPreferences;
@@ -54,7 +50,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -62,6 +57,7 @@ import android.widget.Toast;
 
 public class Rendezvous extends TabActivity {
 	
+	public static final String APP_VERSION = "4";
 	
 	private static final String OAUTH_TOKEN_SECRET = "oauth_token_secret";
 	private static final String OAUTH_TOKEN = "oauth_token";
@@ -72,13 +68,13 @@ public class Rendezvous extends TabActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		configurationManager = ConfigurationManager.init(this);
 		contentFactory = new MainContentFactory(this);
 		
-		// Do updgrade activities
-		if(configurationManager.getAccessToken() != null){
-			doUpgradeActivities();
-		}
+		// Do upgrade activities
+		doUpgradeActivities();
+
 		
 		Object accessor = Helper.getFromCache(OAUTH_ACCESSOR_INSTANCE);
 		if(accessor != null)
@@ -92,26 +88,19 @@ public class Rendezvous extends TabActivity {
 	 * Things to do after an upgrade
 	 */
 	private void doUpgradeActivities() {
-		
-		// Clear data cache
-		DataManager.nuke();
-		
+
+		if(configurationManager.getCurrentVersion() == null || 
+				!configurationManager.getCurrentVersion().equals(APP_VERSION)){
+			DataManager.nuke();
+			configurationManager.nuke();
+			configurationManager.setCurrentVersion(APP_VERSION);
+		}
 	}
 
 	/**
 	 * Populates the screen when everything is authorized.
 	 */
 	private void populateDashboard() {
-		
-//		if(configurationManager.haveAcess()){
-//			Member currentMember = getMemberInformation();
-//			if(currentMember == null){
-//				Toast t = Toast.makeText(getApplicationContext(), "Network connection not available.", Toast.LENGTH_LONG);
-//				t.show();
-//				return;
-//			}
-//			setTitle("Welcome " + currentMember.getName());
-//		}
 		
 		TabHost mTabHost = getTabHost();
 		mTabHost.setDrawingCacheEnabled(false);
@@ -124,52 +113,21 @@ public class Rendezvous extends TabActivity {
 
 	public View authorizeView(){
 			
-			TableLayout authLayout = new TableLayout(getApplicationContext());
-			TextView notice = new TextView(getApplicationContext());
-			notice.setText(R.string.authorizeMessage);
-			notice.setPadding(10, 10, 10, 10);
-			authLayout.addView(notice);
-			
-			Button authButton = new Button(getApplicationContext());
-			authButton.setGravity(Gravity.CENTER);
-			authButton.setText(R.string.authorize);
-			authButton.setOnClickListener(new AuthorizeButtonListener());
-			authButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
-			authLayout.addView(authButton);
-			return authLayout;
-		}
-
-	private Member getMemberInformation() {
+		TableLayout authLayout = new TableLayout(getApplicationContext());
+		TextView notice = new TextView(getApplicationContext());
+		notice.setText(R.string.authorizeMessage);
+		notice.setPadding(10, 10, 10, 10);
+		authLayout.addView(notice);
 		
-		MembersRequest selfInfo = new MembersRequest();
-		selfInfo.setParameters(Constants.PARAM_RELATION,"self");
-		
-		String responseBody = null;
-	    Member currentMember = null;
-	    
-		try {
-			responseBody = ConnectionManagerFactory.getConnectionManager().makeRequest(selfInfo);
-			List members = Helper.getListFromResult(responseBody, Member.class);
-			currentMember = (Member) members.get(0);
-			configurationManager.saveMemberId(currentMember.getId());
-
-		} catch (Exception e) {
-			Log.e("Rendezvous", "Exception occured in getMemberInformation()", e);
-		}
-        
-        
-        return currentMember;
+		Button authButton = new Button(getApplicationContext());
+		authButton.setGravity(Gravity.CENTER);
+		authButton.setText(R.string.authorize);
+		authButton.setOnClickListener(new AuthorizeButtonListener());
+		authButton.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+		authLayout.addView(authButton);
+		return authLayout;
 	}
-
-	class LoginScreenSubmitListener implements View.OnClickListener {
-
-		public void onClick(View v) {
-			EditText apiKey = (EditText) findViewById(R.id.apiKeyEdit);
-			configurationManager.saveApiKey(apiKey.getText().toString());
-			getMemberInformation();
-		}
-
-	}
+	
 	
 	public class AuthorizeButtonListener implements View.OnClickListener {
 
@@ -259,6 +217,7 @@ public class Rendezvous extends TabActivity {
 	    case Constants.RESET_ACC_MENU:
 	    	DataManager.nuke();
 	    	configurationManager.nuke();
+	    	finish();
 	        return true;
 	    case Constants.PREFS_RESET_CACHE:
 	    	DataManager.nuke();

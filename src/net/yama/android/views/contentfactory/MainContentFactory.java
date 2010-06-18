@@ -51,8 +51,13 @@ public class MainContentFactory extends AbstractContentFactory {
 		View contentView = null;
 		try {
 			
+			// Do I have access?
 			if(!ConfigurationManager.instance.haveAcess())
 				return this.context.authorizeView();
+			
+			// Is my member info available
+			if(ConfigurationManager.instance.getMemberId() == null)
+				DataManager.getMemberInformation();
 			
 			if(Constants.GROUPS_TAB_ID.equalsIgnoreCase(tag))
 				contentView = getGroupsView();
