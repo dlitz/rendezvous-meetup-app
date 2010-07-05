@@ -24,12 +24,14 @@
  *******************************************************************/
 package net.yama.android.views.contentfactory;
 
+import java.util.Iterator;
 import java.util.List;
 
 import net.yama.android.Rendezvous;
 import net.yama.android.managers.DataManager;
 import net.yama.android.managers.config.ConfigurationManager;
 import net.yama.android.managers.connection.ApplicationException;
+import net.yama.android.response.Event;
 import net.yama.android.util.Constants;
 import net.yama.android.views.adapter.EventListAdapter;
 import net.yama.android.views.adapter.GroupsListAdapter;
@@ -96,6 +98,15 @@ public class MainContentFactory extends AbstractContentFactory {
 			@Override
 			public View getResultsView() throws ApplicationException {
 				List eventsList = DataManager.getAllEvents();
+				
+				// Remove non meetups
+				Iterator<Event> iter = eventsList.iterator();
+				while (iter.hasNext()) {
+					Event event = (Event) iter.next();
+					if(!event.isMeetup())
+						iter.remove();
+				}
+				
 				ListView eventsView  = new ListView(context);
 				EventListAdapter adapter = new EventListAdapter(eventsList,context);
 				eventsView.setAdapter(adapter);
