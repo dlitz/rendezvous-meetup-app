@@ -29,7 +29,6 @@ import net.yama.android.managers.connection.ConnectionManagerFactory.ConnectionT
 import net.yama.android.util.Constants;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
 /**
@@ -38,6 +37,7 @@ import android.preference.PreferenceManager;
  */
 public class ConfigurationManager {
 
+	private static final String ONE_HOUR_IN_MS = "3600000";
 	public static ConfigurationManager instance;
 	private Rendezvous activity;
 
@@ -52,6 +52,8 @@ public class ConfigurationManager {
 	private String tempImageStoragePath;
 	private String cachingEnabled;
 	private String reminderCalendarId;
+	private boolean notificationsFlag;
+	private long notificationsCheckInterval;
 	private static SharedPreferences prefs;
 	private static SharedPreferences defaultPrefs;
 	
@@ -69,14 +71,6 @@ public class ConfigurationManager {
 	private static void setupPreferenceFiles(final Rendezvous yama) {
 		prefs = instance.activity.getSharedPreferences(Constants.PREF_FILE_NAME, Context.MODE_PRIVATE);
 		defaultPrefs = PreferenceManager.getDefaultSharedPreferences(yama);
-		defaultPrefs.registerOnSharedPreferenceChangeListener(new OnSharedPreferenceChangeListener() {
-			public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,String key) {
-				loadConfiguration();
-				if(Constants.FETCH_EVENTS_FROM_PREF_KEY.equals(key) || Constants.FETCH_EVENTS_TO_PREF_KEY.equals(key))
-					yama.reloadTabs();
-			}
-		});
-		
 	}
 
 	public static void loadConfiguration() {
@@ -92,6 +86,8 @@ public class ConfigurationManager {
 		instance.cachingEnabled = defaultPrefs.getString(Constants.IS_CACHING_ENABLED, "false");
 		instance.reminderCalendarId = defaultPrefs.getString(Constants.REMINDER_CAL_ID_KEY, null);
 		instance.currentVersion = defaultPrefs.getString(Constants.CURRENT_VERSION, null);
+		instance.notificationsFlag = defaultPrefs.getBoolean(Constants.NOTIFICATION_FLAG, false);
+		instance.notificationsCheckInterval = Long.parseLong(defaultPrefs.getString(Constants.NOTIFICATIONS_CHECK_INTERVAL, ONE_HOUR_IN_MS)); 
 	}
 
 	public String getApiKey() {
@@ -203,10 +199,19 @@ public class ConfigurationManager {
 		return currentVersion;
 	}
 	
+	public boolean isNotificationsFlag() {
+		return notificationsFlag;
+	}
+	
 	public void setCurrentVersion(String currentVersion) {
 		this.currentVersion = currentVersion;
 		SharedPreferences.Editor editor = defaultPrefs.edit();
 		editor.putString(Constants.CURRENT_VERSION, currentVersion);
 		editor.commit();
 	}
+
+	public long getNotificationsCheckInterval() {
+		return notificationsCheckInterval;
+	}
+	
 }

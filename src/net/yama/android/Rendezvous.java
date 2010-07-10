@@ -35,6 +35,7 @@ import net.oauth.client.httpclient4.HttpClient4;
 import net.yama.android.managers.DataManager;
 import net.yama.android.managers.config.ConfigurationManager;
 import net.yama.android.managers.connection.OAuthConnectionManager;
+import net.yama.android.service.NotificationService;
 import net.yama.android.util.Constants;
 import net.yama.android.util.Helper;
 import net.yama.android.views.activity.RendezvousPreferences;
@@ -57,7 +58,7 @@ import android.widget.Toast;
 
 public class Rendezvous extends TabActivity {
 	
-	public static final String APP_VERSION = "4";
+	public static final String APP_VERSION = "5";
 	
 	private static final String OAUTH_TOKEN_SECRET = "oauth_token_secret";
 	private static final String OAUTH_TOKEN = "oauth_token";
@@ -71,14 +72,14 @@ public class Rendezvous extends TabActivity {
 		
 		configurationManager = ConfigurationManager.init(this);
 		contentFactory = new MainContentFactory(this);
-		
-		// Do upgrade activities
-		doUpgradeActivities();
-
+	
 		
 		Object accessor = Helper.getFromCache(OAUTH_ACCESSOR_INSTANCE);
 		if(accessor != null)
 			finishAuthorize();
+		
+		// Do upgrade activities
+		doUpgradeActivities();
 		
 		setContentView(R.layout.dashboard);
 		populateDashboard();
@@ -89,10 +90,19 @@ public class Rendezvous extends TabActivity {
 	 */
 	private void doUpgradeActivities() {
 
-		if(configurationManager.getCurrentVersion() == null || 
-				!configurationManager.getCurrentVersion().equals(APP_VERSION)){
+		if(configurationManager.haveAcess() && (configurationManager.getCurrentVersion() == null || 
+				!configurationManager.getCurrentVersion().equals(APP_VERSION))){
+			
+			// Cleanup cache
 			DataManager.nuke();
-			configurationManager.nuke();
+	
+			// Start notifications
+			if(configurationManager.isNotificationsFlag()){
+				Intent notificationsIntent = new Intent(this, NotificationService.class);
+				startActivity(notificationsIntent);
+			}
+			
+			// Update version
 			configurationManager.setCurrentVersion(APP_VERSION);
 		}
 	}
@@ -106,8 +116,8 @@ public class Rendezvous extends TabActivity {
 		mTabHost.setDrawingCacheEnabled(false);
 		mTabHost.clearAllTabs();
 		
-		mTabHost.addTab(mTabHost.newTabSpec(Constants.MEETUPS_TAB_ID).setIndicator("Meetups").setContent(contentFactory));
-		mTabHost.addTab(mTabHost.newTabSpec(Constants.GROUPS_TAB_ID).setIndicator("Groups").setContent(contentFactory));
+		mTabHost.addTab(mTabHost.newTabSpec(Constants.MEETUPS_TAB_ID).setIndicator(getText(R.string.meetupsTabLabel)).setContent(contentFactory));
+		mTabHost.addTab(mTabHost.newTabSpec(Constants.GROUPS_TAB_ID).setIndicator(getText(R.string.groupsTabLabel)).setContent(contentFactory));
 	    mTabHost.setCurrentTab(configurationManager.getDefaultStartupTab());
 	}
 
@@ -134,7 +144,6 @@ public class Rendezvous extends TabActivity {
 		public void onClick(View v) {
 			doAuthorize();
 		}
-
 	}
 	
 	/**

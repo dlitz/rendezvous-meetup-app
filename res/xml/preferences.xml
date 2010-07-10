@@ -7,11 +7,8 @@
 			android:defaultValue="0"
 			android:entries="@array/startupTabs" 
 			android:entryValues="@array/startupTabsValues" />
-		
-	</PreferenceCategory>
-	
-	<PreferenceCategory android:title="@string/appBehavior">
-		<ListPreference android:title="@string/fetchEventsFrom"
+			
+			<ListPreference android:title="@string/fetchEventsFrom"
 			android:summary="@string/fetchEventsFromDesc"
 			android:key="fetchEventsFrom" 
 			android:defaultValue="-1d"
@@ -29,7 +26,22 @@
 			android:summary="@string/calendarListDesc"
 			android:key="reminderCalendar" 
 		 />
-			
+		 
+		<CheckBoxPreference android:title="@string/notifications"
+		 	android:summary="@string/notificationsDesc"
+			android:key="notificationsFlag" 
+			android:defaultValue="false"
+			android:disableDependentsState="false"
+		/>
+		
+		<ListPreference android:title="@string/checkNotificationsDuration"
+			android:summary="@string/checkNotificationsDuration"
+			android:dependency="notificationsFlag"
+			android:key="notificationsCheckInterval" 
+			android:defaultValue="3600000"
+			android:entries="@array/checkIntervals" 
+			android:entryValues="@array/checkIntervalsValues" />
+		
 	</PreferenceCategory>
 	
 	<PreferenceCategory android:title="@string/advancedPrefs" 

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" 
       package="net.yama.android"
-      android:versionName="4" android:versionCode="4">
-    <application android:icon="@drawable/launcher" android:label="@string/app_name">
-        <activity android:name=".Rendezvous"
-                  android:label="@string/app_name">
+      android:versionName="5" android:versionCode="5">
+    <application android:icon="@drawable/launcher" android:label="@string/app_name" android:debuggable="true">
+        <activity android:name=".Rendezvous" android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,6 +20,7 @@
         <activity android:name=".views.activity.RendezvousPreferences" android:label="Settings"></activity>
         <activity android:name=".views.activity.GalleryActivity" android:label="Gallery"></activity>
         <activity android:name=".views.activity.UploadPhotoActivity" android:label="Upload Photo"></activity>
+        <service android:name=".service.NotificationService" />
     </application>
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.CAMERA" />

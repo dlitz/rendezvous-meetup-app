@@ -40,4 +40,21 @@
 		<item>Enable caching</item>
 		<item>Disable caching</item>
 	</string-array>
+	
+	<string-array name="checkIntervalsValues">
+		<item>1800000</item>
+		<item>3600000</item>
+		<item>10800000</item>
+		<item>21600000</item>
+		<item>43200000</item>
+	</string-array>
+	<string-array name="checkIntervals">
+		<item>@string/every30mins</item>
+		<item>@string/everyOneHour</item>
+		<item>@string/everyThreeHours</item>
+		<item>@string/everySixHours</item>
+		<item>@string/everyTwelveHours</item>
+	</string-array>
+	
+	
 </resources>

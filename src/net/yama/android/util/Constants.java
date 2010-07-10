@@ -179,5 +179,7 @@ public class Constants {
 	public static final String PARAM_TEXT_FORMAT = "text_format";
 	public static final String TEXT_FORMAT_PLAIN = "plain";
 	public static final String CURRENT_VERSION = "current_version";
+	public static final String NOTIFICATION_FLAG = "notificationsFlag";
+	public static final String NOTIFICATIONS_CHECK_INTERVAL = "notificationsCheckInterval";
 
 }

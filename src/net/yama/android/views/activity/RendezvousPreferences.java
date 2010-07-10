@@ -28,7 +28,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.yama.android.R;
+import net.yama.android.managers.DataManager;
+import net.yama.android.managers.config.ConfigurationManager;
+import net.yama.android.service.NotificationService;
 import net.yama.android.util.Constants;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,7 +45,7 @@ import android.preference.PreferenceActivity;
  * Preferences for the application
  * @author Rohit Kumbhar
  */
-public class RendezvousPreferences extends PreferenceActivity {
+public class RendezvousPreferences extends PreferenceActivity implements OnSharedPreferenceChangeListener  {
 
 	List<String> calEntries = new ArrayList<String>();
 	List<String> calEntryValues = new ArrayList<String>();
@@ -62,7 +68,7 @@ public class RendezvousPreferences extends PreferenceActivity {
 		}
 		
 	}
-
+	
 	private void loadCalendars() {
 		String[] projection = new String[] { "_id", "name" };
 		Uri calendars = Uri.parse("content://calendar/calendars");
@@ -88,7 +94,36 @@ public class RendezvousPreferences extends PreferenceActivity {
 				calEntryValues.add(calId);
 			} while (managedCursor.moveToNext());
 		}
+	}
+	
+	@Override
+    protected void onResume() {
+        super.onResume();
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+	
+		// Update the value of the member variables
+		ConfigurationManager.loadConfiguration();
 		
+		// Reload the tabs if the duration changes
+		if(Constants.FETCH_EVENTS_FROM_PREF_KEY.equals(key) || Constants.FETCH_EVENTS_TO_PREF_KEY.equals(key))
+			DataManager.nuke();
 		
+		// Start stop notification service
+		if(Constants.NOTIFICATION_FLAG.equals(key)){
+			Intent notificationsIntent = new Intent(this, NotificationService.class);
+			if(sharedPreferences.getBoolean(Constants.NOTIFICATION_FLAG, false))
+				startService(notificationsIntent);
+			else
+				stopService(notificationsIntent);
+		}		
 	}
 }

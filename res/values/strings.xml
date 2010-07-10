@@ -6,8 +6,7 @@
     <string name="apiKey">API Key:</string>
     <string name="submit">Submit</string>
     <string name="authorizeMessage">In order to use this application, you need to authorize this application on meetup.com. <br /> 
-    	Clicking on the button below will open a new browser window where you will be asked to grant permission to the application. You will be returned back to the application after you select your response. <br />
-    	If you had already authorized the application, you will need to do it again since a previous update caused an incorrect configuration. Your configuration settings will be cleared. I apologize for the inconvenience. </string>
+    	Clicking on the button below will open a new browser window where you will be asked to grant permission to the application. You will be returned back to the application after you select your response.</string>
 	<string name="authorize">Authorize</string>
 	<string name="haveAComment">Have a comment?</string>
 	<string name="youRsvped">You RSVPed: </string>
@@ -52,10 +51,23 @@
 	<string name="cachingDesc">Enable/disable caching data.</string>
 	<string name="dontMessAround">Change these only if you know what you are doing.</string>
 	<string name="addToCalendar">Add to calendar</string>
-	<string name="calendarList">Select Calendar</string>
-	<string name="calendarListDesc">Calendar to set reminders</string>
-	<string name="noCalSel">A calendar has not been specified. Press OK to open the Setings screen.</string>
+	<string name="calendarList">Calendar</string>
+	<string name="calendarListDesc">Meetups will be added to this calendar.</string>
+	<string name="noCalSel">A calendar has not been specified. Press OK to open the Settings screen.</string>
 	<string name="savedInCal">Event was successfully added to your calendar.</string>
 	<string name="calSaveFailed">There was an error adding the event to your calendar. Please try again later.</string>
-	
+	<string name="meetupsTabLabel">Meetups</string>
+	<string name="groupsTabLabel">Groups</string>
+	<string name="notifications">Notifications</string>
+	<string name="notificationsDesc">Enable or disable notifications for new meetups.</string>
+	<string name="checkNotificationsDuration">Check Interval</string>
+	<string name="checkNotificationsDurationDesc">Notifications will be checked after every specified time interval</string>
+	<string name="every30mins">Every 30 minutes</string>
+	<string name="everyOneHour">Every hour</string>
+	<string name="everyThreeHours">Every 3 hours</string>
+	<string name="everySixHours">Every 6 hours</string>
+	<string name="everyTwelveHours">Every 12 hours</string>
+	<string name="newEvents">new events.</string>
+	<string name="newEvent">new event.</string>
+	<string name="meetupNotification">New Meetup Notification</string>
 </resources>
