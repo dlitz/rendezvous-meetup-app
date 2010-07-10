@@ -27,6 +27,7 @@ package net.yama.android.views.adapter;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import net.yama.android.managers.config.ConfigurationManager;
 import net.yama.android.response.Event;
 import net.yama.android.views.components.InfoRowView;
 import net.yama.android.views.listeners.EventListClickListener;
@@ -36,13 +37,15 @@ import android.view.ViewGroup;
 
 public class EventListAdapter extends AbstractListAdapter{
 
-	
+	String newEventsList;
 	EventListClickListener listener;
 	static SimpleDateFormat subTextFormat = new SimpleDateFormat("MM/dd hh:mm a");
 	
 	public EventListAdapter(List data, Context ctx) {
 		super(data, ctx);
 		this.listener = new EventListClickListener(ctx);
+		this.newEventsList = ConfigurationManager.instance.getNewEventsList();
+		ConfigurationManager.instance.setNewEventList("");
 	}
 
 	public Object getItem(int position) {
@@ -57,8 +60,12 @@ public class EventListAdapter extends AbstractListAdapter{
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Event event = (Event) data.get(position);
+		String eventName = event.getName();
+		if(newEventsList != null && newEventsList.contains(event.getId()))
+			eventName = eventName + " - New!";
+		
 		InfoRowView view = new InfoRowView(this.context,
-										   event.getName(),
+										   eventName,
 										   event.getGroupName() + " - " + subTextFormat.format(event.getEventTime()),
 										   event.getPhotoURL(),
 										   Integer.valueOf(event.getId()));

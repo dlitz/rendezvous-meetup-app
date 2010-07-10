@@ -54,6 +54,7 @@ public class ConfigurationManager {
 	private String reminderCalendarId;
 	private boolean notificationsFlag;
 	private long notificationsCheckInterval;
+	private String newEventsList;
 	private static SharedPreferences prefs;
 	private static SharedPreferences defaultPrefs;
 	
@@ -79,6 +80,7 @@ public class ConfigurationManager {
 		instance.accessToken = prefs.getString(Constants.ACCESS_TOKEN, null);
 		instance.accessTokenSecret = prefs.getString(Constants.ACCESS_TOKEN_SECRET, null);
 		instance.memberId = prefs.getString(Constants.MEMBER_ID, null);
+		instance.newEventsList = prefs.getString(Constants.NEW_EVENTS_LIST, null);
 		instance.defaultStartupTab = Integer.valueOf(defaultPrefs.getString(Constants.STARTUP_TAB, "0"));
 		instance.tempImageStoragePath = prefs.getString(Constants.TEMP_IMAGE_FILE_PATH, null);
 		instance.requestAfterPeriod = defaultPrefs.getString(Constants.FETCH_EVENTS_FROM_PREF_KEY, Constants.DEFAULT_BEFORE_PERIOD);
@@ -212,6 +214,15 @@ public class ConfigurationManager {
 
 	public long getNotificationsCheckInterval() {
 		return notificationsCheckInterval;
+	}
+	
+	public void setNewEventList(String newEventsList){
+		this.newEventsList = newEventsList;
+		addPairToPrefs(Constants.NEW_EVENTS_LIST, newEventsList);
+	}
+	
+	public String getNewEventsList(){
+		return this.newEventsList;
 	}
 	
 }

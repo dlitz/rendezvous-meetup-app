@@ -181,5 +181,6 @@ public class Constants {
 	public static final String CURRENT_VERSION = "current_version";
 	public static final String NOTIFICATION_FLAG = "notificationsFlag";
 	public static final String NOTIFICATIONS_CHECK_INTERVAL = "notificationsCheckInterval";
+	public static final String NEW_EVENTS_LIST = "NEW_EVENTS_LIST";
 
 }
