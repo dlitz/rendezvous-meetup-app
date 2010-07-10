@@ -162,13 +162,6 @@ public class NotificationService extends Service {
 			if (cachedEvents == null) {
 				cachedEvents = new HashSet<String>();
 				removePastEvents(allEvents,cachedEvents);
-				
-				// Test code
-				ConfigurationManager.instance.setNewEventList(cachedEvents.toString());
-				notify(allEvents,cachedEvents);
-				
-				// Test code
-				
 			} else {
 				
 				Set<String> newerEvents = new HashSet<String>();
