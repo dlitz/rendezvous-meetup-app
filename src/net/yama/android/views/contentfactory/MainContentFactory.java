@@ -33,6 +33,7 @@ import net.yama.android.managers.config.ConfigurationManager;
 import net.yama.android.managers.connection.ApplicationException;
 import net.yama.android.response.Event;
 import net.yama.android.util.Constants;
+import net.yama.android.views.adapter.ActivityListAdapter;
 import net.yama.android.views.adapter.EventListAdapter;
 import net.yama.android.views.adapter.GroupsListAdapter;
 import net.yama.android.views.components.LoadingView;
@@ -78,8 +79,21 @@ public class MainContentFactory extends AbstractContentFactory {
 	
 	private View getActivityView() throws ApplicationException {
 
-		List activities = DataManager.getAllActivity();
-		return getNullView();
+		LoadingView view = new LoadingView(context) {
+			
+			@Override
+			public View getResultsView() throws ApplicationException {
+				List activities = DataManager.getAllActivity();
+				ListView activityView = new ListView(context);
+				ActivityListAdapter adapter = new ActivityListAdapter(activities,context);
+				activityView.setAdapter(adapter);
+				return activityView;
+			}
+		};
+		
+		
+		
+		return view;
 	}
 
 	private View getGroupsView() throws ApplicationException {

@@ -32,12 +32,24 @@ import org.json.JSONObject;
 
 public class Activity extends BaseResponse {
 	
+	private String title;
 	private String itemType;
 	private String groupId;
 	private String groupName;
 	private String memberName;
 	private String memberId;
 	private Date published;
+	
+	// photo_comment
+	private String albumName;
+	private String comment;
+	
+	// edit_rsvp,new_rsvp
+	private String rsvpResponse;
+	private String rsvpComment;
+	
+	// new_member
+	private String bio;
 	
 
 	public Activity() {
@@ -53,6 +65,7 @@ public class Activity extends BaseResponse {
 		activity.itemType = json.optString(Constants.ITEM_TYPE);
 		activity.memberId = json.optString(Constants.PARAM_MEMBER_ID);
 		activity.memberName = json.optString(Constants.RESPONSE_PARAM_MEMBER_NAME);
+		activity.title = json.optString(Constants.TITLE);
 	}
 
 	public String getItemType() {
@@ -102,7 +115,53 @@ public class Activity extends BaseResponse {
 	public void setPublished(Date published) {
 		this.published = published;
 	}
-	
-	
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getAlbumName() {
+		return albumName;
+	}
+
+	public void setAlbumName(String albumName) {
+		this.albumName = albumName;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getRsvpResponse() {
+		return rsvpResponse;
+	}
+
+	public void setRsvpResponse(String rsvpResponse) {
+		this.rsvpResponse = rsvpResponse;
+	}
+
+	public String getRsvpComment() {
+		return rsvpComment;
+	}
+
+	public void setRsvpComment(String rsvpComment) {
+		this.rsvpComment = rsvpComment;
+	}
+
+	public String getBio() {
+		return bio;
+	}
+
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
 
 }
