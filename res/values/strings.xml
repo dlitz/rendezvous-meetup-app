@@ -70,4 +70,5 @@
 	<string name="newEvents">new events.</string>
 	<string name="newEvent">new event.</string>
 	<string name="meetupNotification">New Meetup Notification</string>
+	<string name="activityTabLabel">Activity</string>
 </resources>

@@ -182,5 +182,8 @@ public class Constants {
 	public static final String NOTIFICATION_FLAG = "notificationsFlag";
 	public static final String NOTIFICATIONS_CHECK_INTERVAL = "notificationsCheckInterval";
 	public static final String NEW_EVENTS_LIST = "NEW_EVENTS_LIST";
+	public static final String ITEM_TYPE = "item_type";
+	public static final String PAGE_START_TIMESTAMP = "page_start";
+	public static final String ACTIVITY_TAB_ID = "activity_tab_id";
 
 }

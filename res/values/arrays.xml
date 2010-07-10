@@ -3,10 +3,12 @@
 	<string-array name="startupTabsValues">
 		<item>0</item>
 		<item>1</item>
+		<item>2</item>
 	</string-array>
 	<string-array name="startupTabs">
 		<item>@string/myMeetups</item>
 		<item>@string/myGroups</item>
+		<item>@string/activityTabLabel</item>
 	</string-array>
 	<string-array name="fetchPrevDurationsValues">
 		<item>-1d</item>

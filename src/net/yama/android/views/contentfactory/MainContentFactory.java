@@ -65,6 +65,8 @@ public class MainContentFactory extends AbstractContentFactory {
 				contentView = getGroupsView();
 			else if (Constants.MEETUPS_TAB_ID.equalsIgnoreCase(tag))
 				contentView = getMeetupsView();
+			else if (Constants.ACTIVITY_TAB_ID.equalsIgnoreCase(tag))
+				contentView = getActivityView();
 			else
 				contentView = getNullView();
 		} catch (Exception e) {
@@ -74,6 +76,12 @@ public class MainContentFactory extends AbstractContentFactory {
 		return contentView;
 	}
 	
+	private View getActivityView() throws ApplicationException {
+
+		List activities = DataManager.getAllActivity();
+		return getNullView();
+	}
+
 	private View getGroupsView() throws ApplicationException {
 
 		LoadingView view = new LoadingView(context) {

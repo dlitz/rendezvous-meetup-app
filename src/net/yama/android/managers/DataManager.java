@@ -32,6 +32,7 @@ import java.util.Map;
 import net.yama.android.managers.config.ConfigurationManager;
 import net.yama.android.managers.connection.ApplicationException;
 import net.yama.android.managers.connection.ConnectionManagerFactory;
+import net.yama.android.requests.ActivityRequest;
 import net.yama.android.requests.EventCommentRequest;
 import net.yama.android.requests.EventRequest;
 import net.yama.android.requests.GroupRequest;
@@ -40,6 +41,7 @@ import net.yama.android.requests.PhotoRequest;
 import net.yama.android.requests.RsvpRequest;
 import net.yama.android.requests.write.WriteEventComment;
 import net.yama.android.requests.write.WriteRsvp;
+import net.yama.android.response.Activity;
 import net.yama.android.response.Event;
 import net.yama.android.response.EventComment;
 import net.yama.android.response.Group;
@@ -272,6 +274,25 @@ public class DataManager {
 			}
 		}
 		return theGroup;
+	}
+	
+	
+	public static List getAllActivity() throws ApplicationException{
+		
+		List activities = null;
+		ActivityRequest request = new ActivityRequest();
+		long pageStartTimestamp = System.currentTimeMillis() - 86400000;
+		
+		request.addParameter(Constants.PARAM_MEMBER_ID, ConfigurationManager.instance.getMemberId());
+		request.addParameter(Constants.PAGE_START_TIMESTAMP, String.valueOf(pageStartTimestamp));
+		try {
+			String response = ConnectionManagerFactory.getConnectionManager().makeRequest(request);
+			activities = Helper.getListFromResult(response, Activity.class);
+		} catch (Exception e) {
+			Log.e("DataManager::getAllActivity()", e.getMessage(), e);
+			throw new ApplicationException(e);
+		}
+		return activities;
 	}
 	
 

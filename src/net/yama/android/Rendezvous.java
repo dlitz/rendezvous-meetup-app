@@ -118,6 +118,7 @@ public class Rendezvous extends TabActivity {
 		
 		mTabHost.addTab(mTabHost.newTabSpec(Constants.MEETUPS_TAB_ID).setIndicator(getText(R.string.meetupsTabLabel)).setContent(contentFactory));
 		mTabHost.addTab(mTabHost.newTabSpec(Constants.GROUPS_TAB_ID).setIndicator(getText(R.string.groupsTabLabel)).setContent(contentFactory));
+		mTabHost.addTab(mTabHost.newTabSpec(Constants.ACTIVITY_TAB_ID).setIndicator(getText(R.string.activityTabLabel)).setContent(contentFactory));
 	    mTabHost.setCurrentTab(configurationManager.getDefaultStartupTab());
 	}
 
