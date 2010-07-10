@@ -162,7 +162,6 @@ public class NotificationService extends Service {
 			if (cachedEvents == null) {
 				cachedEvents = new HashSet<String>();
 				removePastEvents(allEvents,cachedEvents);
-				notify(allEvents,cachedEvents); // for testing only
 			} else {
 				
 				Set<String> newerEvents = new HashSet<String>();
@@ -189,13 +188,8 @@ public class NotificationService extends Service {
 					cachedEvents.clear();
 					cachedEvents.addAll(newerEvents);
 				}
-				
-				
-				
 			}
-
 		}
-
 		
 		private void notify(List allEvents, Set<String> newEventIds) {
 			
