@@ -66,9 +66,16 @@ public class RendezvousPreferences extends PreferenceActivity {
 	private void loadCalendars() {
 		String[] projection = new String[] { "_id", "name" };
 		Uri calendars = Uri.parse("content://calendar/calendars");
-
+		
+		// Calendar uri changes for 2.2
+		Uri calendars_2_2 = Uri.parse("content://com.android.calendar/calendars");
+		
 		Cursor managedCursor = managedQuery(calendars, projection, "selected=1", null, null);
 
+		if(managedCursor == null)
+			managedCursor = managedQuery(calendars_2_2, projection, "selected=1", null, null);
+		
+		
 		if (managedCursor.moveToFirst()) {
 			String calName;
 			String calId;
