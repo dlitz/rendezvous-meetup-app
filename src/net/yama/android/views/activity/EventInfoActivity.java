@@ -153,7 +153,19 @@ public class EventInfoActivity extends TabActivity {
 			calEntry.put("hasAlarm", 1);
 			
 			Uri eventsUri = Uri.parse("content://calendar/events");
-			Uri url = getContentResolver().insert(eventsUri, calEntry);
+			Uri calendars_2_2_events = Uri.parse("content://com.android.calendar/events");
+			
+			
+
+			Uri url = null;
+			try {
+				url = getContentResolver().insert(eventsUri, calEntry);
+			} catch (Exception e) {
+				// Trying for 2.2
+				url = getContentResolver().insert(calendars_2_2_events, calEntry);
+			}
+			
+			
 			
 			if(url != null)
 				Toast.makeText(EventInfoActivity.this, getText(R.string.savedInCal), Toast.LENGTH_SHORT).show();

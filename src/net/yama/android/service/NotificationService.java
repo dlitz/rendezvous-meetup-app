@@ -38,13 +38,16 @@ import net.yama.android.managers.DataManager;
 import net.yama.android.managers.config.ConfigurationManager;
 import net.yama.android.managers.connection.ApplicationException;
 import net.yama.android.response.Event;
+import net.yama.android.util.Constants;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 
 /**
  * Service to notify user of new events
@@ -77,14 +80,20 @@ public class NotificationService extends Service {
 
 	private void handleCommand(Intent intent) {
 
+		if(ConfigurationManager.instance == null)
+			ConfigurationManager.init(getApplicationContext());
+		
 		// Timer is already started
 		if(timer != null)
 			return;
 		
-		 // Display a notification about us starting.  We put an icon in the status bar.
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		long interval = Long.parseLong(prefs.getString(Constants.NOTIFICATIONS_CHECK_INTERVAL, "3600000"));
+		
+		// Display a notification about us starting.  We put an icon in the status bar.
 		TimerTask checkNewMeetups = new CheckNewMeetups();
 		timer = new Timer();
-		timer.schedule(checkNewMeetups, 0, ConfigurationManager.instance.getNotificationsCheckInterval());
+		timer.schedule(checkNewMeetups, 0, interval);
 	}
 	
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -101,6 +110,7 @@ public class NotificationService extends Service {
 		
 		timer = null;
 	}
+	
 	
 	 /**
      * Show a notification while this service is running.
@@ -145,10 +155,11 @@ public class NotificationService extends Service {
 		
 		@Override
 		public void run() {
-
+			
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 			
 			// Only if config is enabled
-			if(!ConfigurationManager.instance.isNotificationsFlag())
+			if(!prefs.getBoolean(Constants.NOTIFICATION_FLAG, false))
 				return;
 			
 			
@@ -185,7 +196,9 @@ public class NotificationService extends Service {
 				if(!newEventIds.isEmpty()){
 					
 					// Save to cache
-					ConfigurationManager.instance.setNewEventList(newEventIds.toString());
+					SharedPreferences.Editor editor = prefs.edit();
+					editor.putString(Constants.NEW_EVENTS_LIST, newEventIds.toString());
+					editor.commit();
 					
 					// We need a notification
 					notify(allEvents,newEventIds);

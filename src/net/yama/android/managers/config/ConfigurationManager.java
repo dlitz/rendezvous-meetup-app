@@ -39,7 +39,7 @@ public class ConfigurationManager {
 
 	private static final String ONE_HOUR_IN_MS = "3600000";
 	public static ConfigurationManager instance;
-	private Rendezvous activity;
+	private Context activity;
 
 	private String currentVersion;
 	private String apiKey;
@@ -61,7 +61,7 @@ public class ConfigurationManager {
 	private ConfigurationManager() {
 	}
 
-	public static ConfigurationManager init(Rendezvous yama) {
+	public static ConfigurationManager init(Context yama) {
 		instance = new ConfigurationManager();
 		instance.activity = yama;
 		setupPreferenceFiles(yama);
@@ -69,7 +69,7 @@ public class ConfigurationManager {
 		return instance;
 	}
 
-	private static void setupPreferenceFiles(final Rendezvous yama) {
+	private static void setupPreferenceFiles(final Context yama) {
 		prefs = instance.activity.getSharedPreferences(Constants.PREF_FILE_NAME, Context.MODE_PRIVATE);
 		defaultPrefs = PreferenceManager.getDefaultSharedPreferences(yama);
 	}

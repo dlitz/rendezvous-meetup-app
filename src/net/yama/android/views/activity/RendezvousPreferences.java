@@ -63,10 +63,6 @@ public class RendezvousPreferences extends PreferenceActivity implements OnShare
 		CharSequence[] entryValuesArray = new String[calEntryValues.size()];
 		calPref.setEntryValues((CharSequence[]) calEntryValues.toArray(entryValuesArray));
 		
-		if(calEntryValues.size() == 1){
-			calPref.setValue(calEntryValues.get(0));
-		}
-		
 	}
 	
 	private void loadCalendars() {
@@ -75,7 +71,6 @@ public class RendezvousPreferences extends PreferenceActivity implements OnShare
 		
 		// Calendar uri changes for 2.2
 		Uri calendars_2_2 = Uri.parse("content://com.android.calendar/calendars");
-		
 		Cursor managedCursor = managedQuery(calendars, projection, "selected=1", null, null);
 
 		if(managedCursor == null)

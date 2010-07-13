@@ -22,61 +22,44 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *******************************************************************/
-package net.yama.android.views.adapter;
+package net.yama.android.service;
 
-import java.util.List;
-
-import net.yama.android.response.Activity;
-import net.yama.android.views.components.InfoRowView;
+import net.yama.android.managers.config.ConfigurationManager;
+import net.yama.android.util.Constants;
+import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
-public class ActivityListAdapter extends AbstractListAdapter {
+/**
+ * @author Rohit Kumbhar
+ *
+ */
+public class BootListener extends BroadcastReceiver {
 
-	public ActivityListAdapter(List data, Context ctx) {
-		super(data, ctx);
+	/**
+	 * 
+	 */
+	public BootListener() {
+		// TODO Auto-generated constructor stub
 	}
 
-	public Object getItem(int position) {
-		Activity activity = (Activity) data.get(position);
-		return activity;
-	}
-
-	public long getItemId(int position) {
-		Activity activity = (Activity) data.get(position);
-		return 1;
-	}
-	
+	/* (non-Javadoc)
+	 * @see android.content.BroadcastReceiver#onReceive(android.content.Context, android.content.Intent)
+	 */
 	@Override
-	public boolean hasStableIds() {
-		return false;
-	}
+	public void onReceive(Context context, Intent arg1) {
 	
-	public View getView(int position, View convertView, ViewGroup parent) {
+		ConfigurationManager.init(context);
 		
-		//TODO: Create a dialog box to show activity details
-		Activity activity = (Activity) data.get(position);
-		InfoRowView view = new InfoRowView(this.context,
-				   getTitle(activity),
-				   activity.getMemberName() + " - " + activity.getGroupName(),
-				   activity.getPhotoURL(),
-				   1);
-		view.setNoClicks();
-		return view;
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		boolean notificationsEnabled = prefs.getBoolean(Constants.NOTIFICATION_FLAG, false);
+		Intent notificationsIntent = new Intent(context, NotificationService.class);
+		if(notificationsEnabled)
+			context.startService(notificationsIntent);
 		
-	}
 
-	private String getTitle(Activity activity) {
-		String title = removeGroupName(activity.getTitle());
-		
-//		if()
-//		context.
-		return title;
-	}
-
-	private String removeGroupName(String title) {
-		return title.substring(title.indexOf(":") + 1);
 	}
 
 }

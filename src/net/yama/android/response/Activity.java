@@ -51,7 +51,6 @@ public class Activity extends BaseResponse {
 	// new_member
 	private String bio;
 	
-
 	public Activity() {
 	}
 
@@ -66,8 +65,15 @@ public class Activity extends BaseResponse {
 		activity.memberId = json.optString(Constants.PARAM_MEMBER_ID);
 		activity.memberName = json.optString(Constants.RESPONSE_PARAM_MEMBER_NAME);
 		activity.title = json.optString(Constants.TITLE);
+		
+		activity.albumName = json.optString(Constants.ALBUM_NAME);
+		activity.comment = json.optString(Constants.RESPONSE_PARAM_COMMENT);
+		
+		activity.rsvpComment = json.optString(Constants.RSVP_COMMENT);
+		activity.rsvpResponse = json.optString(Constants.RSVP_RESPONSE_ACTIVITY);
+		
 	}
-
+	
 	public String getItemType() {
 		return itemType;
 	}
