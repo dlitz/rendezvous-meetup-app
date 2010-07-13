@@ -89,6 +89,12 @@ public class NotificationService extends Service {
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		long interval = Long.parseLong(prefs.getString(Constants.NOTIFICATIONS_CHECK_INTERVAL, "3600000"));
+
+		// Disable caching
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(Constants.IS_CACHING_ENABLED, "false");
+		editor.commit();
+		
 		
 		// Display a notification about us starting.  We put an icon in the status bar.
 		TimerTask checkNewMeetups = new CheckNewMeetups();
