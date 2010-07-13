@@ -70,8 +70,9 @@ public class ActivityListAdapter extends AbstractListAdapter {
 	private String getTitle(Activity activity) {
 		String title = removeGroupName(activity.getTitle());
 		
-//		if()
-//		context.
+		if(activity.getItemType().equals("new_rsvp") || activity.getItemType().equals("edit_rsvp"))
+			title = title + ": " + activity.getRsvpResponse();
+			
 		return title;
 	}
 
