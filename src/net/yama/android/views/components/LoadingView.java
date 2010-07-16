@@ -43,8 +43,12 @@ public abstract class LoadingView extends FrameLayout {
 	// Create runnable for posting
 	final Runnable mUpdateResults = new Runnable() {
 		public void run() {
-//			LoadingView.this.removeAllViews();
-			dialog.cancel();
+			
+			try {
+				dialog.dismiss();
+			}catch (Exception e) {
+				// meh
+			}
 			
 			if (afterResultsView != null)
 				addView(afterResultsView);
@@ -62,7 +66,7 @@ public abstract class LoadingView extends FrameLayout {
 		doWork();
 		
 	}
-
+	
 	private void doWork() {
 
 		Thread t = new Thread(new Runnable() {
