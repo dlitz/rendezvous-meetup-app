@@ -58,7 +58,7 @@ import android.widget.Toast;
 
 public class Rendezvous extends TabActivity {
 	
-	public static final String APP_VERSION = "5";
+	public static final String APP_VERSION = "6";
 	
 	private static final String OAUTH_TOKEN_SECRET = "oauth_token_secret";
 	private static final String OAUTH_TOKEN = "oauth_token";
