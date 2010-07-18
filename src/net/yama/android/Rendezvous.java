@@ -99,7 +99,7 @@ public class Rendezvous extends TabActivity {
 			// Start notifications
 			if(configurationManager.isNotificationsFlag()){
 				Intent notificationsIntent = new Intent(this, NotificationService.class);
-				startActivity(notificationsIntent);
+				startService(notificationsIntent);
 			}
 			
 			// Update version
