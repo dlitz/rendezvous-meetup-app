@@ -42,6 +42,9 @@ import net.yama.android.views.activity.RendezvousPreferences;
 import net.yama.android.views.contentfactory.MainContentFactory;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,8 +60,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Rendezvous extends TabActivity {
-	
-	public static final String APP_VERSION = "6";
 	
 	private static final String OAUTH_TOKEN_SECRET = "oauth_token_secret";
 	private static final String OAUTH_TOKEN = "oauth_token";
@@ -90,9 +91,18 @@ public class Rendezvous extends TabActivity {
 	 */
 	private void doUpgradeActivities() {
 
+		int version = -1;
+		try {
+			PackageInfo info = getApplication().getPackageManager().getPackageInfo(this.getPackageName(), PackageManager.GET_ACTIVITIES);
+			version = info.versionCode;
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		if(configurationManager.haveAcess() && (configurationManager.getCurrentVersion() == null || 
-				!configurationManager.getCurrentVersion().equals(APP_VERSION))){
-			
+				!configurationManager.getCurrentVersion().equals(Integer.toString(version)))){
+	
 			// Cleanup cache
 			DataManager.nuke();
 	
@@ -103,7 +113,7 @@ public class Rendezvous extends TabActivity {
 			}
 			
 			// Update version
-			configurationManager.setCurrentVersion(APP_VERSION);
+			configurationManager.setCurrentVersion(Integer.toString(version));
 		}
 	}
 
