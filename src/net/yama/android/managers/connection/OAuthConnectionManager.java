@@ -37,6 +37,7 @@ import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
 import net.oauth.OAuthMessage;
+import net.oauth.OAuthProblemException;
 import net.oauth.OAuthServiceProvider;
 import net.oauth.client.OAuthClient;
 import net.oauth.client.OAuthClient.ParameterStyle;
@@ -56,6 +57,8 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.util.Log;
 
@@ -80,7 +83,7 @@ public class OAuthConnectionManager implements ConnectionManager {
 	 */
 	public String makeRequest(AbstractRequest request) throws ApplicationException {
 		
-		try {
+		
 			
 			OAuthAccessor accessor = new OAuthAccessor(OAuthConnectionManager.consumer);
 			accessor.accessToken = ConfigurationManager.instance.getAccessToken();
@@ -91,14 +94,42 @@ public class OAuthConnectionManager implements ConnectionManager {
 			convertRequestParamsToOAuth(params,request.getParameterMap());
 			OAuthClient oAuthClient = new OAuthClient(new HttpClient4());
 			OAuthMessage authMessage;
+			String body = null;
 		
-			authMessage = oAuthClient.invoke(accessor, request.getMethod(),request.getRequestURL(),params);
-			String body = authMessage.readBodyAsString();
+			try {
+				authMessage = oAuthClient.invoke(accessor, request.getMethod(),request.getRequestURL(),params);
+				body = authMessage.readBodyAsString();
+			} catch (Exception e) {
+				
+				String msg = e.getMessage();
+				
+				if(e instanceof OAuthProblemException) {
+					
+					// This is because of the OAuth library
+					OAuthProblemException ex = (OAuthProblemException) e;
+					Map<String, Object> exParams =  ex.getParameters();
+					for(Map.Entry<String, Object> entry : exParams.entrySet()){
+						String k = entry.getKey();
+						Object v = entry.getValue();
+						if(k.startsWith("{")){
+							JSONObject json;
+							try {
+								json = new JSONObject(k);
+								String details = json.optString("details");
+								msg = details;
+								break;
+							} catch (JSONException e1) {
+								msg = ex.getMessage();
+							}
+						}
+					}
+				}
+					
+				Log.e("OAuthConnectionManager", "Exception in makeRequest()", e);
+				throw new ApplicationException(msg);
+			} 
 			return body;
-		} catch (Exception e) {
-			Log.e("OAuthConnectionManager", "Exception in makeRequest()", e);
-			throw new ApplicationException(e);
-		}
+		
 	}
 
 	/**
@@ -155,7 +186,7 @@ public class OAuthConnectionManager implements ConnectionManager {
 			
 		} catch (Exception e) {
 			Log.e("OAuthConnectionManager", "Exception in uploadPhoto()", e);
-			throw new ApplicationException(e);
+			throw new ApplicationException(e.getMessage());
 		}
 
 		return responseString;
