@@ -39,7 +39,7 @@ public class EventListAdapter extends AbstractListAdapter{
 
 	String newEventsList;
 	EventListClickListener listener;
-	static SimpleDateFormat subTextFormat = new SimpleDateFormat("MM/dd hh:mm a");
+	static SimpleDateFormat subTextFormat = new SimpleDateFormat("MMM dd hh:mm a");
 	
 	public EventListAdapter(List data, Context ctx) {
 		super(data, ctx);
@@ -63,10 +63,10 @@ public class EventListAdapter extends AbstractListAdapter{
 		String eventName = event.getName();
 		if(newEventsList != null && newEventsList.contains(event.getId()))
 			eventName = eventName + " - New!";
-		
+		String timeStr = event.getEventTime() != null ? " - " +  subTextFormat.format(event.getEventTime()) : " - No Date";
 		InfoRowView view = new InfoRowView(this.context,
 										   eventName,
-										   event.getGroupName() + " - " + subTextFormat.format(event.getEventTime()),
+										   event.getGroupName() + timeStr,
 										   event.getPhotoURL(),
 										   Integer.valueOf(event.getId()));
 		view.setOnClickListener(listener);

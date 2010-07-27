@@ -100,33 +100,8 @@ public class OAuthConnectionManager implements ConnectionManager {
 				authMessage = oAuthClient.invoke(accessor, request.getMethod(),request.getRequestURL(),params);
 				body = authMessage.readBodyAsString();
 			} catch (Exception e) {
-				
-				String msg = e.getMessage();
-				
-				if(e instanceof OAuthProblemException) {
-					
-					// This is because of the OAuth library
-					OAuthProblemException ex = (OAuthProblemException) e;
-					Map<String, Object> exParams =  ex.getParameters();
-					for(Map.Entry<String, Object> entry : exParams.entrySet()){
-						String k = entry.getKey();
-						Object v = entry.getValue();
-						if(k.startsWith("{")){
-							JSONObject json;
-							try {
-								json = new JSONObject(k);
-								String details = json.optString("details");
-								msg = details;
-								break;
-							} catch (JSONException e1) {
-								msg = ex.getMessage();
-							}
-						}
-					}
-				}
-					
 				Log.e("OAuthConnectionManager", "Exception in makeRequest()", e);
-				throw new ApplicationException(msg);
+				throw new ApplicationException(e);
 			} 
 			return body;
 		
@@ -186,7 +161,7 @@ public class OAuthConnectionManager implements ConnectionManager {
 			
 		} catch (Exception e) {
 			Log.e("OAuthConnectionManager", "Exception in uploadPhoto()", e);
-			throw new ApplicationException(e.getMessage());
+			throw new ApplicationException(e);
 		}
 
 		return responseString;

@@ -59,6 +59,8 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nullwire.trace.ExceptionHandler;
+
 public class Rendezvous extends TabActivity {
 	
 	private static final String OAUTH_TOKEN_SECRET = "oauth_token_secret";
@@ -71,9 +73,10 @@ public class Rendezvous extends TabActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		ExceptionHandler.register(this, "http://www.milagris.org/rendezvous/server.php");
+		
 		configurationManager = ConfigurationManager.init(this);
 		contentFactory = new MainContentFactory(this);
-	
 		
 		Object accessor = Helper.getFromCache(OAUTH_ACCESSOR_INSTANCE);
 		if(accessor != null)
@@ -84,13 +87,14 @@ public class Rendezvous extends TabActivity {
 		
 		setContentView(R.layout.dashboard);
 		populateDashboard();
+		
 	}
 	
 	/**
 	 * Things to do after an upgrade
 	 */
 	private void doUpgradeActivities() {
-
+		
 		int version = -1;
 		try {
 			PackageInfo info = getApplication().getPackageManager().getPackageInfo(this.getPackageName(), PackageManager.GET_ACTIVITIES);

@@ -165,8 +165,6 @@ public class EventInfoActivity extends TabActivity {
 				url = getContentResolver().insert(calendars_2_2_events, calEntry);
 			}
 			
-			
-			
 			if(url != null)
 				Toast.makeText(EventInfoActivity.this, getText(R.string.savedInCal), Toast.LENGTH_SHORT).show();
 			
@@ -174,9 +172,6 @@ public class EventInfoActivity extends TabActivity {
 			Log.e(EventInfoActivity.class.getName(), e.getMessage());
 			Toast.makeText(EventInfoActivity.this, getText(R.string.calSaveFailed), Toast.LENGTH_LONG).show();
 		}
-		
-
-
 	}
 
 	private void startCamera() {

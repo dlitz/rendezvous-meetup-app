@@ -28,6 +28,11 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.oauth.OAuthProblemException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Generic exception
  * @author Rohit Kumbhar
@@ -61,11 +66,65 @@ public class ApplicationException extends Exception {
 	@Override
 	public String getMessage() {
 	
-		Class ec = (getCause() != null ) ? getCause().getClass() : null;
+		Throwable cause = getCause();
+		String message = null;
+		
+		
+		if(cause != null && cause instanceof OAuthProblemException)
+			message = getOAuthMessage((OAuthProblemException) cause);
+		
+		if(cause != null && message == null)
+			message = getMessageForExceptionClass(cause);
+			
+		if(cause != null && message == null)
+			message = cause.getMessage();
+		
+		if(message == null)
+			message = super.getMessage();
+		
+		return message;
+	}
+
+	/**
+	 * Returns a string from a static map of knows exceptions and causes.
+	 * @param cause
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	private String getMessageForExceptionClass(Throwable cause) {
+		
+		Class ec = (cause != null ) ? cause.getClass() : null;
 		if(ec != null && excpetionMessages.get(ec) != null)
 			return excpetionMessages.get(ec);
 		
-		return super.getMessage();
+		return null;
+	}
+
+	/**
+	 * Returns a string returned by meetup.com
+	 * @param ex
+	 * @return
+	 */
+	private String getOAuthMessage(OAuthProblemException ex) {
+		String message = null;
+		
+		Map<String, Object> exParams =  ex.getParameters();
+		for(Map.Entry<String, Object> entry : exParams.entrySet()){
+			String k = entry.getKey();
+			Object v = entry.getValue();
+			if(k.startsWith("{")){
+				JSONObject json;
+				try {
+					json = new JSONObject(k);
+					String details = json.optString("details");
+					message = details;
+					break;
+				} catch (JSONException e1) {
+					
+				}
+			}
+		}
+		return message;
 	}
 
 }
