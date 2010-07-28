@@ -59,8 +59,6 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nullwire.trace.ExceptionHandler;
-
 public class Rendezvous extends TabActivity {
 	
 	private static final String OAUTH_TOKEN_SECRET = "oauth_token_secret";
@@ -72,9 +70,6 @@ public class Rendezvous extends TabActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		ExceptionHandler.register(this, "http://www.milagris.org/rendezvous/server.php");
-		
 		configurationManager = ConfigurationManager.init(this);
 		contentFactory = new MainContentFactory(this);
 		

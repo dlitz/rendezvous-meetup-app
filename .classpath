@@ -6,6 +6,5 @@
 	<classpathentry kind="lib" path="lib/oauth-core-20090522.jar" sourcepath="C:/Development/20090522/oauth-core-20090522-sources.jar"/>
 	<classpathentry kind="lib" path="lib/apache-mime4j-0.6.jar"/>
 	<classpathentry kind="lib" path="lib/httpmime-4.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/trace.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
