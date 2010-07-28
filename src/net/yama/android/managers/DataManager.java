@@ -196,13 +196,7 @@ public class DataManager {
 				request.addParameter(Constants.PARAM_BEFORE, ConfigurationManager.instance.getRequestBeforePeriod());
 				request.addParameter(Constants.PARAM_TEXT_FORMAT, Constants.TEXT_FORMAT_PLAIN);
 				String response = ConnectionManagerFactory.getConnectionManager().makeRequest(request);
-				
-				File t = new File(Helper.getTempStorageDirectory(),"events.txt");
-						
-				java.io.BufferedReader bfr = new BufferedReader(new FileReader(t));
-				String resp = bfr.readLine();
-				bfr.close();
-				eventsList = Helper.getListFromResult(resp, Event.class);
+				eventsList = Helper.getListFromResult(response, Event.class);
 				storeInCache(Constants.EVENT_DATA_KEY, eventsList);
 			}
 		} catch (Exception e) {
