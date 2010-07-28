@@ -131,7 +131,7 @@ public class NotificationService extends Service {
 
         // Set the info for the views that show in the notification panel.
         notification.setLatestEventInfo(this, getText(R.string.meetupNotification), message, contentIntent);
-        notification.defaults |= Notification.DEFAULT_SOUND;
+        notification.defaults |= Notification.DEFAULT_ALL;
         notification.flags |=  Notification.FLAG_AUTO_CANCEL;
         // Send the notification.
         // We use a layout id because it is a unique number.  We use it later to cancel.
