@@ -65,6 +65,7 @@ public class Event extends BaseResponse {
 	private String rsvpCutoff;
 	private String status;
 	private Rsvpable rsvpable;
+	private long utcTime;
 	
 	List<EventHost> hosts;
 	
@@ -108,7 +109,6 @@ public class Event extends BaseResponse {
 			super.convertCommon(b, json);
 			Event event = (Event) b;
 			event.description = json.optString(Constants.RESPONSE_PARAM_DESCRIPTION);
-			event.eventTime = super.formatAndSetDate(json.optString(Constants.RESPONSE_PARAM_TIME));
 			event.findingInstructions = json.optString(Constants.RESPONSE_PARAM_FINDING_INS);
 			setRSVPStatus(json.optString(Constants.RESPONSE_PARAM_RSVP_STATUS));
 			event.eventURL = json.optString(Constants.RESPONSE_PARAM_EVENT_URL);
@@ -131,7 +131,8 @@ public class Event extends BaseResponse {
 			event.rsvpCutoff = json.optString(Constants.RESPONSE_PARAM_RSVP_CUTOFF);
 			event.status = json.optString(Constants.RESPONSE_PARAM_STATUS);
 			event.rsvpable = extractRsvpable(json.optString(Constants.RESPONSE_PARAMS_RSVPABLE));
-			
+			event.utcTime = json.optLong(Constants.UTC_TIME);
+			event.eventTime = new Date(event.utcTime);
 			Venue venue = new Venue(json);
 			event.venue = venue;
 			event.hosts = new ArrayList<EventHost>();
@@ -393,4 +394,13 @@ public class Event extends BaseResponse {
 	public int hashCode() {
 		return Integer.valueOf(this.getId());
 	}
+
+	public long getUtcTime() {
+		return utcTime;
+	}
+
+	public void setUtcTime(long utcTime) {
+		this.utcTime = utcTime;
+	}
+	
 }

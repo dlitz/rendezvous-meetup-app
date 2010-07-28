@@ -37,7 +37,7 @@ import org.json.JSONObject;
  *
  */
 public abstract class BaseResponse  {
-
+																		 
 	private static final SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
 	
 	private String id;
@@ -51,13 +51,9 @@ public abstract class BaseResponse  {
 	private Double latitude;
 	private Double longitude;
 	
-	
-	
 	public String getId() {
 		return id;
 	}
-
-
 
 	public void setId(String id) {
 		this.id = id;
@@ -175,31 +171,21 @@ public abstract class BaseResponse  {
 
 	public abstract void convertFromJSON(BaseResponse b, JSONObject json);
 
-
-
 	public void convertCommon(BaseResponse b, JSONObject json) {
-		
 		b.setId(json.optString(Constants.RESPONSE_PARAM_ID));
 		b.setName(json.optString(Constants.RESPONSE_PARAM_NAME));
 		b.setPhotoURL(json.optString(Constants.RESPONSE_PARAM_PHOTO_URL));
 		b.setLatitude(json.optDouble(Constants.RESPONSE_PARAM_LATITUDE));
 		b.setLongitude(json.optDouble(Constants.RESPONSE_PARAM_LONGITUDE));
-		
 	}
 
-
-
 	public Date formatAndSetDate(String dateString) {
-		
 		try {
 			return format.parse(dateString);
 		} catch (ParseException e) {
 			return null;
 		}
-		
 	}
-
-
 
 	public boolean getBoolean(int optInt) {
 		if(optInt == 1)

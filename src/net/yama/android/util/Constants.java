@@ -188,5 +188,6 @@ public class Constants {
 	public static final String ALBUM_NAME = "album_name";
 	public static final String RSVP_COMMENT = "rsvp_comment";
 	public static final String RSVP_RESPONSE_ACTIVITY = "rsvp_response";
+	public static final String UTC_TIME = "utc_time";
 
 }

@@ -24,10 +24,17 @@
  *******************************************************************/
 package net.yama.android.managers;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.json.JSONArray;
 
 import net.yama.android.managers.config.ConfigurationManager;
 import net.yama.android.managers.connection.ApplicationException;
@@ -189,7 +196,13 @@ public class DataManager {
 				request.addParameter(Constants.PARAM_BEFORE, ConfigurationManager.instance.getRequestBeforePeriod());
 				request.addParameter(Constants.PARAM_TEXT_FORMAT, Constants.TEXT_FORMAT_PLAIN);
 				String response = ConnectionManagerFactory.getConnectionManager().makeRequest(request);
-				eventsList = Helper.getListFromResult(response, Event.class);
+				
+				File t = new File(Helper.getTempStorageDirectory(),"events.txt");
+						
+				java.io.BufferedReader bfr = new BufferedReader(new FileReader(t));
+				String resp = bfr.readLine();
+				bfr.close();
+				eventsList = Helper.getListFromResult(resp, Event.class);
 				storeInCache(Constants.EVENT_DATA_KEY, eventsList);
 			}
 		} catch (Exception e) {

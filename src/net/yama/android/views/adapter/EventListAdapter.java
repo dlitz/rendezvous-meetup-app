@@ -25,6 +25,7 @@
 package net.yama.android.views.adapter;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import net.yama.android.managers.config.ConfigurationManager;
@@ -63,7 +64,9 @@ public class EventListAdapter extends AbstractListAdapter{
 		String eventName = event.getName();
 		if(newEventsList != null && newEventsList.contains(event.getId()))
 			eventName = eventName + " - New!";
-		String timeStr = event.getEventTime() != null ? " - " +  subTextFormat.format(event.getEventTime()) : " - No Date";
+		
+		Date eventDate = new Date(event.getUtcTime());
+		String timeStr = eventDate != null ? " - " +  subTextFormat.format(eventDate) : " - No Date";
 		InfoRowView view = new InfoRowView(this.context,
 										   eventName,
 										   event.getGroupName() + timeStr,
