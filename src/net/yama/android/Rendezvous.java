@@ -37,6 +37,7 @@ import net.yama.android.managers.config.ConfigurationManager;
 import net.yama.android.managers.connection.OAuthConnectionManager;
 import net.yama.android.service.NotificationService;
 import net.yama.android.util.Constants;
+import net.yama.android.util.CrashHandler;
 import net.yama.android.util.Helper;
 import net.yama.android.views.activity.RendezvousPreferences;
 import net.yama.android.views.contentfactory.MainContentFactory;
@@ -72,6 +73,8 @@ public class Rendezvous extends TabActivity {
 		super.onCreate(savedInstanceState);
 		configurationManager = ConfigurationManager.init(this);
 		contentFactory = new MainContentFactory(this);
+		
+		CrashHandler.init(this);
 		
 		Object accessor = Helper.getFromCache(OAUTH_ACCESSOR_INSTANCE);
 		if(accessor != null)

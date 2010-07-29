@@ -71,4 +71,5 @@
 	<string name="newEvent">new event.</string>
 	<string name="meetupNotification">New Meetup Notification</string>
 	<string name="activityTabLabel">Activity</string>
+	<string name="crashNotice">Rendezvous Crashed. Press OK to send a crash report.</string>
 </resources>
