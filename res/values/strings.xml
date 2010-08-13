@@ -10,7 +10,7 @@
 	<string name="authorize">Authorize</string>
 	<string name="haveAComment">Have a comment?</string>
 	<string name="youRsvped">You RSVPed: </string>
-	<string name="rsvpClosed">Sorry! RSVPs are closed.</string>
+	<string name="rsvpClosed">\nSorry! RSVPs are closed.</string>
 	<string name="guestsLabel">Guests:</string>
 	<string name="yes">Yes</string>
 	<string name="no">No</string>

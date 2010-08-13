@@ -132,7 +132,12 @@ public class EventRsvpView extends TableLayout {
 
 	private void addRsvpButtonsView(Context context, Event event, Rsvp rsvp) {
 		
-		if(event.isRsvpClosed() || Rsvpable.CLOSED.equals(event.getRsvpable()) || (rsvp != null && !rsvp.getResponse().equals(RsvpResponse.YES) && Rsvpable.FULL.equals(event.getRsvpable()))){
+		if(event.isRsvpClosed() || 
+				Rsvpable.CLOSED.equals(event.getRsvpable()) ||
+				event.getRsvpOpenTime() > System.currentTimeMillis() ||
+				event.getRsvpCutoffTime() > System.currentTimeMillis() ||
+				(rsvp != null && !rsvp.getResponse().equals(RsvpResponse.YES) && Rsvpable.FULL.equals(event.getRsvpable()))){
+			
 			TextView rsvpClosed = new TextView(context);
 			rsvpClosed.setText(R.string.rsvpClosed);
 			rsvpClosed.setGravity(Gravity.CENTER);
