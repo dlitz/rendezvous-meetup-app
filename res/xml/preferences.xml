@@ -24,7 +24,7 @@
 		
 		<ListPreference android:title="@string/calendarList"
 			android:summary="@string/calendarListDesc"
-			android:key="reminderCalendar" 
+			android:key="reminderCalendar"
 		 />
 		 
 		<CheckBoxPreference android:title="@string/notifications"

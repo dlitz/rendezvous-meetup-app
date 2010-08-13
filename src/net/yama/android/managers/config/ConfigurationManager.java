@@ -41,6 +41,7 @@ public class ConfigurationManager {
 	public static ConfigurationManager instance;
 	private Context activity;
 
+	private int logFilesCount;
 	private String currentVersion;
 	private String apiKey;
 	private String accessToken;
@@ -89,7 +90,8 @@ public class ConfigurationManager {
 		instance.reminderCalendarId = defaultPrefs.getString(Constants.REMINDER_CAL_ID_KEY, null);
 		instance.currentVersion = defaultPrefs.getString(Constants.CURRENT_VERSION, null);
 		instance.notificationsFlag = defaultPrefs.getBoolean(Constants.NOTIFICATION_FLAG, false);
-		instance.notificationsCheckInterval = Long.parseLong(defaultPrefs.getString(Constants.NOTIFICATIONS_CHECK_INTERVAL, ONE_HOUR_IN_MS)); 
+		instance.notificationsCheckInterval = Long.parseLong(defaultPrefs.getString(Constants.NOTIFICATIONS_CHECK_INTERVAL, ONE_HOUR_IN_MS));
+		instance.logFilesCount = defaultPrefs.getInt(Constants.LOG_FILE_COUNT, 0);
 	}
 
 	public String getApiKey() {
@@ -203,6 +205,17 @@ public class ConfigurationManager {
 	
 	public boolean isNotificationsFlag() {
 		return notificationsFlag;
+	}
+	
+	public int getLogFilesCount(){
+		return logFilesCount;
+	}
+	
+	public void setLogFilesCount(int count){
+		this.logFilesCount = count;
+		SharedPreferences.Editor editor = defaultPrefs.edit();
+		editor.putInt(Constants.LOG_FILE_COUNT, logFilesCount);
+		editor.commit();
 	}
 	
 	public void setCurrentVersion(String currentVersion) {

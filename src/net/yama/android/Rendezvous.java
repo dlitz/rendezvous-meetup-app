@@ -24,7 +24,11 @@
  *******************************************************************/
 package net.yama.android;
 
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Map;
 
 import net.oauth.OAuth;
@@ -82,12 +86,23 @@ public class Rendezvous extends TabActivity {
 		
 		// Do upgrade activities
 		doUpgradeActivities();
-		
+		checkForCrashes();
 		setContentView(R.layout.dashboard);
 		populateDashboard();
 		
 	}
 	
+	private void checkForCrashes() {
+		File crashReportsDir = Helper.getCrashReportsDirectory();
+		int currentReports = crashReportsDir.list().length;
+		int existingReports = configurationManager.getLogFilesCount();
+		
+		if(currentReports != existingReports) {
+			configurationManager.setLogFilesCount(currentReports);
+			Toast.makeText(this, R.string.crashDetected, Toast.LENGTH_LONG).show();
+		}
+	}
+
 	/**
 	 * Things to do after an upgrade
 	 */
@@ -98,8 +113,7 @@ public class Rendezvous extends TabActivity {
 			PackageInfo info = getApplication().getPackageManager().getPackageInfo(this.getPackageName(), PackageManager.GET_ACTIVITIES);
 			version = info.versionCode;
 		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// no can do
 		}
 		
 		if(configurationManager.haveAcess() && (configurationManager.getCurrentVersion() == null || 
@@ -181,7 +195,6 @@ public class Rendezvous extends TabActivity {
 		} 
 	}
 	
-	
 	protected void finishAuthorize() {
 	
 		// extract the OAUTH access token if it exists
@@ -224,9 +237,18 @@ public class Rendezvous extends TabActivity {
 	
 	/* Creates the menu items */
 	public boolean onCreateOptionsMenu(Menu menu) {
+		
 	    menu.add(0, Constants.PREFS_MENU, 0, R.string.prefSettings).setIcon(android.R.drawable.ic_menu_preferences);
-	    menu.add(0, Constants.PREFS_RESET_CACHE, 0, R.string.prefResetCache).setIcon(android.R.drawable.ic_menu_rotate);
+//	    menu.add(0, Constants.PREFS_RESET_CACHE, 0, R.string.prefResetCache).setIcon(android.R.drawable.ic_menu_rotate);
 	    menu.add(0, Constants.RESET_ACC_MENU, 0, R.string.prefDeleteAcc).setIcon(android.R.drawable.ic_menu_delete);
+	    
+
+	    if(configurationManager.getLogFilesCount() > 0){
+	    	// delete crash reports
+	    	menu.add(0, Constants.REPORT_CRASH, 0, R.string.reportCrash).setIcon(android.R.drawable.ic_menu_info_details);
+	    	menu.add(0, Constants.DELETE_CRASH_REPORTS, 0, R.string.deleteCrashReports).setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+	    }
+	    
 	    return true;
 	}
 
@@ -244,10 +266,58 @@ public class Rendezvous extends TabActivity {
 	    case Constants.PREFS_RESET_CACHE:
 	    	DataManager.nuke();
 	        return true;
+	    case Constants.REPORT_CRASH:
+	    	try {
+				reportCrash();
+			} catch (Exception e) {
+				Toast.makeText(this, R.string.errorSendingCrashReport, Toast.LENGTH_LONG).show();
+			}
+	        return true;
+	    case Constants.DELETE_CRASH_REPORTS:
+	    	deleteAllCrashReports();
+	        return true;
 	    }
+	    
 	    return false;
 	}
 	
+	private void deleteAllCrashReports() {
+		File[] crashReports = Helper.getCrashReportsDirectory().listFiles();
+		for(File f : crashReports){
+			f.delete();
+		}
+		configurationManager.setLogFilesCount(0);
+	}
+
+	private void reportCrash() throws Exception {
+		
+		// Find the latest crash report
+		File[] crashReports = Helper.getCrashReportsDirectory().listFiles();
+		Arrays.sort(crashReports, new Comparator<File>(){
+			public int compare(File file1, File file2) {
+				return (int) (file2.lastModified() - file1.lastModified());
+			}
+		});
+		
+		StringBuffer fileContents = new StringBuffer();
+		char[] buf = new char[1024];
+		FileReader r = new FileReader(crashReports[0]);
+		int len = r.read(buf);
+		while(len != -1){
+			fileContents.append(buf,0,len);
+			len = r.read(buf);
+		}
+		
+		Intent sendIntent = new Intent(Intent.ACTION_SEND);
+		String subject = "Rendezvous Crash Report";
+		sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {"rendezvous.android@gmail.com" });
+		sendIntent.putExtra(Intent.EXTRA_TEXT, fileContents.toString());
+		sendIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+		sendIntent.setType("message/rfc822");
+		this.startActivity(sendIntent);
+		
+	}
+
 	private void showPreferencesScreen() {
 		Intent prefsIntent = new Intent(getBaseContext(),RendezvousPreferences.class);
 		startActivity(prefsIntent);

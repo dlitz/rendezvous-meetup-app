@@ -133,6 +133,10 @@ public class EventInfoActivity extends TabActivity {
 		
 		String calendarId = ConfigurationManager.instance.getReminderCalendarId();
 		
+		if(true){
+			throw new Error("Garbage exception to test logs");
+		}
+		
 		if(calendarId == null){
 			// No calendar selected. Open the preferences page
 			handler.post(showDialogAndLaunchPrefs);

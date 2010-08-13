@@ -143,6 +143,8 @@ public class Constants {
 	public static final int PREFS_MENU = 1;
 	public static final int RESET_ACC_MENU = 2;
 	public static final int PREFS_RESET_CACHE = 3;
+	public static final int REPORT_CRASH = 4;
+	public static final int DELETE_CRASH_REPORTS = 5;
 	public static final String STARTUP_TAB = "startupTab";
 	public static final String FETCH_EVENTS_FROM_PREF_KEY = "fetchEventsFrom";
 	public static final String DEFAULT_BEFORE_PERIOD = "-1w";
@@ -189,5 +191,6 @@ public class Constants {
 	public static final String RSVP_COMMENT = "rsvp_comment";
 	public static final String RSVP_RESPONSE_ACTIVITY = "rsvp_response";
 	public static final String UTC_TIME = "utc_time";
+	public static final String LOG_FILE_COUNT = "LOG_FILE_COUNT";
 
 }

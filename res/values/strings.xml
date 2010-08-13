@@ -72,4 +72,8 @@
 	<string name="meetupNotification">New Meetup Notification</string>
 	<string name="activityTabLabel">Activity</string>
 	<string name="crashNotice">Rendezvous Crashed. Press OK to send a crash report.</string>
+	<string name="crashDetected">A previous crash was detected and a crash report was created. Please use the new menu options to send the crash report to the developer.</string>
+	<string name="reportCrash">Send crash report</string>
+	<string name="deleteCrashReports">Delete all crash reports.</string>
+	<string name="errorSendingCrashReport">An error occurred while sending crash report. Please try again later.</string>
 </resources>
