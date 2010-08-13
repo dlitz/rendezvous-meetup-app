@@ -55,7 +55,7 @@
 	<string name="calendarListDesc">Meetups will be added to this calendar.</string>
 	<string name="noCalSel">A calendar has not been specified. Press OK to open the Settings screen.</string>
 	<string name="savedInCal">Event was successfully added to your calendar.</string>
-	<string name="calSaveFailed">There was an error adding the event to your calendar. Please try again later.</string>
+	<string name="calSaveFailed">There was an error adding the event to your calendar. A crash report has been created. Please restart Rendezvous and send the crash report to the developer. You may try adding the event to the calendar later.</string>
 	<string name="meetupsTabLabel">Meetups</string>
 	<string name="groupsTabLabel">Groups</string>
 	<string name="notifications">Notifications</string>

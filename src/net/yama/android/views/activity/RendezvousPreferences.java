@@ -59,7 +59,6 @@ public class RendezvousPreferences extends PreferenceActivity implements OnShare
 		ListPreference calPref = (ListPreference) findPreference(Constants.REMINDER_CAL_ID_KEY);
 		CharSequence[] entryArray = new String[calEntries.size()];
 		calPref.setEntries( calEntries.toArray(entryArray));
-		
 		CharSequence[] entryValuesArray = new String[calEntryValues.size()];
 		calPref.setEntryValues((CharSequence[]) calEntryValues.toArray(entryValuesArray));
 		

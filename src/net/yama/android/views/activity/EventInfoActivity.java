@@ -29,7 +29,6 @@ import java.io.File;
 import net.yama.android.R;
 import net.yama.android.managers.DataManager;
 import net.yama.android.managers.config.ConfigurationManager;
-import net.yama.android.managers.connection.ApplicationException;
 import net.yama.android.response.Event;
 import net.yama.android.util.Constants;
 import net.yama.android.util.Helper;
@@ -133,10 +132,6 @@ public class EventInfoActivity extends TabActivity {
 		
 		String calendarId = ConfigurationManager.instance.getReminderCalendarId();
 		
-		if(true){
-			throw new Error("Garbage exception to test logs");
-		}
-		
 		if(calendarId == null){
 			// No calendar selected. Open the preferences page
 			handler.post(showDialogAndLaunchPrefs);
@@ -172,8 +167,9 @@ public class EventInfoActivity extends TabActivity {
 			if(url != null)
 				Toast.makeText(EventInfoActivity.this, getText(R.string.savedInCal), Toast.LENGTH_SHORT).show();
 			
-		} catch (ApplicationException e) {
+		} catch (Exception e) {
 			Log.e(EventInfoActivity.class.getName(), e.getMessage());
+			Helper.logCrashReport(e, this);
 			Toast.makeText(EventInfoActivity.this, getText(R.string.calSaveFailed), Toast.LENGTH_LONG).show();
 		}
 	}

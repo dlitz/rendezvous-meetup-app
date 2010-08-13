@@ -45,6 +45,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Environment;
@@ -144,7 +145,7 @@ public class Helper{
 		return Environment.getExternalStorageDirectory();
 	}
 	
-	private static String getCrashReport(Throwable e, Rendezvous application) {
+	private static String getCrashReport(Throwable e, Context application) {
 		
 		StringBuffer body = new StringBuffer();
 		body.append("Timestamp: " + new Date().toString());
@@ -186,7 +187,7 @@ public class Helper{
 	 * @param application
 	 * @return
 	 */
-	public static String logCrashReport(Throwable ex, Rendezvous application) {
+	public static String logCrashReport(Throwable ex, Context application) {
 		String reportContent = getCrashReport(ex, application);
 		File crashReportsDir = getCrashReportsDirectory();
 		File report = new File(crashReportsDir, "crashreport-" + System.currentTimeMillis() + ".log");
