@@ -46,7 +46,6 @@ public class GroupInfoView extends TableLayout {
 		TextView groupName = new TextView(context);
 		groupName.setText(group.getName());
 		groupName.setTypeface(Typeface.DEFAULT_BOLD);
-		groupName.setTextSize(19.0F);
 		groupName.setPadding(2, 2, 2, 2);
 		groupName.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 		this.addView(groupName,0);

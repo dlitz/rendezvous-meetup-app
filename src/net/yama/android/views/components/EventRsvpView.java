@@ -43,6 +43,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -68,7 +69,6 @@ public class EventRsvpView extends TableLayout {
 		TextView titleView = new TextView(context);
 		titleView.setText(event.getName());
 		titleView.setTypeface(Typeface.DEFAULT_BOLD);
-		titleView.setTextSize(19.0F);
 		titleView.setPadding(2, 2, 2, 2);
 		titleView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 		this.addView(titleView);
@@ -137,7 +137,6 @@ public class EventRsvpView extends TableLayout {
 				event.getRsvpOpenTime() > System.currentTimeMillis() ||
 				event.getRsvpCutoffTime() > System.currentTimeMillis() ||
 				(rsvp != null && !rsvp.getResponse().equals(RsvpResponse.YES) && Rsvpable.FULL.equals(event.getRsvpable()))){
-			
 			TextView rsvpClosed = new TextView(context);
 			rsvpClosed.setText(R.string.rsvpClosed);
 			rsvpClosed.setGravity(Gravity.CENTER);
@@ -153,8 +152,6 @@ public class EventRsvpView extends TableLayout {
 		yesBtn.setPadding(2, 2, 2, 2);
 		yesBtn.setGravity(Gravity.CENTER);
 		yesBtn.setOnClickListener(listener);
-		yesBtn.setMinWidth(100);
-		yesBtn.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 		
 		Button noBtn = new Button(context);
 		noBtn.setId(R.string.no);
@@ -162,8 +159,6 @@ public class EventRsvpView extends TableLayout {
 		noBtn.setPadding(2, 2, 2, 2);
 		noBtn.setGravity(Gravity.CENTER);
 		noBtn.setOnClickListener(listener);
-		noBtn.setMinWidth(100);
-		noBtn.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 		
 		Button maybeBtn = new Button(context);
 		maybeBtn.setId(R.string.maybe);
@@ -171,28 +166,18 @@ public class EventRsvpView extends TableLayout {
 		maybeBtn.setPadding(2, 2, 2, 2);
 		maybeBtn.setGravity(Gravity.CENTER);
 		maybeBtn.setOnClickListener(listener);
-		maybeBtn.setMinWidth(100);
 		maybeBtn.setEnabled(event.isAllowMaybeRsvp());
-		maybeBtn.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 		
-		
-		RelativeLayout rel = new RelativeLayout(context);
-		rel.setPadding(2, 2, 2, 2);
-		RelativeLayout.LayoutParams noBtnParams = new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT,android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
-		noBtnParams.addRule(RelativeLayout.RIGHT_OF,R.string.maybe);
-		rel.addView(noBtn, noBtnParams);
-		
-		RelativeLayout.LayoutParams maybeBtnParams = new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT,android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
-		maybeBtnParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-		rel.addView(maybeBtn, maybeBtnParams);
-		
-		
-		
-		RelativeLayout.LayoutParams yesBtnParams = new RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT,android.widget.RelativeLayout.LayoutParams.WRAP_CONTENT);
-		yesBtnParams.addRule(RelativeLayout.LEFT_OF,R.string.maybe);
-		rel.addView(yesBtn, yesBtnParams);
-		
-		this.addView(rel);
+		LinearLayout l = new LinearLayout(context);
+		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+		p.weight = 1;
+		p.width = 0;
+		l.setGravity(Gravity.BOTTOM);
+		l.addView(yesBtn,p);
+		l.addView(maybeBtn,p);
+		l.addView(noBtn,p);
+		l.setPadding(1, 10, 1, 1);
+		this.addView(l);
 		
 	}
 

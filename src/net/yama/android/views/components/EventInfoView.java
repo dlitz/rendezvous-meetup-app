@@ -60,7 +60,6 @@ public class EventInfoView extends TableLayout {
 		TextView titleView = new TextView(context);
 		titleView.setText(event.getName());
 		titleView.setTypeface(Typeface.DEFAULT_BOLD);
-		titleView.setTextSize(19.0F);
 		titleView.setPadding(2, 2, 2, 2);
 		titleView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 		this.addView(titleView,0);
