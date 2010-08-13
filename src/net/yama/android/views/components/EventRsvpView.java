@@ -79,7 +79,6 @@ public class EventRsvpView extends TableLayout {
 		TextView rsvpStatsView = new TextView(context);
 		rsvpStatsView.setText(rsvpString + feeString);
 		rsvpStatsView.setPadding(1,1,1,3);
-//		rsvpStatsView.setTextSize(12.0F);
 		rsvpStatsView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 		this.addView(rsvpStatsView);
 		
@@ -205,10 +204,8 @@ public class EventRsvpView extends TableLayout {
 	}
 
 	private String getRsvpString(Event event) {
-		
 		StringBuilder rsvpStr = new StringBuilder();
-		rsvpStr.append("RSVP Limit: ").append(event.getRsvpLimit()).append("\n");
-		rsvpStr.append("Open spots: ").append(event.getRsvpCount() - event.getNoRsvpCount()).append("\n");
+		rsvpStr.append("Attendees: ").append(event.getRsvpCount()).append("\n");
 		return rsvpStr.toString();
 	}
 
