@@ -192,5 +192,7 @@ public class Constants {
 	public static final String RSVP_RESPONSE_ACTIVITY = "rsvp_response";
 	public static final String UTC_TIME = "utc_time";
 	public static final String LOG_FILE_COUNT = "LOG_FILE_COUNT";
+	public static final String RSVP_OPEN_TIME = "utc_rsvp_open_time";
+	public static final String RSVP_CUTOFF_TIME = "utc_rsvp_cutoff";
 
 }
