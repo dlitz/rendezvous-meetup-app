@@ -66,6 +66,8 @@ public class Event extends BaseResponse {
 	private String status;
 	private Rsvpable rsvpable;
 	private long utcTime;
+	private long rsvpOpenTime;
+	private long rsvpCutoffTime;
 	
 	List<EventHost> hosts;
 	
@@ -133,6 +135,9 @@ public class Event extends BaseResponse {
 			event.rsvpable = extractRsvpable(json.optString(Constants.RESPONSE_PARAMS_RSVPABLE));
 			event.utcTime = json.optLong(Constants.UTC_TIME);
 			event.eventTime = new Date(event.utcTime);
+			event.rsvpOpenTime = json.optLong(Constants.RSVP_OPEN_TIME);
+			event.rsvpCutoffTime = json.optLong(Constants.RSVP_CUTOFF_TIME);
+			
 			Venue venue = new Venue(json);
 			event.venue = venue;
 			event.hosts = new ArrayList<EventHost>();
@@ -402,5 +407,23 @@ public class Event extends BaseResponse {
 	public void setUtcTime(long utcTime) {
 		this.utcTime = utcTime;
 	}
+
+	public long getRsvpOpenTime() {
+		return rsvpOpenTime;
+	}
+
+	public void setRsvpOpenTime(long rsvpOpenTime) {
+		this.rsvpOpenTime = rsvpOpenTime;
+	}
+
+	public long getRsvpCutoffTime() {
+		return rsvpCutoffTime;
+	}
+
+	public void setRsvpCutoffTime(long rsvpCutoffTime) {
+		this.rsvpCutoffTime = rsvpCutoffTime;
+	}
+	
+	
 	
 }
