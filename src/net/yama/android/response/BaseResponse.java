@@ -24,6 +24,7 @@
  *******************************************************************/
 package net.yama.android.response;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,8 +37,13 @@ import org.json.JSONObject;
  * @author Rohit Kumbhar
  *
  */
-public abstract class BaseResponse  {
+public abstract class BaseResponse implements Serializable  {
 																		 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4947697724858447319L;
+
 	private static final SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
 	
 	private String id;

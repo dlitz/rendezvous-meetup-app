@@ -32,6 +32,10 @@ import org.json.JSONObject;
 
 public class Activity extends BaseResponse {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8637767408815099672L;
 	private String title;
 	private String itemType;
 	private String groupId;
