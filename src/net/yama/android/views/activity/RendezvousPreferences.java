@@ -57,26 +57,32 @@ public class RendezvousPreferences extends PreferenceActivity implements OnShare
 		addPreferencesFromResource(R.xml.preferences);
 		loadCalendars();
 		ListPreference calPref = (ListPreference) findPreference(Constants.REMINDER_CAL_ID_KEY);
-		CharSequence[] entryArray = new String[calEntries.size()];
-		calPref.setEntries( calEntries.toArray(entryArray));
-		CharSequence[] entryValuesArray = new String[calEntryValues.size()];
-		calPref.setEntryValues((CharSequence[]) calEntryValues.toArray(entryValuesArray));
+		if(calEntries.size() == 0){
+			calPref.setSummary("No Google Calendars were found on your phone.");
+			calPref.setEnabled(false);
+		} else {
+			CharSequence[] entryArray = new String[calEntries.size()];
+			calPref.setEntries( calEntries.toArray(entryArray));
+			CharSequence[] entryValuesArray = new String[calEntryValues.size()];
+			calPref.setEntryValues((CharSequence[]) calEntryValues.toArray(entryValuesArray));
+		}
 		
 	}
 	
 	private void loadCalendars() {
+		
 		String[] projection = new String[] { "_id", "name" };
 		Uri calendars = Uri.parse("content://calendar/calendars");
 		
 		// Calendar uri changes for 2.2
 		Uri calendars_2_2 = Uri.parse("content://com.android.calendar/calendars");
-		Cursor managedCursor = managedQuery(calendars, projection, "selected=1", null, null);
+		Cursor managedCursor = managedQuery(calendars, projection, null, null, null);
 
-		if(managedCursor == null)
-			managedCursor = managedQuery(calendars_2_2, projection, "selected=1", null, null);
+		if(managedCursor == null || managedCursor.getCount() == 0)
+			managedCursor = managedQuery(calendars_2_2, projection, null, null, null);
 		
 		
-		if (managedCursor.moveToFirst()) {
+		if (managedCursor != null && managedCursor.moveToFirst()) {
 			String calName;
 			String calId;
 			int nameColumn = managedCursor.getColumnIndex("name");
