@@ -36,11 +36,9 @@ import net.yama.android.views.contentfactory.EventInfoContentFactory;
 import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,10 +46,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TabHost;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
