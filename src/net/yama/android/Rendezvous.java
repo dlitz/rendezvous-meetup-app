@@ -45,8 +45,11 @@ import net.yama.android.util.CrashHandler;
 import net.yama.android.util.Helper;
 import net.yama.android.views.activity.RendezvousPreferences;
 import net.yama.android.views.contentfactory.MainContentFactory;
+import android.app.AlertDialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -83,15 +86,36 @@ public class Rendezvous extends TabActivity {
 		Object accessor = Helper.getFromCache(OAUTH_ACCESSOR_INSTANCE);
 		if(accessor != null)
 			finishAuthorize();
-		
+			
 		// Do upgrade activities
 		doUpgradeActivities();
 		checkForCrashes();
 		setContentView(R.layout.dashboard);
 		populateDashboard();
+		showWhatsNewDialog();
 		
 	}
-	
+
+	private void showWhatsNewDialog() {
+		
+		if(!configurationManager.showWhatsNewDialog())
+			return;
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setCancelable(true);
+		builder.setMessage(R.string.whatsNew);
+		builder.setPositiveButton("OK", new OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				configurationManager.disableShowWhatsNewDialog();
+				dialog.cancel();
+			}
+		});
+		
+		builder.show();
+		
+	}
+
 	private void checkForCrashes() {
 		File crashReportsDir = Helper.getCrashReportsDirectory();
 		int currentReports = crashReportsDir.list().length;
@@ -239,10 +263,8 @@ public class Rendezvous extends TabActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
 	    menu.add(0, Constants.PREFS_MENU, 0, R.string.prefSettings).setIcon(android.R.drawable.ic_menu_preferences);
-//	    menu.add(0, Constants.PREFS_RESET_CACHE, 0, R.string.prefResetCache).setIcon(android.R.drawable.ic_menu_rotate);
 	    menu.add(0, Constants.RESET_ACC_MENU, 0, R.string.prefDeleteAcc).setIcon(android.R.drawable.ic_menu_delete);
-	    
-
+	   
 	    if(configurationManager.getLogFilesCount() > 0){
 	    	// delete crash reports
 	    	menu.add(0, Constants.REPORT_CRASH, 0, R.string.reportCrash).setIcon(android.R.drawable.ic_menu_info_details);

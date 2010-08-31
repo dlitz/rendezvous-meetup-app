@@ -194,5 +194,6 @@ public class Constants {
 	public static final String LOG_FILE_COUNT = "LOG_FILE_COUNT";
 	public static final String RSVP_OPEN_TIME = "utc_rsvp_open_time";
 	public static final String RSVP_CUTOFF_TIME = "utc_rsvp_cutoff";
+	public static final String SHOW_WHATS_NEW_DIALOG = "SHOW_WHATS_NEW_DIALOG";
 
 }

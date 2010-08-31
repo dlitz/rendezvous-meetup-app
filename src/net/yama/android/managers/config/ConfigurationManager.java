@@ -56,8 +56,10 @@ public class ConfigurationManager {
 	private boolean notificationsFlag;
 	private long notificationsCheckInterval;
 	private String newEventsList;
+	private boolean showWhatsNewDialog;
 	private static SharedPreferences prefs;
 	private static SharedPreferences defaultPrefs;
+	
 	
 	private ConfigurationManager() {
 	}
@@ -92,6 +94,7 @@ public class ConfigurationManager {
 		instance.notificationsFlag = defaultPrefs.getBoolean(Constants.NOTIFICATION_FLAG, false);
 		instance.notificationsCheckInterval = Long.parseLong(defaultPrefs.getString(Constants.NOTIFICATIONS_CHECK_INTERVAL, ONE_HOUR_IN_MS));
 		instance.logFilesCount = defaultPrefs.getInt(Constants.LOG_FILE_COUNT, 0);
+		instance.showWhatsNewDialog = defaultPrefs.getBoolean(Constants.SHOW_WHATS_NEW_DIALOG, true);
 	}
 
 	public String getApiKey() {
@@ -238,4 +241,15 @@ public class ConfigurationManager {
 		return this.newEventsList;
 	}
 	
+	public boolean showWhatsNewDialog(){
+		return showWhatsNewDialog;
+	}
+	
+	public void disableShowWhatsNewDialog(){
+		this.showWhatsNewDialog = false;
+		SharedPreferences.Editor editor = defaultPrefs.edit();
+		editor.putBoolean(Constants.SHOW_WHATS_NEW_DIALOG, false);
+		editor.commit();
+		
+	}
 }

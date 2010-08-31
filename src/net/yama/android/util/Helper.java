@@ -35,7 +35,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.yama.android.Rendezvous;
 import net.yama.android.managers.config.ConfigurationManager;
 import net.yama.android.response.BaseResponse;
 import net.yama.android.response.Rsvp;
@@ -45,9 +44,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
@@ -210,6 +212,39 @@ public class Helper{
 		
 		return dir;
 		
+	}
+	
+	
+	public static boolean haveCalendars(Activity ctx){
+		
+		boolean exists = false;
+		
+		String[] projection = new String[] { "_id", "name" };
+		Uri calendars = Uri.parse("content://calendar/calendars");
+		
+		// Calendar uri changes for 2.2
+		Uri calendars_2_2 = Uri.parse("content://com.android.calendar/calendars");
+		Cursor managedCursor = ctx.managedQuery(calendars, projection, null, null, null);
+
+		if(managedCursor == null || managedCursor.getCount() == 0)
+			managedCursor = ctx.managedQuery(calendars_2_2, projection, null, null, null);
+		
+		
+		if (managedCursor != null && managedCursor.moveToFirst()) {
+			String calName;
+			String calId;
+			int nameColumn = managedCursor.getColumnIndex("name");
+			int idColumn = managedCursor.getColumnIndex("_id");
+			do {
+				calName = managedCursor.getString(nameColumn);
+				calId = managedCursor.getString(idColumn);
+				exists = true;
+			} while (managedCursor.moveToNext());
+			
+			managedCursor.close();
+		}
+		
+		return exists;
 	}
 
 }

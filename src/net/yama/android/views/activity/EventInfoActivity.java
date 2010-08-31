@@ -107,7 +107,10 @@ public class EventInfoActivity extends TabActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		menu.add(0, Constants.TAKE_A_PICTURE, 0, R.string.takePhoto).setIcon(android.R.drawable.ic_menu_camera);
-		menu.add(0, Constants.ADD_TO_CALENDAR, 0, R.string.addToCalendar).setIcon(android.R.drawable.ic_menu_month);
+		
+		if(Helper.haveCalendars(this))
+			menu.add(0, Constants.ADD_TO_CALENDAR, 0, R.string.addToCalendar).setIcon(android.R.drawable.ic_menu_month);
+		
 		return true;
 	}
 	

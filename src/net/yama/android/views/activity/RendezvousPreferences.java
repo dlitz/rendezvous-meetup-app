@@ -58,7 +58,7 @@ public class RendezvousPreferences extends PreferenceActivity implements OnShare
 		loadCalendars();
 		ListPreference calPref = (ListPreference) findPreference(Constants.REMINDER_CAL_ID_KEY);
 		if(calEntries.size() == 0){
-			calPref.setSummary("No Google Calendars were found on your phone.");
+			calPref.setSummary("Google Calendars could not be accessed on your device.");
 			calPref.setEnabled(false);
 		} else {
 			CharSequence[] entryArray = new String[calEntries.size()];
@@ -93,7 +93,12 @@ public class RendezvousPreferences extends PreferenceActivity implements OnShare
 				calEntries.add(calName);
 				calEntryValues.add(calId);
 			} while (managedCursor.moveToNext());
+			
+			managedCursor.close();
 		}
+		
+		
+		
 	}
 	
 	@Override
