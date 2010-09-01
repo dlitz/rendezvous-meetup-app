@@ -50,7 +50,7 @@
 	<string name="cachingTitle">Cache</string>
 	<string name="cachingDesc">Enable/disable caching data.</string>
 	<string name="dontMessAround">Change these only if you know what you are doing.</string>
-	<string name="addToCalendar">Add to calendar</string>
+	<string name="addToCalendar">Add to Google Calendar</string>
 	<string name="calendarList">Calendar</string>
 	<string name="calendarListDesc">Meetups will be added to this calendar.</string>
 	<string name="noCalSel">A calendar has not been specified. Press OK to open the Settings screen.</string>
@@ -76,4 +76,5 @@
 	<string name="reportCrash">Send crash report</string>
 	<string name="deleteCrashReports">Delete all crash reports.</string>
 	<string name="errorSendingCrashReport">An error occurred while sending crash report. Please try again later.</string>
+	<string name="whatsNew">"<b>Changes in 11"</b>:\n\nThe "Add to calendar" functionality works in some devices only because of a technical limitation.</string>
 </resources>
