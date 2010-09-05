@@ -118,12 +118,14 @@ public class Rendezvous extends TabActivity {
 
 	private void checkForCrashes() {
 		File crashReportsDir = Helper.getCrashReportsDirectory();
-		int currentReports = crashReportsDir.list().length;
-		int existingReports = configurationManager.getLogFilesCount();
-		
-		if(currentReports != existingReports) {
-			configurationManager.setLogFilesCount(currentReports);
-			Toast.makeText(this, R.string.crashDetected, Toast.LENGTH_LONG).show();
+		if(crashReportsDir != null ){
+			int currentReports = crashReportsDir.list().length;
+			int existingReports = configurationManager.getLogFilesCount();
+			
+			if(currentReports != existingReports) {
+				configurationManager.setLogFilesCount(currentReports);
+				Toast.makeText(this, R.string.crashDetected, Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 

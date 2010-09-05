@@ -20,6 +20,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
@@ -88,8 +91,24 @@ public class DrawableManager {
 	    
 	    try {
 	        InputStream is = fetch(urlString);
-	        Drawable drawable = Drawable.createFromStream(is, "src");
-	        drawableRef = new SoftReference<Drawable>(drawable);
+	        
+	        Bitmap photo = null;
+	        Drawable drawable = null;
+	        BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(is, null, opts);
+            opts.inJustDecodeBounds = false;
+            InputStream is2 = fetch(urlString);
+            if(opts.outWidth > 1000){
+                    opts.inSampleSize = 4;
+                    photo = BitmapFactory.decodeStream(is2, null, opts);
+            }
+            else {
+            	photo = BitmapFactory.decodeStream(is2);
+            }
+            
+            drawable = new BitmapDrawable(photo);
+            drawableRef = new SoftReference<Drawable>(drawable);
 	        drawableCache.put(urlString, drawableRef);
 	        return drawableRef.get();
 	    } catch (Exception e) {
@@ -119,17 +138,7 @@ public class DrawableManager {
 
 	    if(Looper.myLooper() == null)
 	    	Looper.prepare();
-	   
-//	    Thread thread = new Thread() {
-//	        @Override
-//	        public void run() {
-//	            Drawable drawable = fetchDrawable(urlString);
-//	            Message message = handler.obtainMessage(1, new MessageContainer(imageView, drawable));
-//	            handler.sendMessage(message);
-//	            System.gc();
-//	        }
-//	    };
-//	    thread.start();
+
 	    try {
 			imageWorkQueue.put(new MessageContainer(imageView,urlString));
 		} catch (InterruptedException e) {
