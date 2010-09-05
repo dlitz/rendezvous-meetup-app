@@ -250,6 +250,12 @@ public class ConfigurationManager {
 		SharedPreferences.Editor editor = defaultPrefs.edit();
 		editor.putBoolean(Constants.SHOW_WHATS_NEW_DIALOG, false);
 		editor.commit();
-		
+	}
+	
+	public void enableShowWhatsNewDialog(){
+		this.showWhatsNewDialog = false;
+		SharedPreferences.Editor editor = defaultPrefs.edit();
+		editor.putBoolean(Constants.SHOW_WHATS_NEW_DIALOG, true);
+		editor.commit();
 	}
 }

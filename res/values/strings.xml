@@ -76,5 +76,5 @@
 	<string name="reportCrash">Send crash report</string>
 	<string name="deleteCrashReports">Delete all crash reports.</string>
 	<string name="errorSendingCrashReport">An error occurred while sending crash report. Please try again later.</string>
-	<string name="whatsNew">"<b>Changes in 11"</b>:\n\nThe "Add to calendar" functionality works in some devices only because of a technical limitation.</string>
+	<string name="whatsNew">"<b>Changes in 12"</b>:\n\n1. Fixed the memory issue. \n 2. Fixed crash on startup</string>
 </resources>

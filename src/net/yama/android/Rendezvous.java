@@ -156,6 +156,7 @@ public class Rendezvous extends TabActivity {
 			
 			// Update version
 			configurationManager.setCurrentVersion(Integer.toString(version));
+			configurationManager.enableShowWhatsNewDialog();
 		}
 	}
 
