@@ -76,5 +76,12 @@
 	<string name="reportCrash">Send crash report</string>
 	<string name="deleteCrashReports">Delete all crash reports.</string>
 	<string name="errorSendingCrashReport">An error occurred while sending crash report. Please try again later.</string>
+	<string name="rateEvent">Rate Event</string>
+	<string name="selectRating">Select your rating:</string>
+	<string name="noOfAttendees">Number of attendees:</string>
+	<string name="yourThoughts">Share your thoughts about the event:</string>
+	<string name="submitRating">Submit rating</string>
+	
+	
 	<string name="whatsNew">"<b>Changes in 12"</b>:\n\n1. Fixed the memory issue. \n 2. Fixed crash on startup</string>
 </resources>

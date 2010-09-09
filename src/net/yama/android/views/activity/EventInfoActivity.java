@@ -25,11 +25,15 @@
 package net.yama.android.views.activity;
 
 import java.io.File;
+import java.util.Date;
 
 import net.yama.android.R;
 import net.yama.android.managers.DataManager;
 import net.yama.android.managers.config.ConfigurationManager;
+import net.yama.android.managers.connection.ApplicationException;
 import net.yama.android.response.Event;
+import net.yama.android.response.Rsvp;
+import net.yama.android.response.Rsvp.RsvpResponse;
 import net.yama.android.util.Constants;
 import net.yama.android.util.Helper;
 import net.yama.android.views.contentfactory.EventInfoContentFactory;
@@ -58,7 +62,10 @@ public class EventInfoActivity extends TabActivity {
 	private Intent cameraIntent;
 	private String eventId;
 	private Handler handler = new Handler();
-	
+
+	/**
+	 * Calendar dialog handler
+	 */
 	private Runnable showDialogAndLaunchPrefs = new Runnable() {
 		
 		private AlertDialog dialog;
@@ -88,11 +95,21 @@ public class EventInfoActivity extends TabActivity {
 		}
 	};
 	
+	
+	private Event event;
+	private Rsvp rsvp;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent i = getIntent();
 		eventId = i.getExtras().getString(Constants.EVENT_ID_KEY);
+		try {
+			event = DataManager.getEvent(eventId);
+			rsvp = DataManager.getMyRsvp(eventId);
+		} catch (ApplicationException e) {
+			// will occur later
+		}
 		setContentView(R.layout.dashboard);
 		EventInfoContentFactory contentFactory = new EventInfoContentFactory(EventInfoActivity.this,eventId);
 		TabHost mTabHost = getTabHost();
@@ -107,9 +124,13 @@ public class EventInfoActivity extends TabActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		menu.add(0, Constants.TAKE_A_PICTURE, 0, R.string.takePhoto).setIcon(android.R.drawable.ic_menu_camera);
+		Date now = new Date();
 		
-		if(Helper.haveCalendars(this))
+		if(Helper.haveCalendars(this) &&  now.before(event.getEventTime()))
 			menu.add(0, Constants.ADD_TO_CALENDAR, 0, R.string.addToCalendar).setIcon(android.R.drawable.ic_menu_month);
+		
+	//	if(now.after(event.getEventTime()) && (rsvp.getResponse().equals(RsvpResponse.YES)) || rsvp.getResponse().equals(RsvpResponse.MAYBE))
+			menu.add(0, Constants.RATE_EVENT, 0, R.string.rateEvent).setIcon(android.R.drawable.ic_menu_edit);
 		
 		return true;
 	}
@@ -124,11 +145,20 @@ public class EventInfoActivity extends TabActivity {
 		        return true;
 		 case Constants.ADD_TO_CALENDAR:
 			 	addEventToCalendar();
-			 break;
+			 	break;
+		 case Constants.RATE_EVENT:
+			 	launchRatingDialog();
+			 	break;
 		 }
 		
 		
 		return false;
+	}
+
+	private void launchRatingDialog() {
+		Intent i = new Intent(this,EventRatingActivity.class);
+		i.putExtra(Constants.EVENT_ID_KEY, event);
+		startActivity(i);
 	}
 
 	private void addEventToCalendar() {

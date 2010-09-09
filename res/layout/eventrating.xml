@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent" android:padding="10px"
+	android:layout_height="fill_parent">
+
+	<TextView android:id="@+id/eventTitle" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="" android:textStyle="bold"/>
+
+	<TextView android:id="@+id/ratingLabel" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="@string/selectRating" />
+
+	<RatingBar android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" android:contentDescription="@string/selectRating"
+		android:id="@+id/eventRatingBar" android:indeterminate="false"
+		android:stepSize="1" android:numStars="5" android:max="5"></RatingBar>
+
+	<TextView android:id="@+id/noOfAttendeesLabel" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="@string/noOfAttendees" />
+		
+	<EditText android:id="@+id/noOfAttendees" android:numeric="integer" android:layout_gravity="right" 
+			  android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
+	<TextView android:id="@+id/shareThoughtsLabel" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="@string/yourThoughts" />
+		
+	<EditText android:id="@+id/shareThoughts"  android:layout_width="fill_parent" android:layout_height="wrap_content" 
+			  android:maxLines="3" android:minLines="3" />
+
+	<Button android:id="@+id/submitRating" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="@string/submitRating"
+		android:layout_gravity="center" android:paddingLeft="25px" android:paddingTop="10px"
+		android:paddingRight="25px" />
+</LinearLayout>

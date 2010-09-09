@@ -24,33 +24,29 @@
  *******************************************************************/
 package net.yama.android.managers;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.json.JSONArray;
 
 import net.yama.android.managers.config.ConfigurationManager;
 import net.yama.android.managers.connection.ApplicationException;
 import net.yama.android.managers.connection.ConnectionManagerFactory;
 import net.yama.android.requests.ActivityRequest;
 import net.yama.android.requests.EventCommentRequest;
+import net.yama.android.requests.EventRatingRequest;
 import net.yama.android.requests.EventRequest;
 import net.yama.android.requests.GroupRequest;
 import net.yama.android.requests.MembersRequest;
 import net.yama.android.requests.PhotoRequest;
 import net.yama.android.requests.RsvpRequest;
 import net.yama.android.requests.write.WriteEventComment;
+import net.yama.android.requests.write.WriteEventRating;
 import net.yama.android.requests.write.WriteRsvp;
 import net.yama.android.response.Activity;
 import net.yama.android.response.Event;
 import net.yama.android.response.EventComment;
+import net.yama.android.response.EventRating;
 import net.yama.android.response.Group;
 import net.yama.android.response.Member;
 import net.yama.android.response.Photo;
@@ -312,6 +308,28 @@ public class DataManager {
 		ConnectionManagerFactory.getConnectionManager().makeRequest(request);
 		removeFromCache(Constants.ALL_RSVPS_KEY + "_" + request.getParameterMap().get(Constants.EVENT_ID_KEY));
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static EventRating getMyEventRating(String eventId) throws ApplicationException{
+		
+		EventRating rating = null;
+		EventRatingRequest request = new EventRatingRequest();
+		request.addParameter(Constants.EVENT_ID_KEY, eventId);
+		
+		try{
+			String response = ConnectionManagerFactory.getConnectionManager().makeRequest(request);
+			List<EventRating> ratings = Helper.getListFromResult(response, EventRating.class);
+			
+			if(!ratings.isEmpty())
+				rating = ratings.get(0);
+			
+		} catch (Exception e) {
+			Log.e("DataManager::getMyEventRating()", e.getMessage(), e);
+			throw new ApplicationException(e);
+		}
+		
+		return rating;
+	}
 
 	public static void nuke() {
 		cache.clear();
@@ -339,5 +357,9 @@ public class DataManager {
 	
 	public static void removeCachedPhotosForGroup(String groupId){
 		removeFromCache(Constants.PHOTOS_IN_GROUP + groupId);
+	}
+
+	public static void submitEventRating(WriteEventRating request) throws ApplicationException {
+		ConnectionManagerFactory.getConnectionManager().makeRequest(request);
 	}
 }

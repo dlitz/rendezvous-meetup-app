@@ -24,6 +24,7 @@
  *******************************************************************/
 package net.yama.android.response;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -71,8 +72,8 @@ public class Event extends BaseResponse {
 	
 	List<EventHost> hosts;
 	
-	class EventHost {
-		
+	class EventHost implements Serializable{
+		private static final long serialVersionUID = 2278018280625348220L;
 		EventHost(JSONObject json) {
 			this.memberId = json.optString(Constants.RESPONSE_PARAM_MEMBER_ID);
 			this.memberName = json.optString(Constants.RESPONSE_PARAM_MEMBER_NAME);

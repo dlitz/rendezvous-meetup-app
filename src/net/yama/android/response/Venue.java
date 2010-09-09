@@ -24,11 +24,13 @@
  *******************************************************************/
 package net.yama.android.response;
 
+import java.io.Serializable;
+
 import net.yama.android.util.Constants;
 
 import org.json.JSONObject;
 
-public class Venue {
+public class Venue implements Serializable {
 
 	private String venueVisibility ;
 	private String venueId;
