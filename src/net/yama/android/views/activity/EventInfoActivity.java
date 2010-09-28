@@ -45,6 +45,7 @@ import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -129,7 +130,7 @@ public class EventInfoActivity extends TabActivity {
 		if(Helper.haveCalendars(this) &&  now.before(event.getEventTime()))
 			menu.add(0, Constants.ADD_TO_CALENDAR, 0, R.string.addToCalendar).setIcon(android.R.drawable.ic_menu_month);
 		
-	//	if(now.after(event.getEventTime()) && (rsvp.getResponse().equals(RsvpResponse.YES)) || rsvp.getResponse().equals(RsvpResponse.MAYBE))
+		if(now.after(event.getEventTime()) && (rsvp.getResponse().equals(RsvpResponse.YES)) || rsvp.getResponse().equals(RsvpResponse.MAYBE))
 			menu.add(0, Constants.RATE_EVENT, 0, R.string.rateEvent).setIcon(android.R.drawable.ic_menu_edit);
 		
 		return true;
@@ -187,8 +188,6 @@ public class EventInfoActivity extends TabActivity {
 			Uri eventsUri = Uri.parse("content://calendar/events");
 			Uri calendars_2_2_events = Uri.parse("content://com.android.calendar/events");
 			
-			
-
 			Uri url = null;
 			try {
 				url = getContentResolver().insert(eventsUri, calEntry);
@@ -208,11 +207,24 @@ public class EventInfoActivity extends TabActivity {
 	}
 
 	private void startCamera() {
-		
-			tempImage = new File(Helper.getTempStorageDirectory(),Constants.TEMP_IMAGE);
-			cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);	
-			cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(tempImage));
-			startActivityForResult(	cameraIntent, Constants.CAMERA_INTENT_ID);
+
+		if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+			// they don't have an SDCard, give them an error message and quit
+			final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("SD Card could not be found. Cannot start camera.").setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				public void onClick(final DialogInterface dialog, final int id) {
+					finish();
+				}
+			});
+			final AlertDialog alert = builder.create();
+			alert.show();
+		} else {
+			tempImage = new File(Helper.getTempStorageDirectory(), Constants.TEMP_IMAGE);
+			cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempImage));
+			startActivityForResult(cameraIntent, Constants.CAMERA_INTENT_ID);
+		}
+
 	}
 		
 	@Override

@@ -42,24 +42,18 @@ public class BootListener extends BroadcastReceiver {
 	 * 
 	 */
 	public BootListener() {
-		// TODO Auto-generated constructor stub
+
 	}
 
-	/* (non-Javadoc)
-	 * @see android.content.BroadcastReceiver#onReceive(android.content.Context, android.content.Intent)
-	 */
 	@Override
 	public void onReceive(Context context, Intent arg1) {
 	
 		ConfigurationManager.init(context);
-		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		boolean notificationsEnabled = prefs.getBoolean(Constants.NOTIFICATION_FLAG, false);
 		Intent notificationsIntent = new Intent(context, NotificationService.class);
 		if(notificationsEnabled)
 			context.startService(notificationsIntent);
-		
-
 	}
 
 }

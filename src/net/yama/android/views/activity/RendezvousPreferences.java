@@ -57,7 +57,7 @@ public class RendezvousPreferences extends PreferenceActivity implements OnShare
 		addPreferencesFromResource(R.xml.preferences);
 		loadCalendars();
 		ListPreference calPref = (ListPreference) findPreference(Constants.REMINDER_CAL_ID_KEY);
-		if(calEntries.size() == 0){
+		if(calEntries.isEmpty() || calEntryValues.isEmpty()){
 			calPref.setSummary("Google Calendars could not be accessed on your device.");
 			calPref.setEnabled(false);
 		} else {

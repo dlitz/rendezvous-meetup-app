@@ -22,47 +22,20 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *******************************************************************/
-package net.yama.android.views.listeners;
+package net.yama.android.requests;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.yama.android.response.Photo;
 import net.yama.android.util.Constants;
-import android.content.Context;
-import android.content.Intent;
-import android.view.View;
-import android.view.View.OnClickListener;
 
-/**
- * Generic listener. Passes the Id of the clicked view 
- * to the activity specified by the class
- * @author Rohit Kumbhar
- *
- */
-public class PhotoAlbumClickListener implements OnClickListener {
+public class PhotoCommentRequest extends AbstractRequest {
 
-	Context context;
-	Class activityClass;
-	String groupId;
-	List<Photo> data;
+	private static final String URL = Constants.BASE_API_URL + "2/photo_comments" + Constants.RESPONSE_FORMAT;
 	
-	public PhotoAlbumClickListener(Context context, Class actvityClass, String groupId, List data) {
-		this.context = context;
-		this.activityClass = actvityClass;
-		this.groupId = groupId;
-		this.data = data;
+	public PhotoCommentRequest() {
 	}
-	
-	public void onClick(View v) {
-		
-		int id = v.getId();
-		Intent i = new Intent(context,activityClass);
-		i.putExtra(Constants.SELECTED_ALBUM_ID, String.valueOf(id));
-		i.putExtra(Constants.SELECTED_GROUP_ID, String.valueOf(groupId));
-		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		context.startActivity(i);
 
+	@Override
+	public String getRequestURL() {
+		return URL;
 	}
 
 }

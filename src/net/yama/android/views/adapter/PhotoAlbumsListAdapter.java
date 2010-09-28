@@ -16,7 +16,7 @@ public class PhotoAlbumsListAdapter extends AbstractListAdapter{
 	
 	public PhotoAlbumsListAdapter(List data,Context ctx, String groupId) {
 		super(data, ctx);
-		listClickListener = new PhotoAlbumClickListener(context, GalleryActivity.class, groupId);
+		listClickListener = new PhotoAlbumClickListener(context, GalleryActivity.class, groupId,data);
 	}
 
 	public Object getItem(int position) {

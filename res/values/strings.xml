@@ -81,7 +81,8 @@
 	<string name="noOfAttendees">Number of attendees:</string>
 	<string name="yourThoughts">Share your thoughts about the event:</string>
 	<string name="submitRating">Submit rating</string>
-	
-	
+	<string name="viewComments">View Comments</string>
+	<string name="addPhotoCommentMenu">Add Comment</string>
+	<string name="noCommentsOnPhoto">This photo has no comments on it. Perhaps, you may want to add one.</string>
 	<string name="whatsNew">"<b>Changes in 12"</b>:\n\n1. Fixed the memory issue. \n 2. Fixed crash on startup</string>
 </resources>

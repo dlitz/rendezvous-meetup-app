@@ -22,47 +22,39 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *******************************************************************/
-package net.yama.android.views.listeners;
+package net.yama.android.views.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import net.yama.android.response.Photo;
-import net.yama.android.util.Constants;
+import net.yama.android.response.PhotoComment;
+import net.yama.android.views.components.InfoRowView;
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 
-/**
- * Generic listener. Passes the Id of the clicked view 
- * to the activity specified by the class
- * @author Rohit Kumbhar
- *
- */
-public class PhotoAlbumClickListener implements OnClickListener {
+public class PhotoCommentsListAdapter extends AbstractListAdapter {
 
-	Context context;
-	Class activityClass;
-	String groupId;
-	List<Photo> data;
-	
-	public PhotoAlbumClickListener(Context context, Class actvityClass, String groupId, List data) {
-		this.context = context;
-		this.activityClass = actvityClass;
-		this.groupId = groupId;
-		this.data = data;
+	public PhotoCommentsListAdapter(List data,Context context){
+		super(data, context);
 	}
 	
-	public void onClick(View v) {
-		
-		int id = v.getId();
-		Intent i = new Intent(context,activityClass);
-		i.putExtra(Constants.SELECTED_ALBUM_ID, String.valueOf(id));
-		i.putExtra(Constants.SELECTED_GROUP_ID, String.valueOf(groupId));
-		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		context.startActivity(i);
+	public Object getItem(int position) {
+		PhotoComment photoComment = (PhotoComment) data.get(position);
+		return photoComment;
+	}
 
+	public long getItemId(int position) {
+		PhotoComment photoComment = (PhotoComment) data.get(position);
+		return Long.parseLong(photoComment.getPhotoCommentId());
+	}
+
+	public View getView(int position, View convertView, ViewGroup parent) {
+		PhotoComment photoComment = (PhotoComment) data.get(position);
+		InfoRowView view = new InfoRowView(this.context,
+					photoComment.getMemberName(),
+					photoComment.getComment(),
+					Integer.valueOf(photoComment.getPhotoCommentId()));
+		return view;
 	}
 
 }

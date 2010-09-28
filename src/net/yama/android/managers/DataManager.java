@@ -29,6 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
+
 import net.yama.android.managers.config.ConfigurationManager;
 import net.yama.android.managers.connection.ApplicationException;
 import net.yama.android.managers.connection.ConnectionManagerFactory;
@@ -38,6 +40,7 @@ import net.yama.android.requests.EventRatingRequest;
 import net.yama.android.requests.EventRequest;
 import net.yama.android.requests.GroupRequest;
 import net.yama.android.requests.MembersRequest;
+import net.yama.android.requests.PhotoCommentRequest;
 import net.yama.android.requests.PhotoRequest;
 import net.yama.android.requests.RsvpRequest;
 import net.yama.android.requests.write.WriteEventComment;
@@ -50,6 +53,7 @@ import net.yama.android.response.EventRating;
 import net.yama.android.response.Group;
 import net.yama.android.response.Member;
 import net.yama.android.response.Photo;
+import net.yama.android.response.PhotoComment;
 import net.yama.android.response.Rsvp;
 import net.yama.android.util.Constants;
 import net.yama.android.util.Helper;
@@ -361,5 +365,21 @@ public class DataManager {
 
 	public static void submitEventRating(WriteEventRating request) throws ApplicationException {
 		ConnectionManagerFactory.getConnectionManager().makeRequest(request);
+	}
+
+	public static List<PhotoComment> getPhotoComments(String photoId) throws ApplicationException {
+
+		List<PhotoComment> comments = null;
+		PhotoCommentRequest request = new PhotoCommentRequest();
+		request.addParameter("photo_id", photoId);
+		try {
+			String response = ConnectionManagerFactory.getConnectionManager().makeRequest(request);
+			comments = Helper.getListFromResult(response, PhotoComment.class);
+			
+		} catch (Exception e) {
+			Log.e("DataManager::getPhotoComments()", e.getMessage(), e);
+			throw new ApplicationException(e);
+		}
+		return comments;
 	}
 }

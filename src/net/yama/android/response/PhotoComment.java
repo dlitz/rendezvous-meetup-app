@@ -22,50 +22,62 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *******************************************************************/
-package net.yama.android.views.adapter;
+package net.yama.android.response;
 
-import net.yama.android.response.Photo;
-import net.yama.android.util.DrawableManager;
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import java.util.Date;
 
-public class GalleryAdapter extends BaseAdapter {
+import org.json.JSONObject;
 
-	Photo data;
-	Context context;
+public class PhotoComment extends BaseResponse {
+
+	private static final long serialVersionUID = -7967804725849702228L;
+	private String photoCommentId;
+	private String comment;
+	private String memberName;
+	private Date createdDate;
 	
-	public GalleryAdapter(Photo data, Context ctx) {
-		super();
-		this.data = data;
-		this.context = ctx;
-	}
-
-	public int getCount() {
-		return data.getPhotoUrls().size();
-	}
-
-	public Object getItem(int position) {
-		return data.getPhotoUrls().get(position);
-	}
-
-	public long getItemId(int position) {
-		String photoUrl = data.getPhotoUrls().get(position);
-		int start = photoUrl.lastIndexOf("_");
-		int end = photoUrl.lastIndexOf(".");
-		String idStr = photoUrl.substring(( start + 1), end);
+	@Override
+	public void convertFromJSON(BaseResponse b, JSONObject json) {
+		PhotoComment pc = (PhotoComment) b;
+		pc.comment = json.optString("comment");
+		pc.photoCommentId = json.optString("photo_comment_id");
+		pc.createdDate = new Date(json.optLong("created"));
 		
-		return Long.valueOf(idStr);
+		JSONObject member = json.optJSONObject("member");
+		pc.memberName = member.optString("name");
+		
 	}
 
-	public View getView(int position, View convertView, ViewGroup parent) {
-		ImageView i = new ImageView(context);
-		i.setScaleType(ImageView.ScaleType.FIT_CENTER);
-		i.setPadding(2, 2, 2, 2);
-		DrawableManager.instance.fetchDrawableOnThread(data.getPhotoUrls().get(position), i);
-		return i;
+	public String getPhotoCommentId() {
+		return photoCommentId;
+	}
+
+	public void setPhotoCommentId(String photoCommentId) {
+		this.photoCommentId = photoCommentId;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getMemberName() {
+		return memberName;
+	}
+
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 	
 }

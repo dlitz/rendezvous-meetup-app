@@ -196,5 +196,6 @@ public class Constants {
 	public static final String RSVP_CUTOFF_TIME = "utc_rsvp_cutoff";
 	public static final String SHOW_WHATS_NEW_DIALOG = "SHOW_WHATS_NEW_DIALOG";
 	public static final int RATE_EVENT = 7;
+	public static final String PHOTO_LIST = "PHOTO_LIST";
 
 }

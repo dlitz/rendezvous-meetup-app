@@ -27,6 +27,7 @@ package net.yama.android.views.activity;
 import java.util.Iterator;
 import java.util.List;
 
+import net.yama.android.R;
 import net.yama.android.managers.DataManager;
 import net.yama.android.managers.connection.ApplicationException;
 import net.yama.android.response.Photo;
@@ -36,6 +37,8 @@ import net.yama.android.views.components.LoadingView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Gallery;
 
@@ -44,6 +47,10 @@ import android.widget.Gallery;
  */
 public class GalleryActivity extends Activity {
 
+	private static final int VIEW_COMMENTS = 1;
+	private static final int ADD_COMMENT = 2;
+	private Gallery galleryView;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,14 +60,17 @@ public class GalleryActivity extends Activity {
 		final String groupId = i.getExtras().getString(Constants.SELECTED_GROUP_ID);
 		LoadingView loadingView = new LoadingView(GalleryActivity.this) {
 			
+			
+
 			@SuppressWarnings("unchecked")
 			@Override
 			public View getResultsView() throws ApplicationException {
 				List photos = DataManager.getPhotosForGroup(groupId);
 				Photo albumPhotos = getPhotosForAlbum(photos,albumId);
-				Gallery g = new Gallery(GalleryActivity.this);
-				g.setAdapter(new GalleryAdapter(albumPhotos,GalleryActivity.this));
-			    return g;
+				galleryView = new Gallery(GalleryActivity.this);
+				galleryView.setSpacing(10);
+				galleryView.setAdapter(new GalleryAdapter(albumPhotos,GalleryActivity.this));
+			    return galleryView;
 			}
 
 			private Photo getPhotosForAlbum(List photos, String albumId) {
@@ -76,4 +86,28 @@ public class GalleryActivity extends Activity {
 		};
 		setContentView(loadingView);
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		
+//		menu.add(0, Constants.PREFS_MENU, 0, R.string.prefSettings).setIcon(android.R.drawable.ic_menu_preferences);
+		menu.add(0,VIEW_COMMENTS,0,R.string.viewComments).setIcon(android.R.drawable.ic_menu_view);
+		menu.add(0,ADD_COMMENT,0,R.string.addPhotoCommentMenu).setIcon(android.R.drawable.ic_menu_add);
+		return true;
+	}
+	
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+	
+		long photoId = galleryView.getSelectedItemId();
+	
+		if(VIEW_COMMENTS == item.getItemId()){
+			Intent i = new Intent(this,PhotoCommentListActivity.class);
+			i.putExtra("photo_id", photoId);
+			startActivity(i);
+		}
+		return true;
+	}
+	
 }
