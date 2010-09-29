@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent" android:padding="10px"
+	android:layout_height="fill_parent">
+
+	<TextView android:id="@+id/commentsLabel" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="@string/addComment" />
+	
+	<EditText android:id="@+id/photoCommentText" android:layout_gravity="right" android:lines="3" 
+			  android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
+
+	<Button android:id="@+id/submitPhotoComment" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="@string/addCommentBtn"
+		android:layout_gravity="center" android:paddingLeft="25px" android:paddingTop="10px"
+		android:paddingRight="25px" />
+		
+</LinearLayout>

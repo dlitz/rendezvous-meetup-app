@@ -45,6 +45,7 @@ import net.yama.android.requests.PhotoRequest;
 import net.yama.android.requests.RsvpRequest;
 import net.yama.android.requests.write.WriteEventComment;
 import net.yama.android.requests.write.WriteEventRating;
+import net.yama.android.requests.write.WritePhotoComment;
 import net.yama.android.requests.write.WriteRsvp;
 import net.yama.android.response.Activity;
 import net.yama.android.response.Event;
@@ -381,5 +382,9 @@ public class DataManager {
 			throw new ApplicationException(e);
 		}
 		return comments;
+	}
+
+	public static void submitPhotoComment(WritePhotoComment request) throws ApplicationException {
+		ConnectionManagerFactory.getConnectionManager().makeRequest(request);
 	}
 }

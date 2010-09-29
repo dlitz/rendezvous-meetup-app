@@ -17,7 +17,7 @@
 	<string name="maybe">Maybe</string>
 	<string name="noCommentsYet">No comments for this event.</string>
 	<string name="addComment">Add a comment:</string>
-	<string name="addCommentBtn">Add</string>
+	<string name="addCommentBtn">Add Comment</string>
 	<string name="myMeetups">Meetups</string>
 	<string name="myGroups">Groups</string>
 	<string name="generalPrefs">General Preferences</string>

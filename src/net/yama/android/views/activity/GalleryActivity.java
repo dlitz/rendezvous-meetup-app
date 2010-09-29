@@ -106,6 +106,10 @@ public class GalleryActivity extends Activity {
 			Intent i = new Intent(this,PhotoCommentListActivity.class);
 			i.putExtra("photo_id", photoId);
 			startActivity(i);
+		} else if (ADD_COMMENT == item.getItemId()){
+			Intent i = new Intent(this,AddPhotoCommentActivity.class);
+			i.putExtra("photo_id", Long.toString(photoId));
+			startActivity(i);
 		}
 		return true;
 	}

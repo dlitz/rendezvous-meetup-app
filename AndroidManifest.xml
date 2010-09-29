@@ -27,6 +27,7 @@
         <activity android:name=".views.activity.UploadPhotoActivity" android:label="Upload Photo"></activity>
         <activity android:name=".views.activity.EventRatingActivity" android:label="Rate Event"></activity>
         <activity android:name=".views.activity.PhotoCommentListActivity" android:label="Photo Comments"></activity>
+        <activity android:name=".views.activity.AddPhotoCommentActivity" android:label="Add Comment"></activity>
         
         
         <service android:name=".service.NotificationService" />
