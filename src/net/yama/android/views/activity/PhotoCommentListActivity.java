@@ -33,17 +33,24 @@ import net.yama.android.response.PhotoComment;
 import net.yama.android.views.adapter.PhotoCommentsListAdapter;
 import net.yama.android.views.components.LoadingView;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class PhotoCommentListActivity extends Activity {
 
+	private static final int ADD_COMMENT = 1;
+	private Long photoId;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		final Long photoId = getIntent().getExtras().getLong("photo_id");
+		photoId = getIntent().getExtras().getLong("photo_id");
 		LoadingView view = new LoadingView(this) {
 			
 			@Override
@@ -65,4 +72,21 @@ public class PhotoCommentListActivity extends Activity {
 		setContentView(view);
 	}
 	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(0,ADD_COMMENT,0,R.string.addPhotoCommentMenu).setIcon(android.R.drawable.ic_menu_add);
+		return true;
+	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+	
+		if (ADD_COMMENT == item.getItemId()){
+			Intent i = new Intent(this,AddPhotoCommentActivity.class);
+			i.putExtra("photo_id", Long.toString(photoId));
+			startActivity(i);
+		}
+		return true;
+	}
 }
