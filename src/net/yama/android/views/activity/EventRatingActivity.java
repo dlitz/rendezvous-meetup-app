@@ -86,6 +86,12 @@ public class EventRatingActivity extends Activity {
 				EditText review = (EditText) findViewById(R.id.shareThoughts); 
 				EditText count = (EditText) findViewById(R.id.noOfAttendees);
 				
+				if(count.getText().length() == 0){
+					Toast.makeText(EventRatingActivity.this, "Attendee count is required." , Toast.LENGTH_LONG).show();
+					return;
+				}
+				
+				
 				WriteEventRating request = new WriteEventRating();
 				request.addParameter(Constants.EVENT_ID_KEY, event.getId());
 				request.addParameter(EventRating.EVENT_RATING, Integer.toString((int) ratingBar.getRating()));

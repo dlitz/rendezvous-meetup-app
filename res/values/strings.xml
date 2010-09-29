@@ -84,5 +84,5 @@
 	<string name="viewComments">View Comments</string>
 	<string name="addPhotoCommentMenu">Add Comment</string>
 	<string name="noCommentsOnPhoto">This photo has no comments on it. Perhaps, you may want to add one.</string>
-	<string name="whatsNew">"<b>Changes in 12"</b>:\n\n1. Fixed the memory issue. \n 2. Fixed crash on startup</string>
+	<string name="whatsNew">"<b>Changes in 13"</b>:\n\n1. Rate your events.\n2. View and add photo comments.</string>
 </resources>
