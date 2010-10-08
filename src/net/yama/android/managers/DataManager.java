@@ -29,8 +29,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONException;
-
 import net.yama.android.managers.config.ConfigurationManager;
 import net.yama.android.managers.connection.ApplicationException;
 import net.yama.android.managers.connection.ConnectionManagerFactory;

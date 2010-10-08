@@ -24,6 +24,7 @@
  *******************************************************************/
 package net.yama.android.views.contentfactory;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,6 +34,8 @@ import net.yama.android.managers.config.ConfigurationManager;
 import net.yama.android.managers.connection.ApplicationException;
 import net.yama.android.response.Event;
 import net.yama.android.util.Constants;
+import net.yama.android.util.OrganizerEventComparator;
+import net.yama.android.util.OrganizerGroupComparator;
 import net.yama.android.views.adapter.ActivityListAdapter;
 import net.yama.android.views.adapter.EventListAdapter;
 import net.yama.android.views.adapter.GroupsListAdapter;
@@ -99,9 +102,12 @@ public class MainContentFactory extends AbstractContentFactory {
 	private View getGroupsView() throws ApplicationException {
 
 		LoadingView view = new LoadingView(context) {
+			@SuppressWarnings("unchecked")
 			@Override
 			public View getResultsView() throws ApplicationException {
 				List groupsList = DataManager.getAllGroups();
+				Collections.sort(groupsList, new OrganizerGroupComparator());
+				
 				ListView groupsView = new ListView(context);
 				GroupsListAdapter adapter = new GroupsListAdapter(groupsList,context);
 				groupsView.setAdapter(adapter);
@@ -117,9 +123,10 @@ public class MainContentFactory extends AbstractContentFactory {
 		
 		LoadingView view = new LoadingView(context) {
 			
+			@SuppressWarnings("unchecked")
 			@Override
 			public View getResultsView() throws ApplicationException {
-				List eventsList = DataManager.getAllEvents();
+				List<Event> eventsList = DataManager.getAllEvents();
 				
 				// Remove non meetups
 				Iterator<Event> iter = eventsList.iterator();
@@ -128,6 +135,7 @@ public class MainContentFactory extends AbstractContentFactory {
 					if(!event.isMeetup())
 						iter.remove();
 				}
+				Collections.sort(eventsList, new OrganizerEventComparator());
 				
 				ListView eventsView  = new ListView(context);
 				EventListAdapter adapter = new EventListAdapter(eventsList,context);
