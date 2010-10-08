@@ -130,8 +130,12 @@ public class EventInfoActivity extends TabActivity {
 		if(Helper.haveCalendars(this) &&  now.before(event.getEventTime()))
 			menu.add(0, Constants.ADD_TO_CALENDAR, 0, R.string.addToCalendar).setIcon(android.R.drawable.ic_menu_month);
 		
-		if(now.after(event.getEventTime()) && (rsvp.getResponse().equals(RsvpResponse.YES)) || rsvp.getResponse().equals(RsvpResponse.MAYBE))
+		if(now.after(event.getEventTime()) 
+				&& rsvp != null 
+				&& ((rsvp.getResponse().equals(RsvpResponse.YES)) 
+						|| rsvp.getResponse().equals(RsvpResponse.MAYBE))) {
 			menu.add(0, Constants.RATE_EVENT, 0, R.string.rateEvent).setIcon(android.R.drawable.ic_menu_edit);
+		}
 		
 		return true;
 	}
