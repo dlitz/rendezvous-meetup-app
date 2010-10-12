@@ -84,5 +84,6 @@
 	<string name="viewComments">View Comments</string>
 	<string name="addPhotoCommentMenu">Add Comment</string>
 	<string name="noCommentsOnPhoto">This photo has no comments on it. Perhaps, you may want to add one.</string>
+	<string name="drawerHandleText">View Selection</string>
 	<string name="whatsNew">"<b>Changes in 14"</b>:\n\n1. Fixed crash on opening Event menu.\n2. Groups and Meetups sorted for organizer.</string>
 </resources>

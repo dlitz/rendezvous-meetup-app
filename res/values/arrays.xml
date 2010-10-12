@@ -57,6 +57,12 @@
 		<item>@string/everySixHours</item>
 		<item>@string/everyTwelveHours</item>
 	</string-array>
-	
+	<string-array name="drawerListEntries">
+		<item>@string/every30mins</item>
+		<item>@string/everyOneHour</item>
+		<item>@string/everyThreeHours</item>
+		<item>@string/everySixHours</item>
+		<item>@string/everyTwelveHours</item>
+	</string-array>
 	
 </resources>

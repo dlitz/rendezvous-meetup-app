@@ -28,7 +28,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import net.oauth.OAuth;
@@ -38,15 +41,21 @@ import net.oauth.client.OAuthClient;
 import net.oauth.client.httpclient4.HttpClient4;
 import net.yama.android.managers.DataManager;
 import net.yama.android.managers.config.ConfigurationManager;
+import net.yama.android.managers.connection.ApplicationException;
 import net.yama.android.managers.connection.OAuthConnectionManager;
+import net.yama.android.response.Event;
 import net.yama.android.service.NotificationService;
 import net.yama.android.util.Constants;
 import net.yama.android.util.CrashHandler;
 import net.yama.android.util.Helper;
+import net.yama.android.util.OrganizerEventComparator;
 import net.yama.android.views.activity.RendezvousPreferences;
+import net.yama.android.views.adapter.ActivityListAdapter;
+import net.yama.android.views.adapter.EventListAdapter;
+import net.yama.android.views.components.LoadingView;
 import net.yama.android.views.contentfactory.MainContentFactory;
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
@@ -57,23 +66,30 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.TabHost;
+import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.SlidingDrawer;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class Rendezvous extends TabActivity {
+public class Rendezvous extends Activity {
 	
 	private static final String OAUTH_TOKEN_SECRET = "oauth_token_secret";
 	private static final String OAUTH_TOKEN = "oauth_token";
 	private static final String OAUTH_ACCESSOR_INSTANCE = "OAUTH_ACCESSOR_INSTANCE";
 	private ConfigurationManager configurationManager;
 	private MainContentFactory contentFactory;
+	private SlidingDrawer drawer;
+	private FrameLayout superLayout;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -90,10 +106,96 @@ public class Rendezvous extends TabActivity {
 		// Do upgrade activities
 		doUpgradeActivities();
 		checkForCrashes();
-		setContentView(R.layout.dashboard);
-		populateDashboard();
+		setContentView(getWrappedView(-1));
+		createSlider();
+		// setContentView(R.layout.dashboard);
+		// populateDashboard();
 		showWhatsNewDialog();
 		
+		drawer = (SlidingDrawer) findViewById(R.id.slide);
+		
+		ListView drawerList =   (ListView) findViewById(R.id.drawerList);
+		drawerList.setOnItemClickListener(new OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				drawer.animateClose();
+				Rendezvous.this.setContentView(getWrappedView(arg2));
+			}
+		});
+	}
+	
+	private View getSelectedView() {
+		LoadingView view = new LoadingView(Rendezvous.this) {
+
+			@Override
+			public View getResultsView() throws ApplicationException {
+				List activities = DataManager.getAllActivity();
+				ListView activityView = new ListView(Rendezvous.this);
+				ActivityListAdapter adapter = new ActivityListAdapter(activities, Rendezvous.this);
+				activityView.setAdapter(adapter);
+				return activityView;
+			}
+		};
+
+		return view;
+	}
+	
+	private View getStartupView(){
+		
+		if(!ConfigurationManager.instance.haveAcess())
+			return authorizeView();
+		
+		LoadingView view = new LoadingView(this) {
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			public View getResultsView() throws ApplicationException {
+				
+				if(ConfigurationManager.instance.getMemberId() == null)
+					DataManager.getMemberInformation();
+				
+				List<Event> eventsList = DataManager.getAllEvents();
+				
+				// Remove non meetups
+				Iterator<Event> iter = eventsList.iterator();
+				while (iter.hasNext()) {
+					Event event = (Event) iter.next();
+					if(!event.isMeetup())
+						iter.remove();
+				}
+				Collections.sort(eventsList, new OrganizerEventComparator());
+				
+				ListView eventsView  = new ListView(Rendezvous.this);
+				EventListAdapter adapter = new EventListAdapter(eventsList,Rendezvous.this);
+				eventsView.setAdapter(adapter);
+				return eventsView;
+			}
+		};
+		
+		return view;
+		
+	}
+	
+	private View getWrappedView(int position){
+		
+		if(superLayout == null)
+			superLayout = new FrameLayout(this);
+		
+		if(position < 0) {
+			superLayout.addView(getStartupView(),0);
+			superLayout.addView(createSlider(),1);
+		} else {
+			superLayout.removeViewAt(0);
+			superLayout.addView(getSelectedView(),0);
+		}
+		return superLayout;
+	}
+
+	private View createSlider() {
+		LayoutInflater inflater = getLayoutInflater();
+		View view = inflater.inflate(R.layout.drawer, null);
+		//getWindow().addContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+		return view;
 	}
 
 	private void showWhatsNewDialog() {
@@ -160,20 +262,20 @@ public class Rendezvous extends TabActivity {
 		}
 	}
 
-	/**
-	 * Populates the screen when everything is authorized.
-	 */
-	private void populateDashboard() {
-		
-		TabHost mTabHost = getTabHost();
-		mTabHost.setDrawingCacheEnabled(false);
-		mTabHost.clearAllTabs();
-		
-		mTabHost.addTab(mTabHost.newTabSpec(Constants.MEETUPS_TAB_ID).setIndicator(getText(R.string.meetupsTabLabel)).setContent(contentFactory));
-		mTabHost.addTab(mTabHost.newTabSpec(Constants.GROUPS_TAB_ID).setIndicator(getText(R.string.groupsTabLabel)).setContent(contentFactory));
-		mTabHost.addTab(mTabHost.newTabSpec(Constants.ACTIVITY_TAB_ID).setIndicator(getText(R.string.activityTabLabel)).setContent(contentFactory));
-	    mTabHost.setCurrentTab(configurationManager.getDefaultStartupTab());
-	}
+//	/**
+//	 * Populates the screen when everything is authorized.
+//	 */
+//	private void populateDashboard() {
+//		
+//		TabHost mTabHost = getTabHost();
+//		mTabHost.setDrawingCacheEnabled(false);
+//		mTabHost.clearAllTabs();
+//		
+//		mTabHost.addTab(mTabHost.newTabSpec(Constants.MEETUPS_TAB_ID).setIndicator(getText(R.string.meetupsTabLabel)).setContent(contentFactory));
+//		mTabHost.addTab(mTabHost.newTabSpec(Constants.GROUPS_TAB_ID).setIndicator(getText(R.string.groupsTabLabel)).setContent(contentFactory));
+//		mTabHost.addTab(mTabHost.newTabSpec(Constants.ACTIVITY_TAB_ID).setIndicator(getText(R.string.activityTabLabel)).setContent(contentFactory));
+//	    mTabHost.setCurrentTab(configurationManager.getDefaultStartupTab());
+//	}
 
 	public View authorizeView(){
 			
@@ -350,7 +452,7 @@ public class Rendezvous extends TabActivity {
 
 	public void reloadTabs() {
 		DataManager.nuke();
-		getTabHost().invalidate();
+	//	getTabHost().invalidate();
 	}
 
 }
