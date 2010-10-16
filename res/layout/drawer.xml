@@ -12,6 +12,7 @@
 			   android:layout_width="fill_parent"
 			   android:textSize="20px"
 			   android:textStyle="bold"
+			   android:textColor="@color/black"
 			   android:gravity="center_horizontal"
 			   android:background="@color/launcher"
 			   android:paddingTop="10px"
