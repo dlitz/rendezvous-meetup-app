@@ -110,7 +110,7 @@ public class MainContentFactory extends AbstractContentFactory {
 					filteredEvents = eventsList;
 
 				if (filteredEvents.isEmpty())
-					return getNoDataView("No meetups scheduled for this group!");
+					return getNoDataView("There are no meetups matching this criteria");
 
 				ListView eventsView = new ListView(context);
 				EventListAdapter adapter = new EventListAdapter(filteredEvents, context);

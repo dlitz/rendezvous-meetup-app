@@ -145,7 +145,7 @@ public class Constants {
 	public static final int PREFS_RESET_CACHE = 3;
 	public static final int REPORT_CRASH = 4;
 	public static final int DELETE_CRASH_REPORTS = 5;
-	public static final String STARTUP_TAB = "startupTab";
+	public static final String STARTUP_LIST = "startupList";
 	public static final String FETCH_EVENTS_FROM_PREF_KEY = "fetchEventsFrom";
 	public static final String DEFAULT_BEFORE_PERIOD = "-1w";
 	public static final String FETCH_EVENTS_TO_PREF_KEY = "fetchEventsTo";

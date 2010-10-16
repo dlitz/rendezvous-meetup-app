@@ -21,8 +21,8 @@
 	<string name="myMeetups">Meetups</string>
 	<string name="myGroups">Groups</string>
 	<string name="generalPrefs">General Preferences</string>
-	<string name="startTabLabel">Starting Tab</string>
-	<string name="startupTabDesc">Default tab to open.</string>
+	<string name="startListLabel">Starting List</string>
+	<string name="startupListDesc">Default list to open.</string>
 	<string name="appBehavior">Application Behavior</string>
 	<string name="fetchEventsFrom">Past Meetups</string>
 	<string name="fetchEventsFromDesc">Previous meetups to show in your list.</string>

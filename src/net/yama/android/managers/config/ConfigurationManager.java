@@ -24,7 +24,6 @@
  *******************************************************************/
 package net.yama.android.managers.config;
 
-import net.yama.android.Rendezvous;
 import net.yama.android.managers.connection.ConnectionManagerFactory.ConnectionType;
 import net.yama.android.util.Constants;
 import android.content.Context;
@@ -49,7 +48,7 @@ public class ConfigurationManager {
 	private String memberId;
 	private String requestBeforePeriod;
 	private String requestAfterPeriod;
-	private int defaultStartupTab;
+	private int defaultStartupListId;
 	private String tempImageStoragePath;
 	private String cachingEnabled;
 	private String reminderCalendarId;
@@ -84,7 +83,7 @@ public class ConfigurationManager {
 		instance.accessTokenSecret = prefs.getString(Constants.ACCESS_TOKEN_SECRET, null);
 		instance.memberId = prefs.getString(Constants.MEMBER_ID, null);
 		instance.newEventsList = prefs.getString(Constants.NEW_EVENTS_LIST, null);
-		instance.defaultStartupTab = Integer.valueOf(defaultPrefs.getString(Constants.STARTUP_TAB, "0"));
+		instance.defaultStartupListId = Integer.valueOf(defaultPrefs.getString(Constants.STARTUP_LIST, "0"));
 		instance.tempImageStoragePath = prefs.getString(Constants.TEMP_IMAGE_FILE_PATH, null);
 		instance.requestAfterPeriod = defaultPrefs.getString(Constants.FETCH_EVENTS_FROM_PREF_KEY, Constants.DEFAULT_BEFORE_PERIOD);
 		instance.requestBeforePeriod = defaultPrefs.getString(Constants.FETCH_EVENTS_TO_PREF_KEY, Constants.DEFAULT_AFTER_PERIOD);
@@ -167,8 +166,8 @@ public class ConfigurationManager {
 		this.requestAfterPeriod = requestAfterPeriod;
 	}
 
-	public int getDefaultStartupTab() {
-		return defaultStartupTab;
+	public int getDefaultStartupListId() {
+		return defaultStartupListId;
 	}
 
 	public void nuke() {

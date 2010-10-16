@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory android:title="@string/generalPrefs">
-		<ListPreference android:title="@string/startTabLabel"
-			android:summary="@string/startupTabDesc"
-			android:key="startupTab" 
+		<ListPreference android:title="@string/startListLabel"
+			android:summary="@string/startupListDesc"
+			android:key="startupList" 
 			android:defaultValue="0"
-			android:entries="@array/startupTabs" 
-			android:entryValues="@array/startupTabsValues" />
+			android:entries="@array/drawerListEntries" 
+			android:entryValues="@array/drawerListValues" />
 			
 			<ListPreference android:title="@string/fetchEventsFrom"
 			android:summary="@string/fetchEventsFromDesc"

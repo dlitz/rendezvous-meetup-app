@@ -67,7 +67,7 @@
 		<item>@string/drawListActivityFeed</item>
 	</string-array>
 	
-	<integer-array name="drawerListValues">
+	<string-array name="drawerListValues">
 		<item>0</item>
 		<item>1</item>
 		<item>2</item>
@@ -75,6 +75,6 @@
 		<item>4</item>
 		<item>5</item>
 		<item>6</item>
-	</integer-array>
+	</string-array>
 	
 </resources>

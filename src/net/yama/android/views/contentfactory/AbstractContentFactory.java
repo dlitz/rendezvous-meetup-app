@@ -25,6 +25,7 @@
 package net.yama.android.views.contentfactory;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.TabHost.TabContentFactory;
@@ -52,6 +53,7 @@ public abstract class AbstractContentFactory implements TabContentFactory {
 	public View getNoDataView(String message) {
 		TextView temp = new TextView(this.context);
 		temp.setText(message);
+		temp.setTypeface(Typeface.DEFAULT_BOLD);
 		temp.setPadding(5, 5, 5, 5);
 		return temp;
 	}

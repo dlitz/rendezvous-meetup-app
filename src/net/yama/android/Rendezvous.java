@@ -97,7 +97,7 @@ public class Rendezvous extends Activity {
 		// Do upgrade activities
 		doUpgradeActivities();
 		checkForCrashes();
-		setContentView(getWrappedView(-1));
+		setContentView(getWrappedView(null,-1));
 		createSlider();
 		showWhatsNewDialog();
 
@@ -107,7 +107,7 @@ public class Rendezvous extends Activity {
 		drawerList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int positon, long id) {
 				drawer.animateClose();
-				Rendezvous.this.setContentView(getWrappedView(positon));
+				Rendezvous.this.setContentView(getWrappedView(view, positon));
 			}
 		});
 	}
@@ -121,17 +121,17 @@ public class Rendezvous extends Activity {
 		if(!ConfigurationManager.instance.haveAcess())
 			return authorizeView();
 
-		// FIXME: Get from configuration
-		return contentFactory.getListView(0);
+		return contentFactory.getListView(configurationManager.getDefaultStartupListId());
 	}
 	
 	/**
 	 * Home screen view. Draws the selected list and overlays
 	 * it with the sliding menu
+	 * @param view 
 	 * @param position
 	 * @return
 	 */
-	private View getWrappedView(int position){
+	private View getWrappedView(View view, int position){
 		
 		if(superLayout == null)
 			superLayout = new FrameLayout(this);
@@ -143,6 +143,17 @@ public class Rendezvous extends Activity {
 			superLayout.removeViewAt(0);
 			superLayout.addView(contentFactory.getListView(position),0);
 		}
+		
+		String title = getString(R.string.app_name);
+		
+		if(view instanceof TextView){
+			title = title + " - " + ((TextView) view).getText().toString();
+		} else {
+			String[] allLabels = getResources().getStringArray(R.array.drawerListEntries);
+			title = title + " - " + allLabels[configurationManager.getDefaultStartupListId()];
+		}
+		
+		setTitle(title);
 		return superLayout;
 	}
 
