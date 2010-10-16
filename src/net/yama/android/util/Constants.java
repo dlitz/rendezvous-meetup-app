@@ -87,7 +87,7 @@ public class Constants {
 	public static final String RESPONSE_PARAM_LONGITUDE = "lon";
 	public static final String RESPONSE_PARAM_TIME = "time";
 	public static final String RESPONSE_PARAM_FINDING_INS = "how_to_find_us";
-	public static final String RESPONSE_PARAM_RSVP_STATUS = "myrsvp ";
+	public static final String RESPONSE_PARAM_RSVP_STATUS = "myrsvp";
 	public static final String RESPONSE_PARAM_EVENT_URL = "event_url";
 	public static final String RESPONSE_PARAM_RSVP_COUNT = "rsvpcount";
 	public static final String RESPONSE_PARAM_MAYBE_RSVP_COUNT = "maybe_rsvpcount";

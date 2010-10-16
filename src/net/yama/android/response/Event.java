@@ -40,6 +40,8 @@ import org.json.JSONObject;
  */
 public class Event extends BaseResponse {
 
+	private static final long serialVersionUID = 5728057514216386757L;
+	private static final String MY_WAITLIST_STATUS = "my_waitlist_status";
 	private String description;
 	private Date eventTime;
 	private Date updated;
@@ -86,6 +88,7 @@ public class Event extends BaseResponse {
 		YES,
 		NO,
 		MAYBE,
+		WAITINGLIST,
 		NONE,
 		PAST_DEADLINE,
 		NOT_OPEN_YET
@@ -113,7 +116,6 @@ public class Event extends BaseResponse {
 			Event event = (Event) b;
 			event.description = json.optString(Constants.RESPONSE_PARAM_DESCRIPTION);
 			event.findingInstructions = json.optString(Constants.RESPONSE_PARAM_FINDING_INS);
-			setRSVPStatus(json.optString(Constants.RESPONSE_PARAM_RSVP_STATUS));
 			event.eventURL = json.optString(Constants.RESPONSE_PARAM_EVENT_URL);
 			event.rsvpCount = json.optInt(Constants.RESPONSE_PARAM_RSVP_COUNT);
 			event.maybeRsvpCount = json.optInt(Constants.RESPONSE_PARAM_MAYBE_RSVP_COUNT);
@@ -138,7 +140,8 @@ public class Event extends BaseResponse {
 			event.eventTime = new Date(event.utcTime);
 			event.rsvpOpenTime = json.optLong(Constants.RSVP_OPEN_TIME);
 			event.rsvpCutoffTime = json.optLong(Constants.RSVP_CUTOFF_TIME);
-			
+			setRSVPStatus(json.optString(Constants.RESPONSE_PARAM_RSVP_STATUS),
+					json.optString(MY_WAITLIST_STATUS));
 			Venue venue = new Venue(json);
 			event.venue = venue;
 			event.hosts = new ArrayList<EventHost>();
@@ -161,9 +164,12 @@ public class Event extends BaseResponse {
 		return null;
 	}
 
-	private void setRSVPStatus(String rsvpStatus) {
+	private void setRSVPStatus(String rsvpStatus, String waitlistStatus) {
 		try{
-			if(rsvpStatus != null && rsvpStatus.length() > 0)
+			
+			if(waitlistStatus != null && "waitlist".equalsIgnoreCase(waitlistStatus))
+				this.rsvpStatus = RsvpStatus.WAITINGLIST;
+			else if(rsvpStatus != null && rsvpStatus.length() > 0)
 				this.rsvpStatus = RsvpStatus.valueOf(rsvpStatus.toUpperCase());
 			
 		}catch (Exception e) {

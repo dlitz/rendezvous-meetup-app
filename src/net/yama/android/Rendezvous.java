@@ -28,10 +28,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import net.oauth.OAuth;
@@ -41,18 +38,12 @@ import net.oauth.client.OAuthClient;
 import net.oauth.client.httpclient4.HttpClient4;
 import net.yama.android.managers.DataManager;
 import net.yama.android.managers.config.ConfigurationManager;
-import net.yama.android.managers.connection.ApplicationException;
 import net.yama.android.managers.connection.OAuthConnectionManager;
-import net.yama.android.response.Event;
 import net.yama.android.service.NotificationService;
 import net.yama.android.util.Constants;
 import net.yama.android.util.CrashHandler;
 import net.yama.android.util.Helper;
-import net.yama.android.util.OrganizerEventComparator;
 import net.yama.android.views.activity.RendezvousPreferences;
-import net.yama.android.views.adapter.ActivityListAdapter;
-import net.yama.android.views.adapter.EventListAdapter;
-import net.yama.android.views.components.LoadingView;
 import net.yama.android.views.contentfactory.MainContentFactory;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -108,74 +99,38 @@ public class Rendezvous extends Activity {
 		checkForCrashes();
 		setContentView(getWrappedView(-1));
 		createSlider();
-		// setContentView(R.layout.dashboard);
-		// populateDashboard();
 		showWhatsNewDialog();
-		
+
+		// Handle sliding menu
 		drawer = (SlidingDrawer) findViewById(R.id.slide);
-		
 		ListView drawerList =   (ListView) findViewById(R.id.drawerList);
 		drawerList.setOnItemClickListener(new OnItemClickListener() {
-
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+			public void onItemClick(AdapterView<?> parent, View view, int positon, long id) {
 				drawer.animateClose();
-				Rendezvous.this.setContentView(getWrappedView(arg2));
+				Rendezvous.this.setContentView(getWrappedView(positon));
 			}
 		});
 	}
 	
-	private View getSelectedView() {
-		LoadingView view = new LoadingView(Rendezvous.this) {
-
-			@Override
-			public View getResultsView() throws ApplicationException {
-				List activities = DataManager.getAllActivity();
-				ListView activityView = new ListView(Rendezvous.this);
-				ActivityListAdapter adapter = new ActivityListAdapter(activities, Rendezvous.this);
-				activityView.setAdapter(adapter);
-				return activityView;
-			}
-		};
-
-		return view;
-	}
-	
+	/**
+	 * Home screen
+	 * @return
+	 */
 	private View getStartupView(){
 		
 		if(!ConfigurationManager.instance.haveAcess())
 			return authorizeView();
-		
-		LoadingView view = new LoadingView(this) {
-			
-			@SuppressWarnings("unchecked")
-			@Override
-			public View getResultsView() throws ApplicationException {
-				
-				if(ConfigurationManager.instance.getMemberId() == null)
-					DataManager.getMemberInformation();
-				
-				List<Event> eventsList = DataManager.getAllEvents();
-				
-				// Remove non meetups
-				Iterator<Event> iter = eventsList.iterator();
-				while (iter.hasNext()) {
-					Event event = (Event) iter.next();
-					if(!event.isMeetup())
-						iter.remove();
-				}
-				Collections.sort(eventsList, new OrganizerEventComparator());
-				
-				ListView eventsView  = new ListView(Rendezvous.this);
-				EventListAdapter adapter = new EventListAdapter(eventsList,Rendezvous.this);
-				eventsView.setAdapter(adapter);
-				return eventsView;
-			}
-		};
-		
-		return view;
-		
+
+		// FIXME: Get from configuration
+		return contentFactory.getListView(0);
 	}
 	
+	/**
+	 * Home screen view. Draws the selected list and overlays
+	 * it with the sliding menu
+	 * @param position
+	 * @return
+	 */
 	private View getWrappedView(int position){
 		
 		if(superLayout == null)
@@ -186,18 +141,24 @@ public class Rendezvous extends Activity {
 			superLayout.addView(createSlider(),1);
 		} else {
 			superLayout.removeViewAt(0);
-			superLayout.addView(getSelectedView(),0);
+			superLayout.addView(contentFactory.getListView(position),0);
 		}
 		return superLayout;
 	}
 
+	/**
+	 * Creates the sliding menu
+	 * @return
+	 */
 	private View createSlider() {
 		LayoutInflater inflater = getLayoutInflater();
 		View view = inflater.inflate(R.layout.drawer, null);
-		//getWindow().addContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
 		return view;
 	}
 
+	/**
+	 * Shows a dialog on startup
+	 */
 	private void showWhatsNewDialog() {
 		
 		if(!configurationManager.showWhatsNewDialog())
@@ -218,6 +179,10 @@ public class Rendezvous extends Activity {
 		
 	}
 
+	/**
+	 * Checks the application directory on the SD card for any crash logs.
+	 * If any NEW crash logs are found, the new count is updated in the configuration
+	 */
 	private void checkForCrashes() {
 		File crashReportsDir = Helper.getCrashReportsDirectory();
 		if(crashReportsDir != null ){
@@ -262,21 +227,9 @@ public class Rendezvous extends Activity {
 		}
 	}
 
-//	/**
-//	 * Populates the screen when everything is authorized.
-//	 */
-//	private void populateDashboard() {
-//		
-//		TabHost mTabHost = getTabHost();
-//		mTabHost.setDrawingCacheEnabled(false);
-//		mTabHost.clearAllTabs();
-//		
-//		mTabHost.addTab(mTabHost.newTabSpec(Constants.MEETUPS_TAB_ID).setIndicator(getText(R.string.meetupsTabLabel)).setContent(contentFactory));
-//		mTabHost.addTab(mTabHost.newTabSpec(Constants.GROUPS_TAB_ID).setIndicator(getText(R.string.groupsTabLabel)).setContent(contentFactory));
-//		mTabHost.addTab(mTabHost.newTabSpec(Constants.ACTIVITY_TAB_ID).setIndicator(getText(R.string.activityTabLabel)).setContent(contentFactory));
-//	    mTabHost.setCurrentTab(configurationManager.getDefaultStartupTab());
-//	}
-
+	/**
+	 * Shows the authorize message 
+	 */
 	public View authorizeView(){
 			
 		TableLayout authLayout = new TableLayout(getApplicationContext());
@@ -296,7 +249,6 @@ public class Rendezvous extends Activity {
 	
 	
 	public class AuthorizeButtonListener implements View.OnClickListener {
-
 		public void onClick(View v) {
 			doAuthorize();
 		}
@@ -315,7 +267,7 @@ public class Rendezvous extends Activity {
 			Helper.storeInCache(OAUTH_ACCESSOR_INSTANCE, accessor);
 		    Intent i = new Intent(Intent.ACTION_VIEW);
 		    i.setData(Uri.parse(Constants.OAUTH_AUTHORIZE_URL + "?oauth_token=" + accessor.requestToken + "&oauth_callback=" + Constants.CALLBACK_URL));
-		    startActivity(i);
+		    this.startActivity(i);
 		} catch (Exception e) {
 			Toast t = Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG);
 			Log.e("Rendezvous", "Exception occured in doAuthorize()", e);
@@ -324,6 +276,10 @@ public class Rendezvous extends Activity {
 		} 
 	}
 	
+	/**
+	 * Last step of authorization. Obtains OAuth token and secret 
+	 * and stores them to the configucation file.
+	 */
 	protected void finishAuthorize() {
 	
 		// extract the OAUTH access token if it exists
@@ -346,6 +302,7 @@ public class Rendezvous extends Activity {
 			
 
 			try {
+				
 				// Get the access token
 				OAuthMessage authMessage = oAuthClient.invoke(accessor, "POST",accessor.consumer.serviceProvider.accessTokenURL,params);
 				String oAuthToken = authMessage.getParameter(OAUTH_TOKEN);
@@ -355,6 +312,9 @@ public class Rendezvous extends Activity {
 				configurationManager.saveAccessTokenSecret(oAuthTokenSecret);
 				Helper.storeInCache(OAUTH_ACCESSOR_INSTANCE,null);
 				
+				// Load the member information
+				if(ConfigurationManager.instance.getMemberId() == null)
+					DataManager.getMemberInformation();
 	
 			}catch (Exception e) {
 				Log.e("Rendezvous", "Exception in onResume()", e);
@@ -408,6 +368,9 @@ public class Rendezvous extends Activity {
 	    return false;
 	}
 	
+	/**
+	 * Deletes all crash reports from the SD card
+	 */
 	private void deleteAllCrashReports() {
 		File[] crashReports = Helper.getCrashReportsDirectory().listFiles();
 		for(File f : crashReports){
@@ -416,6 +379,11 @@ public class Rendezvous extends Activity {
 		configurationManager.setLogFilesCount(0);
 	}
 
+	/**
+	 * Loads the error report from the SD card and opens the email Activity 
+	 * with the report contents loaded as a message.
+	 * @throws Exception
+	 */
 	private void reportCrash() throws Exception {
 		
 		// Find the latest crash report
@@ -445,14 +413,12 @@ public class Rendezvous extends Activity {
 		
 	}
 
+	/**
+	 * Launches the preferences activity
+	 */
 	private void showPreferencesScreen() {
 		Intent prefsIntent = new Intent(getBaseContext(),RendezvousPreferences.class);
 		startActivity(prefsIntent);
-	}
-
-	public void reloadTabs() {
-		DataManager.nuke();
-	//	getTabHost().invalidate();
 	}
 
 }
