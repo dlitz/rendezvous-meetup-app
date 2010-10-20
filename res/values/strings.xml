@@ -95,5 +95,5 @@
 	<string name="drawListMeOrganizer">Meetups I Organize</string>
 	<string name="drawListActivityFeed">Activity Feed</string>
 	
-	<string name="whatsNew">"<b>Changes in 15"</b>:\n\n1. New sliding menu for the home screen.</string>
+	<string name="whatsNew">"<b>Changes in 15"</b>:\n\nNew sliding menu for the home screen. Use Settings to select the default list.</string>
 </resources>
