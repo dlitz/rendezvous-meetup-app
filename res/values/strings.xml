@@ -89,7 +89,9 @@
 	<string name="drawListAllEvents">All Meetups</string>
 	<string name="drawListYesRsvps">Confirmed Meetups</string>
 	<string name="drawListNoRsvps">Declined Meetups</string>
+	<string name="drawListMayBeRsvps">Meetups With Maybe RSVP</string>
 	<string name="drawListMyWaitingLists">Waiting List</string>
+	<string name="drawListMyPendingMeetups">Meetups Pending RSVP</string>
 	<string name="drawListMeOrganizer">Meetups I Organize</string>
 	<string name="drawListActivityFeed">Activity Feed</string>
 	

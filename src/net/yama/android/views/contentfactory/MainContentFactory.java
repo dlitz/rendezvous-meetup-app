@@ -36,7 +36,9 @@ import net.yama.android.util.OrganizerGroupComparator;
 import net.yama.android.util.filters.Filter;
 import net.yama.android.util.filters.events.AffirmativeRsvpFilter;
 import net.yama.android.util.filters.events.NegativeRsvpFilter;
+import net.yama.android.util.filters.events.OnTheFenceRsvpFilter;
 import net.yama.android.util.filters.events.OrganizerFilter;
+import net.yama.android.util.filters.events.UnrespondedEventsFilter;
 import net.yama.android.util.filters.events.WaitingListFilter;
 import net.yama.android.views.adapter.ActivityListAdapter;
 import net.yama.android.views.adapter.EventListAdapter;
@@ -73,13 +75,19 @@ public class MainContentFactory extends AbstractContentFactory {
 			case 3: // Events with RSVP - No
 				view = getEventsView(NegativeRsvpFilter.instance);
 				break;
-			case 4: // Waitlisted events
+			case 4: // Events with RSVP - May be
+				view = getEventsView(OnTheFenceRsvpFilter.instance);
+				break;
+			case 5: // Waitlisted events
 				view = getEventsView(WaitingListFilter.instance);
 				break;
-			case 5: // Events with user as organizer
+			case 6: // Pending RSVP events
+				view = getEventsView(UnrespondedEventsFilter.instance);
+				break;
+			case 7: // Events with user as organizer
 				view = getEventsView(OrganizerFilter.instance);
 				break;
-			case 6: // Activity
+			case 8: // Activity
 				view = getActivityView();
 				break;	
 			default:

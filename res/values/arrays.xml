@@ -62,7 +62,9 @@
 		<item>@string/drawListAllEvents</item>
 		<item>@string/drawListYesRsvps</item>
 		<item>@string/drawListNoRsvps</item>
+		<item>@string/drawListMayBeRsvps</item>
 		<item>@string/drawListMyWaitingLists</item>
+		<item>@string/drawListMyPendingMeetups</item>
 		<item>@string/drawListMeOrganizer</item>
 		<item>@string/drawListActivityFeed</item>
 	</string-array>
@@ -75,6 +77,8 @@
 		<item>4</item>
 		<item>5</item>
 		<item>6</item>
+		<item>7</item>
+		<item>8</item>
 	</string-array>
 	
 </resources>

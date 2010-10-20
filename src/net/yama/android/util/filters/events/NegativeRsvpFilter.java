@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.yama.android.response.Event;
-import net.yama.android.response.Event.RsvpStatus;
+import net.yama.android.response.Event.MyRsvp;
 import net.yama.android.util.filters.Filter;
 
 /**
@@ -46,7 +46,7 @@ public class NegativeRsvpFilter implements Filter<Event> {
 		List<Event> filterResult = new ArrayList<Event>();
 		
 		for(Event e : list){
-			if(e.getRsvpStatus() != null && RsvpStatus.NO.equals(e.getRsvpStatus()))
+			if(e.getMyRsvp() != null && MyRsvp.NO.equals(e.getMyRsvp()))
 				filterResult.add(e);
 		}
 		return filterResult;

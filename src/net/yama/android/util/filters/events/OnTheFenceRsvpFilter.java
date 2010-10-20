@@ -31,23 +31,18 @@ import net.yama.android.response.Event;
 import net.yama.android.response.Event.MyRsvp;
 import net.yama.android.util.filters.Filter;
 
-/**
- * Returns a list of events the user is waiting on
- * @author Rohit Kumbhar
- */
-public class WaitingListFilter implements Filter<Event> {
+public class OnTheFenceRsvpFilter implements Filter<Event> {
 
-	public static WaitingListFilter instance = new WaitingListFilter();
-	
-	private WaitingListFilter(){
+	public static OnTheFenceRsvpFilter instance = new OnTheFenceRsvpFilter();
+	private OnTheFenceRsvpFilter(){
 		
 	}
 	
 	public List<Event> apply(List<Event> list) {
 		List<Event> filterResult = new ArrayList<Event>();
-		
-		for(Event e : list){
-			if(e.getMyRsvp() != null && MyRsvp.WAITINGLIST.equals(e.getMyRsvp()))
+
+		for (Event e : list) {
+			if (e.getMyRsvp() != null && MyRsvp.MAYBE.equals(e.getMyRsvp()))
 				filterResult.add(e);
 		}
 		return filterResult;

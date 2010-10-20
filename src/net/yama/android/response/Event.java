@@ -47,7 +47,7 @@ public class Event extends BaseResponse {
 	private Date updated;
 	private Venue venue;
 	private String findingInstructions;
-	private RsvpStatus rsvpStatus;
+	private MyRsvp myrsvp;
 	private String eventURL;
 	private int rsvpCount;
 	private int maybeRsvpCount;
@@ -84,7 +84,7 @@ public class Event extends BaseResponse {
 		public String memberName;
 	}
 	
-	public enum RsvpStatus {
+	public enum MyRsvp {
 		YES,
 		NO,
 		MAYBE,
@@ -164,16 +164,18 @@ public class Event extends BaseResponse {
 		return null;
 	}
 
-	private void setRSVPStatus(String rsvpStatus, String waitlistStatus) {
+	private void setRSVPStatus(String myrsvp, String mywaitlist) {
 		try{
 			
-			if(waitlistStatus != null && "waitlist".equalsIgnoreCase(waitlistStatus))
-				this.rsvpStatus = RsvpStatus.WAITINGLIST;
-			else if(rsvpStatus != null && rsvpStatus.length() > 0)
-				this.rsvpStatus = RsvpStatus.valueOf(rsvpStatus.toUpperCase());
+			if(mywaitlist != null && "waitlist".equalsIgnoreCase(mywaitlist))
+				this.myrsvp = MyRsvp.WAITINGLIST;
+			else if(myrsvp != null && myrsvp.length() > 0)
+				this.myrsvp = MyRsvp.valueOf(myrsvp.toUpperCase());
+			else
+				this.myrsvp = MyRsvp.NONE;
 			
 		}catch (Exception e) {
-			this.rsvpStatus = RsvpStatus.NONE;
+			this.myrsvp = MyRsvp.NONE;
 		}
 	}
 
@@ -217,12 +219,12 @@ public class Event extends BaseResponse {
 		this.findingInstructions = findingInstructions;
 	}
 
-	public RsvpStatus getRsvpStatus() {
-		return rsvpStatus;
+	public MyRsvp getMyRsvp() {
+		return myrsvp;
 	}
 
-	public void setRsvpStatus(RsvpStatus rsvpStatus) {
-		this.rsvpStatus = rsvpStatus;
+	public void setRsvpStatus(MyRsvp rsvpStatus) {
+		this.myrsvp = rsvpStatus;
 	}
 
 	public String getEventURL() {
