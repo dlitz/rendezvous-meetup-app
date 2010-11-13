@@ -52,11 +52,18 @@ public class GroupInfoView extends TableLayout {
 		
 		ScrollView scrollView = new ScrollView(context);
 		TextView groupDesc = new TextView(context);
-		groupDesc.setText(group.getDescription());
+		groupDesc.setText(sanitize(group.getDescription()));
 		scrollView.addView(groupDesc);
 		Linkify.addLinks(groupDesc, Constants.LINK_MASK);
 		this.addView(scrollView, 1);
 		
 	}
 
+	// XXX - Duplicated in EventInfoView
+	private CharSequence sanitize(String description) {
+		description = description.replaceAll("\r\n", "\n");
+		description = description.replaceAll("<br>", "\n");
+		description = description.replaceAll("<br />", "\n");
+		return description;
+	}
 }

@@ -94,7 +94,9 @@ public class EventInfoView extends TableLayout {
 		this.addView(scrollView,3);
 	}
 
+	// XXX - Duplicated in EventInfoView
 	private CharSequence sanitize(String description) {
+		description = description.replaceAll("\r\n", "\n");
 		description = description.replaceAll("<br>", "\n");
 		description = description.replaceAll("<br />", "\n");
 		return description;
