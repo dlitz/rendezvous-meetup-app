@@ -24,6 +24,7 @@
  *******************************************************************/
 package net.yama.android.views.components;
 
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,6 +35,10 @@ import net.yama.android.util.Constants;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -64,17 +69,14 @@ public class EventInfoView extends TableLayout {
 		titleView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 		this.addView(titleView,0);
 		
-		TableRow dateVenueInfo = new TableRow(context);
+		TableRow dateVenueDisplay = new TableRow(context);
 		DateDisplay dateDisplay = new DateDisplay(context, event.getEventTime());
 		dateDisplay.setPadding(10, 10, 10, 10);
-		TextView venueInfo = new TextView(context);
-		venueInfo.setPadding(10, 0, 1, 0);
-		venueInfo.setText(getVenueString(event.getVenue()));
-		Linkify.addLinks(venueInfo, Constants.LINK_MASK );
-		dateVenueInfo.addView(dateDisplay);
-		dateVenueInfo.addView(venueInfo);
-		this.addView(dateVenueInfo,1);
-		
+		VenueDisplay venueDisplay = new VenueDisplay(context, event.getVenue());
+		venueDisplay.setPadding(10, 0, 1, 0);
+		dateVenueDisplay.addView(dateDisplay);
+		dateVenueDisplay.addView(venueDisplay);
+		this.addView(dateVenueDisplay,1);
 		
 		TextView descriptionTitle = new TextView(context);
 		descriptionTitle.setText("Description");
@@ -102,40 +104,119 @@ public class EventInfoView extends TableLayout {
 		return description;
 	}
 
-	private String getVenueString(Venue venue) {
-		
-		StringBuilder venueString = new StringBuilder();
-		String returnVenue = "Location:\n";
-		
-		if(isNotEmpty(venue.getVenueAddress1()))
-			venueString.append(venue.getVenueAddress1()).append("\n");
-		
-		if(isNotEmpty(venue.getVenueAddress2()))
-			venueString.append(venue.getVenueAddress2()).append("\n");
-		
-		if(isNotEmpty(venue.getVenueCity()))
-			venueString.append(venue.getVenueCity()).append(", ");
-		
-		if(isNotEmpty(venue.getVenueState()))
-			venueString.append(venue.getVenueState()).append("\n");
-		
-		if(isNotEmpty(venue.getVenuePhone()))
-			venueString.append("Phone: ").append(venue.getVenuePhone());
-		
-		if(venueString.length() > 0)
-			returnVenue = returnVenue + venueString.toString();
-		else 
-			returnVenue = returnVenue + "Not chosen yet.";
-		
-		return returnVenue;
-	}
-
-	
-
 	private boolean isNotEmpty(String str) {
 		return (str != null && str.length() > 0);
 	}
 
+	public class VenueDisplay extends TextView{
+		public VenueDisplay(Context context, Venue venue) {
+			super(context);
+
+			StringBuilder venueString = new StringBuilder();
+
+			// Address text
+			int addressStart, addressEnd;
+			addressStart = addressEnd = 0;
+			String venueAddressString = getVenueAddressString(venue);
+			if(isNotEmpty(venueAddressString)) {
+				venueString.append("Location:\n");
+				addressStart = venueString.length();
+				if (isNotEmpty(venue.getVenueName())) {
+					venueString.append(venue.getVenueName());
+					venueString.append("\n");
+				}
+				venueString.append(venueAddressString);
+				addressEnd = venueString.length();
+			}
+
+			// Phone text
+			int phoneStart, phoneEnd;
+			phoneStart = phoneEnd = 0;
+			if(isNotEmpty(venue.getVenuePhone())) {
+				venueString.append("Phone: ");
+				phoneStart = venueString.length();
+				venueString.append(venue.getVenuePhone());
+				phoneEnd = venueString.length();
+			}
+
+			// Skip if we did nothing
+			if(venueString.length() == 0) {
+				setText("Location:\nNot chosen yet.");
+				return;
+			}
+
+			// Set text
+			setText(venueString.toString(), BufferType.SPANNABLE);
+
+			// Add address link
+			if (addressStart != addressEnd) {
+				URLSpan urlSpan = new URLSpan(getVenueGeoURL(venue));
+				Spannable text = (Spannable) getText();
+				text.setSpan(urlSpan, addressStart, addressEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+
+			// Add phone link
+			if (phoneStart != phoneEnd) {
+				URLSpan urlSpan = new URLSpan(getVenueTelURL(venue));
+				Spannable text = (Spannable) getText();
+				text.setSpan(urlSpan, phoneStart, phoneEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+
+			// Make links clickable
+			setMovementMethod(LinkMovementMethod.getInstance());
+		}
+
+		private String getVenueAddressString(Venue venue) {
+			StringBuilder addressString = new StringBuilder();
+
+			if(isNotEmpty(venue.getVenueAddress1()))
+				addressString.append(venue.getVenueAddress1()).append("\n");
+
+			if(isNotEmpty(venue.getVenueAddress2()))
+				addressString.append(venue.getVenueAddress2()).append("\n");
+
+			if(isNotEmpty(venue.getVenueAddress3()))
+				addressString.append(venue.getVenueAddress3()).append("\n");
+
+			if(isNotEmpty(venue.getVenueCity()))
+				addressString.append(venue.getVenueCity()).append(", ");
+
+			if(isNotEmpty(venue.getVenueState()))
+				addressString.append(venue.getVenueState()).append("\n");
+
+			if(addressString.length() > 0)
+				return addressString.toString();
+			else
+				return null;
+		}
+
+		private String getVenueGeoURL(Venue venue) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("geo:");
+			if (venue.getVenueLatitude() != null && venue.getVenueLongitude() != null) {
+				sb.append(venue.getVenueLatitude().toString());
+				sb.append(",");
+				sb.append(venue.getVenueLongitude().toString());
+			} else {
+				sb.append("0,0");
+			}
+
+			// XXX - This is an Android-specific, non-RFC 5870-conformant hack to make
+			// Google Maps show a pin for the location, which is needed to allow getting
+			// directions and in-car navigation.
+			sb.append("?q=");
+			sb.append(URLEncoder.encode(getVenueAddressString(venue)));
+
+			return sb.toString();
+		}
+
+		private String getVenueTelURL(Venue venue) {
+			if (isNotEmpty(venue.getVenuePhone()))
+				return "tel:" + venue.getVenuePhone();
+			else
+				return null;
+		}
+	}
 
 
 	public class DateDisplay extends TableLayout{
