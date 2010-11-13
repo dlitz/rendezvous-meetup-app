@@ -56,10 +56,8 @@ public class Venue implements Serializable {
 		this.venueAddress1 = json.optString(Constants.RESPONSE_PARAM_VENUE_ADD_1);
 		this.venueAddress2 = json.optString(Constants.RESPONSE_PARAM_VENUE_ADD_2);
 		this.venueAddress3 = json.optString(Constants.RESPONSE_PARAM_VENUE_ADD_3);
-		this.venueAddress3 = json.optString(Constants.RESPONSE_PARAM_VENUE_ADD_3);
 		this.venueCity = json.optString(Constants.RESPONSE_PARAM_VENUE_CITY);
 		this.venueState = json.optString(Constants.RESPONSE_PARAM_VENUE_STATE);
-		this.venueZip = json.optString(Constants.RESPONSE_PARAM_VENUE_ZIP);
 		this.venueZip = json.optString(Constants.RESPONSE_PARAM_VENUE_ZIP);
 		this.venueMapURL = json.optString(Constants.RESPONSE_PARAM_VENUE_MAP_URL);
 		this.venueLatitude = json.optDouble(Constants.RESPONSE_PARAM_VENUE_LATITUDE);
